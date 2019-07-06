@@ -1,10 +1,8 @@
-[English](./README.md) | 简体中文 | [日本語](./README.ja-JP.md) 
+[English](./README.md) | 简体中文 | [日本語](./README.ja-JP.md)
 
 <h1 align="center">Webmagician UI</h1>
 
-<div align="center">
-
-Webmagician的UI，基于Ant-design-pro。
+Webmagician 的 UI，基于 Ant-design-pro。
 
 ## 使用
 
