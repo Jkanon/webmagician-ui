@@ -9,16 +9,19 @@ import ProLayout, {
   BasicLayoutProps as ProLayoutProps,
   Settings,
 } from '@ant-design/pro-layout';
-import React, { useEffect } from 'react';
+import GlobalFooter from '@ant-design/pro-layout/lib/GlobalFooter';
+import { Icon } from 'antd';
+import React, { useEffect, Fragment } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
+import defaultSettings from '../../config/defaultSettings';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, Dispatch } from '@/models/connect';
-import { isAntDesignPro } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
+import logoCollapsed from '../assets/logo-collapsed.png';
 
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
@@ -45,33 +48,39 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
 
-const footerRender: BasicLayoutProps['footerRender'] = (_, defaultDom) => {
-  if (!isAntDesignPro()) {
-    return defaultDom;
-  }
-  return (
-    <>
-      {defaultDom}
-      <div
-        style={{
-          padding: '0px 24px 24px',
-          textAlign: 'center',
-        }}
-      >
-        <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
-            width="82px"
-            alt="netlify logo"
-          />
-        </a>
-      </div>
-    </>
-  );
-};
+const footerRender: BasicLayoutProps['footerRender'] = () => (
+  <GlobalFooter
+    links={[
+      {
+        key: 'github',
+        title: <Icon type="github" />,
+        href: 'https://github.com/Jkanon/webmagician-ui',
+        blankTarget: true,
+      },
+      {
+        key: 'Ant Design',
+        title: 'Ant Design',
+        href: 'https://ant.design',
+        blankTarget: true,
+      },
+      {
+        key: 'Ant Design Pro',
+        title: 'Ant Design Pro',
+        href: 'https://pro.ant.design',
+        blankTarget: true,
+      },
+    ]}
+    copyright={
+      <Fragment>
+        Copyright <Icon type="copyright" /> 2018 - {new Date().getFullYear()}{' '}
+        {defaultSettings.title}
+      </Fragment>
+    }
+  />
+);
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings } = props;
+  const { dispatch, children, settings, collapsed } = props;
   /**
    * constructor
    */
@@ -99,7 +108,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
 
   return (
     <ProLayout
-      logo={logo}
+      logo={collapsed ? logoCollapsed : logo}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl) {
