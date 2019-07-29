@@ -19,4 +19,14 @@ const isAntDesignProOrDev = (): boolean => {
   return isAntDesignPro();
 };
 
-export { isAntDesignProOrDev, isAntDesignPro, isUrl };
+const openWindow = (url: string): boolean => {
+  const otherWindow = window.open();
+  if (otherWindow != null) {
+    otherWindow.opener = null;
+    otherWindow.location.href = url;
+  }
+
+  return false;
+};
+
+export { isAntDesignProOrDev, isAntDesignPro, isUrl, openWindow };

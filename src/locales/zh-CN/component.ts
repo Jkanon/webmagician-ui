@@ -1,5 +1,18 @@
 export default {
+  'component.common.text.delete': '删除',
+  'component.common.text.add': '新建',
+  'component.common.text.edit': '编辑',
+  'component.common.text.delete-items': '确定要删除这 {count} 项数据么？',
+  'component.common.text.deleted-success': '删除成功',
+  'component.common.text.add-success': '添加成功',
+  'component.common.text.edit-success': '修改成功',
   'component.tagSelect.expand': '展开',
   'component.tagSelect.collapse': '收起',
   'component.tagSelect.all': '全部',
+  'component.tablePage.text.search': '查询',
+  'component.tablePage.text.reset': '重置',
+  'component.standardTable.items.selected': '已选择 {count} 项',
+  'component.standardTable.items.clear': '清除',
+  'component.inlinePopconfirmBtn.title': '此操作无法撤销，确认要删除?',
+  'component.inlinePopconfirmBtn.text': '删除',
 };

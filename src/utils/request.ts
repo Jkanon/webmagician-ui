@@ -26,7 +26,7 @@ const codeMessage = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): void => {
+const errorHandler = (error: { response: Response }): Response => {
   const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
@@ -37,6 +37,7 @@ const errorHandler = (error: { response: Response }): void => {
       description: errorText,
     });
   }
+  return response;
 };
 
 /**
@@ -45,6 +46,21 @@ const errorHandler = (error: { response: Response }): void => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
+});
+
+// response interceptor, handling response
+request.interceptors.response.use(async (response, options) => {
+  const data = await response.clone().json();
+  if (data && typeof data.code !== 'undefined') {
+    if (data.code !== 0) {
+      const { url } = response;
+      notification.error({
+        message: `请求错误 ${data.code}: ${url}`,
+        description: '',
+      });
+    }
+  }
+  return response;
 });
 
 export default request;

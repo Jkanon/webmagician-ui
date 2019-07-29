@@ -47,14 +47,14 @@ export default {
   primaryColor: '#1890FF',
   layout: 'sidemenu',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   autoHideHeader: false,
-  fixSiderbar: false,
+  fixSiderbar: true,
   colorWeak: false,
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: 'Webmagician UI',
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;

@@ -4,6 +4,7 @@ import menu from './zh-TW/menu';
 import pwa from './zh-TW/pwa';
 import settingDrawer from './zh-TW/settingDrawer';
 import settings from './zh-TW/settings';
+import app from './zh-TW/app';
 
 export default {
   'navBar.lang': '語言',
@@ -17,4 +18,5 @@ export default {
   ...settings,
   ...pwa,
   ...component,
+  ...app,
 };
