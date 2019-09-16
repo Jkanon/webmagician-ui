@@ -123,8 +123,14 @@ class TablePage extends Component<TablePageProps, TablePageState> {
         ...fieldsValue,
       };
 
+      const { pagination } = this.state;
+
       this.setState({
         searchFormValues: values,
+        pagination: {
+          ...pagination,
+          current: 1,
+        },
       });
 
       this.doSearch();

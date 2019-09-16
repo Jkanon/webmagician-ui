@@ -4,7 +4,8 @@ import { FormattedMessage, formatMessage, getLocale } from 'umi-plugin-react/loc
 
 import { checkUrlRegex } from '../service';
 
-async function urlRegexValidator(rules, value, callback) {
+async function urlRegexValidator(rules: any, value: string, callback) {
+  // @ts-ignore
   const response = checkUrlRegex(this.getFieldValue('urlRegex'), this.getFieldValue('urlExample'));
   console.log(response);
   return Promise.resolve(value);
@@ -48,6 +49,7 @@ function getItems() {
           message: <FormattedMessage id="app.crawler.rule-conf.validation.url-regex.not-empty" />,
         },
         {
+          // @ts-ignore
           validator: urlRegexValidator.bind(this),
         },
       ],
