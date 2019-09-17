@@ -8,7 +8,7 @@ import { TableListData } from '@/components/Page/TablePage/index.d';
 import { query as querySites, removeSites, addSite, editSite } from './service';
 
 export interface SiteListItem extends TableListItem {
-  id: number;
+  id: string;
   logo: string;
   name: string;
   shortName: string;

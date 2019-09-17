@@ -41,6 +41,8 @@ interface TablePageState {
   selectedRows: TableListItem[];
   searchFormValues: any;
   pagination: Partial<TableListPagination>;
+  filters?: any;
+  sorter?: SorterResult<TableListItem>;
 }
 
 class TablePage extends Component<TablePageProps, TablePageState> {
@@ -64,10 +66,12 @@ class TablePage extends Component<TablePageProps, TablePageState> {
   handleFormReset = () => {
     const { form } = this.props;
     form.resetFields();
-    this.setState({
-      searchFormValues: {},
-    });
-    this.doSearch();
+    this.setState(
+      {
+        searchFormValues: {},
+      },
+      this.doSearch,
+    );
   };
 
   handleStandardTableChange = (
@@ -75,20 +79,22 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     filtersArg: Record<keyof TableListItem, string[]>,
     sorter: SorterResult<TableListItem>,
   ) => {
-    this.setState({
-      pagination: {
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      },
-    });
-
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
       const newObj = { ...obj };
       newObj[key] = getValue(filtersArg[key]);
       return newObj;
     }, {});
-
-    this.doSearch(filters, sorter);
+    this.setState(
+      {
+        pagination: {
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+        },
+        filters,
+        sorter,
+      },
+      this.doSearch,
+    );
   };
 
   /**
@@ -96,14 +102,17 @@ class TablePage extends Component<TablePageProps, TablePageState> {
    * @param rows
    */
   handleSelectRows = (rows: TableListItem[]) => {
-    this.setState({
-      selectedRows: rows,
-    });
-
-    const { handleSelectRows } = this.props;
-    if (handleSelectRows) {
-      handleSelectRows(rows);
-    }
+    this.setState(
+      {
+        selectedRows: rows,
+      },
+      () => {
+        const { handleSelectRows } = this.props;
+        if (handleSelectRows) {
+          handleSelectRows(rows);
+        }
+      },
+    );
   };
 
   /**
@@ -125,15 +134,16 @@ class TablePage extends Component<TablePageProps, TablePageState> {
 
       const { pagination } = this.state;
 
-      this.setState({
-        searchFormValues: values,
-        pagination: {
-          ...pagination,
-          current: 1,
+      this.setState(
+        {
+          searchFormValues: values,
+          pagination: {
+            ...pagination,
+            current: 1,
+          },
         },
-      });
-
-      this.doSearch();
+        this.doSearch,
+      );
     });
   };
 
@@ -157,9 +167,9 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     });
   };
 
-  doSearch(filters?: any, sorter?: SorterResult<TableListItem>) {
+  doSearch = () => {
     const { action, dispatch } = this.props;
-    const { searchFormValues, pagination } = this.state;
+    const { searchFormValues, pagination, filters, sorter } = this.state;
     const params: Partial<TableListParams> = {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
@@ -174,7 +184,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
       type: action,
       payload: params,
     });
-  }
+  };
 
   /**
    * Search form render
@@ -223,8 +233,8 @@ class TablePage extends Component<TablePageProps, TablePageState> {
             )}
           </div>
           <div className={styles.tableListOperatorRight}>
-            <Tooltip title="刷新">
-              <Button shape="circle" icon="sync" />
+            <Tooltip title={formatMessage({ id: 'app.common.label.refresh' })}>
+              <Button shape="circle" icon="sync" onClick={this.doSearch} />
             </Tooltip>
             <Tooltip title="显隐">
               <Button shape="circle" icon="appstore" />

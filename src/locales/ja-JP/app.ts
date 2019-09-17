@@ -1,6 +1,7 @@
 export default {
   'app.common.label.operation': '操作',
   'app.common.label.memo': '備考',
+  'app.common.label.refresh': 'リフレッシュ',
   'app.crawler.site.add-new-site': 'サイトを追加する',
   'app.crawler.site.edit-the-site': 'サイトを編集する',
   'app.crawler.site.label.name': '名称',

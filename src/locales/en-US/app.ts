@@ -1,6 +1,7 @@
 export default {
   'app.common.label.operation': 'Operation',
   'app.common.label.memo': 'Remarks',
+  'app.common.label.refresh': 'Refresh',
   'app.crawler.site.add-new-site': 'Add a new site',
   'app.crawler.site.edit-the-site': 'Edit the site',
   'app.crawler.site.label.name': 'Name',

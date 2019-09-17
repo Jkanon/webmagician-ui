@@ -9,7 +9,7 @@ import styles from './index.less';
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface TableListItem {
-  id?: number;
+  id?: number | string;
   disabled?: boolean;
 }
 

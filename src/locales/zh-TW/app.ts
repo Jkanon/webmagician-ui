@@ -1,6 +1,7 @@
 export default {
   'app.common.label.operation': '操作',
   'app.common.label.memo': '備註',
+  'app.common.label.refresh': '刷新',
   'app.crawler.site.add-new-site': '新增站點',
   'app.crawler.site.edit-the-site': '編輯站點',
   'app.crawler.site.label.name': '名稱',
