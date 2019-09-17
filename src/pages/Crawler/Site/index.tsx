@@ -12,9 +12,15 @@ import { StandardTableColumnProps } from '@/components/StandardTable';
 import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
 import { ModalForm } from '@/components/Form';
 
+import AceEditor from 'react-ace';
 import { SiteStateType, SiteListItem } from './model';
 
 import { openWindow } from '@/utils/utils';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'brace/mode/javascript';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'brace/theme/github';
 
 interface SiteProps {
   dispatch: Dispatch<any>;
@@ -113,7 +119,25 @@ class Site extends Component<SiteProps, SiteState> {
                 登录脚本
               </a>
             }
-          ></ModalForm>
+          >
+            <AceEditor
+              placeholder="登录脚本"
+              mode="javascript"
+              theme="github"
+              name="blah2"
+              fontSize={14}
+              showPrintMargin
+              showGutter
+              highlightActiveLine
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: false,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2,
+              }}
+            />
+          </ModalForm>
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
         </Fragment>

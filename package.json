@@ -63,6 +63,7 @@
     "prop-types": "^15.7.2",
     "qs": "^6.7.0",
     "react": "^16.8.6",
+    "react-ace": "^7.0.4",
     "react-container-query": "^0.11.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-document-title": "^2.0.3",
