@@ -190,7 +190,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     this.setState({ selectedDisplayColumnsKey });
   };
 
-  handleSwichMenuSelectAll = () => {
+  handleSwitchMenuSelectAll = () => {
     const { columns } = this.props;
     this.setState({
       // eslint-disable-next-line max-len
@@ -200,7 +200,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     });
   };
 
-  handleSwichMenuSelectReverse = () => {
+  handleSwitchMenuSelectReverse = () => {
     const { columns } = this.props;
     const { selectedDisplayColumnsKey } = this.state;
     // eslint-disable-next-line max-len
@@ -292,15 +292,15 @@ class TablePage extends Component<TablePageProps, TablePageState> {
         <div className="ant-table-filter-dropdown-btns">
           <a
             className="ant-table-filter-dropdown-link confirm"
-            onClick={this.handleSwichMenuSelectAll}
+            onClick={this.handleSwitchMenuSelectAll}
           >
-            全选
+            {<FormattedMessage id="app.common.label.select-all" />}
           </a>
           <a
             className="ant-table-filter-dropdown-link clear"
-            onClick={this.handleSwichMenuSelectReverse}
+            onClick={this.handleSwitchMenuSelectReverse}
           >
-            反选
+            {<FormattedMessage id="app.common.label.select-reversely" />}
           </a>
         </div>
       </Menu>
@@ -336,7 +336,9 @@ class TablePage extends Component<TablePageProps, TablePageState> {
             <Tooltip title={formatMessage({ id: 'app.common.label.refresh' })}>
               <Button shape="circle" icon="sync" onClick={this.doSearch} />
             </Tooltip>
-            <Tooltip title="显隐">{this.renderSwitchDropdown()}</Tooltip>
+            <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>
+              {this.renderSwitchDropdown()}
+            </Tooltip>
           </div>
         </div>
       )

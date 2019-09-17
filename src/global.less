@@ -87,3 +87,13 @@ ol {
 .ant-pro-sider-menu-logo img {
   height: 64px !important;
 }
+
+.ant-modal-wrap[role='dialog'] {
+  .ant-modal {
+    max-height: calc(100vh - 30px);
+    .ant-modal-body {
+      max-height: calc(100vh - 140px);
+      overflow-y: scroll;
+    }
+  }
+}

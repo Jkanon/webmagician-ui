@@ -80,7 +80,7 @@ class Site extends Component<SiteProps, SiteState> {
       ),
     },
     {
-      title: '超时时间(s)',
+      title: <FormattedMessage id="app.crawler.site.label.timeout" />,
       dataIndex: 'timeOut',
     },
     {
@@ -276,7 +276,7 @@ class Site extends Component<SiteProps, SiteState> {
     const { getFieldDecorator } = form;
     return (
       <Col md={8} sm={24}>
-        <Form.Item label="站点名称">
+        <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
           {getFieldDecorator('name')(<Input placeholder="请输入" />)}
         </Form.Item>
       </Col>
