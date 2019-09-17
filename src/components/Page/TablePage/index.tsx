@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Modal, Row, Tooltip } from 'antd';
+import { Button, Card, Checkbox, Col, Dropdown, Form, Menu, Modal, Row, Tooltip } from 'antd';
 import React, { Component } from 'react';
 
 import { Dispatch } from 'redux';
@@ -43,6 +43,9 @@ interface TablePageState {
   pagination: Partial<TableListPagination>;
   filters?: any;
   sorter?: SorterResult<TableListItem>;
+  switchDropdownVisible: boolean;
+  // 选中的显示行
+  selectedDisplayColumnsKey: string[];
 }
 
 class TablePage extends Component<TablePageProps, TablePageState> {
@@ -56,6 +59,11 @@ class TablePage extends Component<TablePageProps, TablePageState> {
         current: 1,
         ...props.data.pagination,
       },
+      switchDropdownVisible: false,
+      // eslint-disable-next-line max-len
+      selectedDisplayColumnsKey: props.columns.map((x, index) =>
+        (x.key || x.dataIndex || index).toString(),
+      ),
     };
   }
 
@@ -167,6 +175,47 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     });
   };
 
+  handleSwitchMenusVisibleChange = (flag: boolean) => {
+    this.setState({ switchDropdownVisible: flag });
+  };
+
+  handleMenuItemClick = (info: { keyPath: string; key: string }) => {
+    const { selectedDisplayColumnsKey } = this.state;
+    const index = selectedDisplayColumnsKey.indexOf(info.key);
+    if (index >= 0) {
+      selectedDisplayColumnsKey.splice(index, 1);
+    } else {
+      selectedDisplayColumnsKey.push(info.key);
+    }
+    this.setState({ selectedDisplayColumnsKey });
+  };
+
+  handleSwichMenuSelectAll = () => {
+    const { columns } = this.props;
+    this.setState({
+      // eslint-disable-next-line max-len
+      selectedDisplayColumnsKey: columns.map((x, index) =>
+        (x.key || x.dataIndex || index).toString(),
+      ),
+    });
+  };
+
+  handleSwichMenuSelectReverse = () => {
+    const { columns } = this.props;
+    const { selectedDisplayColumnsKey } = this.state;
+    // eslint-disable-next-line max-len
+    const filterColumns = columns.filter(
+      (x, index) =>
+        selectedDisplayColumnsKey.indexOf((x.key || x.dataIndex || index).toString()) < 0,
+    );
+    this.setState({
+      // eslint-disable-next-line max-len
+      selectedDisplayColumnsKey: filterColumns.map((x, index) =>
+        (x.key || x.dataIndex || index).toString(),
+      ),
+    });
+  };
+
   doSearch = () => {
     const { action, dispatch } = this.props;
     const { searchFormValues, pagination, filters, sorter } = this.state;
@@ -218,9 +267,60 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     );
   }
 
+  renderSwitchMenus(items: StandardTableColumnProps<any>[]): React.ReactElement<any>[] {
+    const { selectedDisplayColumnsKey } = this.state;
+
+    return items.map((item, index) => {
+      const key = (item.key || item.dataIndex || index).toString();
+      return (
+        // eslint-disable-next-line max-len
+        <Menu.Item key={key}>
+          <Checkbox checked={selectedDisplayColumnsKey.indexOf(key) >= 0} />
+          <span style={{ marginLeft: 8 }}>{item.title}</span>
+        </Menu.Item>
+      );
+    });
+  }
+
+  renderSwitchDropdown(): React.ReactElement {
+    const { columns } = this.props;
+
+    const menu = (
+      // @ts-ignore
+      <Menu multiple onClick={this.handleMenuItemClick}>
+        {this.renderSwitchMenus(columns)}
+        <div className="ant-table-filter-dropdown-btns">
+          <a
+            className="ant-table-filter-dropdown-link confirm"
+            onClick={this.handleSwichMenuSelectAll}
+          >
+            全选
+          </a>
+          <a
+            className="ant-table-filter-dropdown-link clear"
+            onClick={this.handleSwichMenuSelectReverse}
+          >
+            反选
+          </a>
+        </div>
+      </Menu>
+    );
+
+    return (
+      <Dropdown
+        overlay={menu}
+        onVisibleChange={this.handleSwitchMenusVisibleChange}
+        visible={this.state.switchDropdownVisible}
+      >
+        <Button shape="circle" icon="appstore" />
+      </Dropdown>
+    );
+  }
+
   renderOperatorPanel() {
     const { operatorRender } = this.props;
     const { selectedRows } = this.state;
+
     return (
       operatorRender && (
         <div className={styles.tableListOperator}>
@@ -236,9 +336,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
             <Tooltip title={formatMessage({ id: 'app.common.label.refresh' })}>
               <Button shape="circle" icon="sync" onClick={this.doSearch} />
             </Tooltip>
-            <Tooltip title="显隐">
-              <Button shape="circle" icon="appstore" />
-            </Tooltip>
+            <Tooltip title="显隐">{this.renderSwitchDropdown()}</Tooltip>
           </div>
         </div>
       )
@@ -246,14 +344,19 @@ class TablePage extends Component<TablePageProps, TablePageState> {
   }
 
   renderTableList() {
-    const { loading, data, columns, expandedRowRender, tableOptions } = this.props;
-    const { selectedRows } = this.state;
+    const { loading, data, expandedRowRender, tableOptions, columns } = this.props;
+    const { selectedRows, selectedDisplayColumnsKey } = this.state;
+    // eslint-disable-next-line max-len
+    const displayColumns = columns.filter(
+      (item, index) =>
+        selectedDisplayColumnsKey.indexOf((item.key || item.dataIndex || index).toString()) >= 0,
+    );
     return (
       <StandardTable
         selectedRows={selectedRows}
         loading={loading}
         data={data}
-        columns={columns}
+        columns={displayColumns}
         expandedRowRender={expandedRowRender}
         onSelectRow={this.handleSelectRows}
         onChange={this.handleStandardTableChange}

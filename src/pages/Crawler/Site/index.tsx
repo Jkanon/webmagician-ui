@@ -86,6 +86,7 @@ class Site extends Component<SiteProps, SiteState> {
     {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
+      key: 'operation',
       render: (text: string, record: SiteListItem) => (
         <Fragment>
           <ModalForm
@@ -217,7 +218,7 @@ class Site extends Component<SiteProps, SiteState> {
    * 删除回调函数
    * @param ids
    */
-  onDelete = (ids: number[]) => {
+  onDelete = (ids: string[]) => {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
 

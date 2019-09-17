@@ -8,7 +8,7 @@ import { TableListData } from '@/components/Page/TablePage/index.d';
 import { query, add, edit } from './service';
 
 export interface PageInfoListItem extends TableListItem {
-  id: number;
+  id: string;
   name: string;
   urlRegex: string;
   urlExample?: string;

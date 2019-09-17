@@ -101,6 +101,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
+      key: 'operation',
       width: 180,
       render: (text, record) => (
         <Fragment>
@@ -142,7 +143,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
    * 删除回调函数
    * @param ids
    */
-  onDelete = (ids: number[]) => {
+  onDelete = (ids: string[]) => {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
 
