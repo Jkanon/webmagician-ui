@@ -16,4 +16,5 @@ export default {
   'component.inlinePopconfirmBtn.title':
     'この項目を削除してもよろしいですか？この操作は取り消せません。',
   'component.inlinePopconfirmBtn.text': '削除',
+  'component.pagination.total': '{total}アイテム中{range0}から{range1}を表示しています',
 };

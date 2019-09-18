@@ -10,10 +10,6 @@ body,
   filter: invert(80%);
 }
 
-.ant-layout {
-  min-height: 100vh;
-}
-
 canvas {
   display: block;
 }
@@ -70,6 +66,18 @@ ol {
   word-break: break-all;
 }
 
+/* 分页总数  */
+.screen-md,
+.screen-lg,
+.screen-xl {
+  .ant-pagination.ant-table-pagination {
+    .ant-pagination-total-text {
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
 .ant-col.ant-form-item-label {
   margin-right: 5px;
 }
@@ -96,4 +104,8 @@ ol {
       overflow-y: scroll;
     }
   }
+}
+
+.ant-layout {
+  height: 100vh !important;
 }

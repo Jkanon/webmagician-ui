@@ -15,4 +15,5 @@ export default {
   'component.standardTable.items.clear': '清除',
   'component.inlinePopconfirmBtn.title': '此操作無法撤銷，確認要刪除?',
   'component.inlinePopconfirmBtn.text': '刪除',
+  'component.pagination.total': '当前显示第 {range0} 至 {range1} 項，共 {total} 項',
 };

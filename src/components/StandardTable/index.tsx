@@ -117,6 +117,12 @@ class StandardTable extends Component<
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
+      showTotal: (total: number, range: [number, number]) => (
+        <FormattedMessage
+          id="component.pagination.total"
+          values={{ range0: range[0], range1: range[1], total }}
+        />
+      ),
       ...pagination,
     };
 

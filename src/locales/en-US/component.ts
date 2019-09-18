@@ -16,4 +16,5 @@ export default {
   'component.inlinePopconfirmBtn.title':
     'This operation cannot be undone. Would you like to proceed? ',
   'component.inlinePopconfirmBtn.text': 'Delete',
+  'component.pagination.total': '{range0} - {range1} of {total} items',
 };
