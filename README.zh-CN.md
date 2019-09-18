@@ -22,3 +22,9 @@ $ npm start         # visit http://localhost:8000
 ## 系统效果
 
 ![](https://s2.ax1x.com/2019/09/17/n4kyqJ.png)
+
+## 最后
+
+欢迎大家来访
+
+[![](https://img.shields.io/badge/%E7%AE%80-%40Jkanon-orange)](https://www.jianshu.com/u/53671b43e905) [![](https://img.shields.io/badge/%E7%A0%81%E4%BA%91-@Jkanon-C5212A)](https://gitee.com/Jkanon) [![](https://img.shields.io/badge/Github-@Jkanon-25292E.svg)](https://github.com/Jkanon)
