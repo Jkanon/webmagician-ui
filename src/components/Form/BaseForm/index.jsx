@@ -69,7 +69,7 @@ class BaseForm extends Component {
    * @returns {*}
    */
   renderFormBody = () => {
-    const { form, formValues } = this.props;
+    const { form, formValues, layout } = this.props;
     const { toggleFieldVisibility } = this.state;
 
     let { formItems } = this.props;
@@ -79,7 +79,14 @@ class BaseForm extends Component {
 
     return (
       <Fragment>
-        {renderFormItems(formItems, form.getFieldDecorator, formValues, toggleFieldVisibility)}
+        {/* eslint-disable-next-line max-len */}
+        {renderFormItems(
+          formItems,
+          form.getFieldDecorator,
+          formValues,
+          toggleFieldVisibility,
+          layout,
+        )}
         {formItems.some(item => item.toggleField) && (
           <div style={{ textAlign: 'center' }} onClick={this.toggleForm}>
             <a style={{ marginLeft: 8 }}>
@@ -93,10 +100,10 @@ class BaseForm extends Component {
   };
 
   render() {
-    const { children, layout, form, formValues } = this.props;
+    const { children, layout, form, formValues, style } = this.props;
 
     return (
-      <Form layout={layout} onSubmit={this.onSubmit}>
+      <Form layout={layout} onSubmit={this.onSubmit} style={style}>
         {// 自定义表单内容，并且注入表单相关属性
         (children &&
           React.Children.map(children, child =>

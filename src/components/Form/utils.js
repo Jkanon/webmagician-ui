@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'antd';
-import { isFunction } from 'lodash';
 
 /**
  * 默认表单布局

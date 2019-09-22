@@ -14,15 +14,9 @@ import { ModalForm } from '@/components/Form';
 
 import LoginScriptForm from './Form/LoginScriptForm';
 
-import AceEditor from 'react-ace';
 import { SiteStateType, SiteListItem } from './model';
 
 import { openWindow } from '@/utils/utils';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-// import 'brace/mode/javascript';
-// eslint-disable-next-line import/no-extraneous-dependencies
-// import 'brace/theme/github';
 
 interface SiteProps {
   dispatch: Dispatch<any>;
@@ -320,8 +314,11 @@ class Site extends Component<SiteProps, SiteState> {
           dispatch={dispatch}
         />
         <Modal
-          title="Basic Modal"
+          title="配置登录脚本"
           visible={showLoginScriptModal}
+          width={500}
+          footer={null}
+          centered
           onCancel={() => this.setState({ showLoginScriptModal: false })}
         >
           <LoginScriptForm />
