@@ -56,13 +56,12 @@ const RuleConfModel: RuleConfModelType = {
   },
 
   effects: {
-    *create({ payload, callback }, { call, put }) {
+    *create({ payload }, { call, put }) {
       const response = yield call(add, payload);
       yield put({
         type: 'add',
         payload: response.data,
       });
-      if (callback) callback();
     },
 
     *fetch({ payload }, { call, put }) {
@@ -73,13 +72,12 @@ const RuleConfModel: RuleConfModelType = {
       });
     },
 
-    *modify({ payload, callback }, { call, put }) {
+    *modify({ payload }, { call, put }) {
       const response = yield call(edit, payload);
       yield put({
         type: 'edit',
         payload: response.data,
       });
-      if (callback) callback();
     },
   },
 

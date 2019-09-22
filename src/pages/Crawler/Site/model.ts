@@ -67,29 +67,30 @@ const SiteModel: SiteModelType = {
         payload: response.data,
       });
     },
-    *create({ payload, callback }, { call, put }) {
+    *create({ payload }, { call, put }) {
       const response = yield call(addSite, payload);
       yield put({
         type: 'add',
         payload: response.data,
       });
-      if (callback) callback();
     },
-    *modify({ payload, callback }, { call, put }) {
-      const response = yield call(editSite, payload);
-      yield put({
-        type: 'edit',
-        payload: response.data,
-      });
-      if (callback) callback();
+    *modify({ payload }, { call, put }) {
+      try {
+        const response = yield call(editSite, payload);
+        yield put({
+          type: 'edit',
+          payload: response.data,
+        });
+      } catch (e) {
+        throw e;
+      }
     },
-    *remove({ payload, callback }, { call, put }) {
+    *remove({ payload }, { call, put }) {
       yield call(removeSites, payload);
       yield put({
         type: 'del',
         payload,
       });
-      if (callback) callback();
     },
   },
 

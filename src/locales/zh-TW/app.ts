@@ -5,6 +5,7 @@ export default {
   'app.common.label.columns-display-settings': '顯隱',
   'app.common.label.select-all': '全選',
   'app.common.label.select-reversely': '反選',
+  'app.common.label.open-in-new-window': '點擊新窗口打開鏈接',
   'app.crawler.site.filter.name': '站點名稱',
   'app.crawler.site.add-new-site': '新增站點',
   'app.crawler.site.edit-the-site': '編輯站點',

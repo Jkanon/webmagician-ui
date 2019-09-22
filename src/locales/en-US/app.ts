@@ -5,6 +5,7 @@ export default {
   'app.common.label.columns-display-settings': 'Displayed Columns Settings',
   'app.common.label.select-all': 'Check All',
   'app.common.label.select-reversely': 'Inverse',
+  'app.common.label.open-in-new-window': 'Open in a new window',
   'app.crawler.site.filter.name': "Site's Name",
   'app.crawler.site.add-new-site': 'Add a new site',
   'app.crawler.site.edit-the-site': 'Edit the site',

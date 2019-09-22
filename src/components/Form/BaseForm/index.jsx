@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Form, Icon } from 'antd';
 
-import { renderFormItems, submitForm } from '../utils';
+import { isFunction } from 'lodash';
+import { renderFormItems } from '../utils';
 
 @Form.create({
   // 表单项变化时调用
@@ -43,7 +44,17 @@ class BaseForm extends Component {
    */
   submit = (e, extraOptions) => {
     const { form, formValues, onSubmit } = this.props;
-    submitForm(form, formValues, onSubmit, extraOptions);
+    return form.validateFields().then(fieldsValue => {
+      const values = { ...formValues, ...fieldsValue };
+      if (isFunction(onSubmit)) {
+        return onSubmit(values, form, extraOptions);
+      }
+      return {
+        values,
+        form,
+        extraOptions,
+      };
+    });
   };
 
   toggleForm = () => {

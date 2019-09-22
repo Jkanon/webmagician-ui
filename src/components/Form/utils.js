@@ -70,23 +70,3 @@ export const renderFormItems = (
       getFieldDecorator,
     );
   });
-
-/**
- * submit form
- * @param form
- * @param formValues
- * @param callback
- * @param extraOptions
- */
-export const submitForm = (form, formValues, callback, extraOptions) => {
-  if (form) {
-    form.validateFieldsAndScroll((err, fieldsValue) => {
-      if (!err && isFunction(callback)) {
-        callback({ ...formValues, ...fieldsValue }, form, extraOptions);
-      }
-    });
-  } else {
-    // eslint-disable-next-line no-console
-    console.warn('form is not defined');
-  }
-};

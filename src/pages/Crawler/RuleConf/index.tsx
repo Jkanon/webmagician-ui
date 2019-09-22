@@ -153,39 +153,38 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       payload: {
         ids: ids.join(','),
       },
-      callback: () => {
-        this.setState({
-          selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
-        });
-        dispatch({
-          type: 'ruleConf/fetch',
-        });
-        message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
-      },
+    }).then(() => {
+      this.setState({
+        selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
+      });
+      dispatch({
+        type: 'ruleConf/fetch',
+      });
+      message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
     });
   };
 
-  handleAdd = (fields: any, form: WrappedFormUtils, hideModalHandler: () => void) =>
-    this.handleAddOrEdit('ruleConf/create', fields, hideModalHandler);
+  handleAdd = (fields: any, form: WrappedFormUtils) =>
+    this.handleAddOrEdit('ruleConf/create', fields);
 
-  handleEdit = (fields: any, form: WrappedFormUtils, hideModalHandler: () => void) =>
-    this.handleAddOrEdit('ruleConf/modify', fields, hideModalHandler);
+  handleEdit = (fields: any, form: WrappedFormUtils) =>
+    this.handleAddOrEdit('ruleConf/modify', fields);
 
-  handleAddOrEdit = (type: string, fields: any, hideModalHandler: () => void) => {
+  handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
 
     dispatch({
       type,
       payload: fields,
-      callback: () => {
-        message.success(
-          formatMessage({
-            id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') ||
-              'edit'}-success`,
-          }),
-        );
-        hideModalHandler();
-      },
+    }).then(() => {
+      dispatch({
+        type: 'ruleConf/fetch',
+      });
+      message.success(
+        formatMessage({
+          id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') || 'edit'}-success`,
+        }),
+      );
     });
   };
 

@@ -1,4 +1,4 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 import { stringify } from 'qs';
 
 import { TableListParams } from '@/components/Page/TablePage/index.d';

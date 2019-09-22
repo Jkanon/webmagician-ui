@@ -5,6 +5,7 @@ export default {
   'app.common.label.columns-display-settings': '表示列の設定',
   'app.common.label.select-all': 'すべて選択',
   'app.common.label.select-reversely': '反転',
+  'app.common.label.open-in-new-window': '新しいウィンドウで開く',
   'app.crawler.site.filter.name': 'サイトの名前',
   'app.crawler.site.add-new-site': 'サイトを追加する',
   'app.crawler.site.edit-the-site': 'サイトを編集する',

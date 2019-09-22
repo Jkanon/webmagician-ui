@@ -28,16 +28,27 @@ const codeMessage = {
  */
 const errorHandler = (error: { response: Response }): Response => {
   const { response } = error;
+  let message;
+  let description;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
 
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
+    message = `请求错误 ${status}: ${url}`;
+    description = errorText;
+  } else if (!response) {
+    if (error instanceof Error) {
+      message = `请求错误 ${error.message}`;
+    } else {
+      description = '您的网络发生异常，无法连接服务器';
+      message = '网络异常';
+    }
   }
-  return response;
+  notification.error({
+    message,
+    description,
+  });
+  throw new Error(message);
 };
 
 /**
@@ -49,18 +60,18 @@ const request = extend({
 });
 
 // response interceptor, handling response
-request.interceptors.response.use(async (response, options) => {
-  const data = await response.clone().json();
-  if (data && typeof data.code !== 'undefined') {
-    if (data.code !== 0) {
-      const { url } = response;
-      notification.error({
-        message: `请求错误 ${data.code}: ${url}`,
-        description: '',
-      });
-    }
-  }
-  return response;
-});
+request.interceptors.response.use(response =>
+  response
+    .clone()
+    .json()
+    .then(data => {
+      if (data && typeof data.code !== 'undefined') {
+        if (data.code !== 0) {
+          return Promise.reject(new Error(data.code));
+        }
+      }
+      return response;
+    }),
+);
 
 export default request;

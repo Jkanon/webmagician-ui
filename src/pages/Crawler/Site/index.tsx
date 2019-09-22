@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Form, Icon, Input, message } from 'antd';
+import { Button, Col, Divider, Form, Icon, Input, Modal, message } from 'antd';
 import React, { Component, Fragment } from 'react';
 
 import { Dispatch } from 'redux';
@@ -12,15 +12,17 @@ import { StandardTableColumnProps } from '@/components/StandardTable';
 import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
 import { ModalForm } from '@/components/Form';
 
+import LoginScriptForm from './Form/LoginScriptForm';
+
 import AceEditor from 'react-ace';
 import { SiteStateType, SiteListItem } from './model';
 
 import { openWindow } from '@/utils/utils';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import 'brace/mode/javascript';
+// import 'brace/mode/javascript';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import 'brace/theme/github';
+// import 'brace/theme/github';
 
 interface SiteProps {
   dispatch: Dispatch<any>;
@@ -30,6 +32,7 @@ interface SiteProps {
 
 interface SiteState {
   selectedRows: SiteListItem[];
+  showLoginScriptModal: boolean;
 }
 
 @connect(
@@ -51,6 +54,7 @@ interface SiteState {
 class Site extends Component<SiteProps, SiteState> {
   state: SiteState = {
     selectedRows: [],
+    showLoginScriptModal: false,
   };
 
   columns: StandardTableColumnProps<SiteListItem>[] = [
@@ -78,7 +82,7 @@ class Site extends Component<SiteProps, SiteState> {
           href={text}
           target="_blank"
           rel="noreferrer noopener"
-          title="点击新窗口打开链接"
+          title={formatMessage({ id: 'app.common.label.open-in-new-window' })}
           onClick={() => openWindow(text)}
         >
           {text}
@@ -96,7 +100,6 @@ class Site extends Component<SiteProps, SiteState> {
       render: (text: string, record: SiteListItem) => (
         <Fragment>
           <ModalForm
-            visible={false}
             title={formatMessage({ id: 'app.crawler.site.edit-the-site' })}
             onSubmit={this.handleEdit}
             element={
@@ -109,35 +112,10 @@ class Site extends Component<SiteProps, SiteState> {
             formValues={record}
           />
           <Divider type="vertical" />
-          <ModalForm
-            visible={false}
-            title="编辑登录脚本"
-            onSubmit={this.handleEdit}
-            element={
-              <a>
-                <Icon type="edit" />
-                登录脚本
-              </a>
-            }
-          >
-            <AceEditor
-              placeholder="登录脚本"
-              mode="javascript"
-              theme="github"
-              name="blah2"
-              fontSize={14}
-              showPrintMargin
-              showGutter
-              highlightActiveLine
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: false,
-                enableSnippets: false,
-                showLineNumbers: true,
-                tabSize: 2,
-              }}
-            />
-          </ModalForm>
+          <a onClick={this.showModal}>
+            <Icon type="edit" />
+            登录脚本
+          </a>
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
         </Fragment>
@@ -238,6 +216,10 @@ class Site extends Component<SiteProps, SiteState> {
     },
   ];
 
+  showModal = () => {
+    this.setState({ showLoginScriptModal: true });
+  };
+
   /**
    * 删除回调函数
    * @param ids
@@ -252,41 +234,35 @@ class Site extends Component<SiteProps, SiteState> {
       payload: {
         ids: ids.join(','),
       },
-      callback: () => {
-        this.setState({
-          selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
-        });
-        dispatch({
-          type: 'site/fetch',
-        });
-        message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
-      },
+    }).then(() => {
+      this.setState({
+        selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
+      });
+      dispatch({
+        type: 'site/fetch',
+      });
+      message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
     });
   };
 
-  handleAdd = (fields: any, form: WrappedFormUtils, hideModalHandler: () => void) =>
-    this.handleAddOrEdit('site/create', fields, hideModalHandler);
+  handleAdd = (fields: any, form: WrappedFormUtils) => this.handleAddOrEdit('site/create', fields);
 
-  handleEdit = (fields: any, form: WrappedFormUtils, hideModalHandler: () => void) =>
-    this.handleAddOrEdit('site/modify', fields, hideModalHandler);
+  handleEdit = (fields: any, form: WrappedFormUtils) => this.handleAddOrEdit('site/modify', fields);
 
-  handleAddOrEdit = (type: string, fields: any, hideModalHandler: () => void) => {
+  handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
-    dispatch({
+    return dispatch({
       type,
       payload: fields,
-      callback: () => {
-        dispatch({
-          type: 'site/fetch',
-        });
-        message.success(
-          formatMessage({
-            id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') ||
-              'edit'}-success`,
-          }),
-        );
-        hideModalHandler();
-      },
+    }).then(() => {
+      dispatch({
+        type: 'site/fetch',
+      });
+      message.success(
+        formatMessage({
+          id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') || 'edit'}-success`,
+        }),
+      );
     });
   };
 
@@ -309,7 +285,6 @@ class Site extends Component<SiteProps, SiteState> {
 
   operatorRender = () => (
     <ModalForm
-      visible={false}
       title={formatMessage({ id: 'app.crawler.site.add-new-site' })}
       onSubmit={this.handleAdd}
       element={
@@ -327,22 +302,31 @@ class Site extends Component<SiteProps, SiteState> {
       loading,
       site: { data },
     } = this.props;
-    const { selectedRows } = this.state;
+    const { selectedRows, showLoginScriptModal } = this.state;
 
     return (
-      <TablePage
-        title="站点配置"
-        action="site/fetch"
-        columns={this.columns}
-        data={data}
-        loading={loading}
-        searchFormRender={this.searchFormRender}
-        operatorRender={this.operatorRender}
-        selectedRows={selectedRows}
-        handleSelectRows={this.handleSelectRows}
-        onDelete={(rows: SiteListItem[]) => this.onDelete(rows.map(row => row.id))}
-        dispatch={dispatch}
-      />
+      <>
+        <TablePage
+          title="站点配置"
+          action="site/fetch"
+          columns={this.columns}
+          data={data}
+          loading={loading}
+          searchFormRender={this.searchFormRender}
+          operatorRender={this.operatorRender}
+          selectedRows={selectedRows}
+          handleSelectRows={this.handleSelectRows}
+          onDelete={(rows: SiteListItem[]) => this.onDelete(rows.map(row => row.id))}
+          dispatch={dispatch}
+        />
+        <Modal
+          title="Basic Modal"
+          visible={showLoginScriptModal}
+          onCancel={() => this.setState({ showLoginScriptModal: false })}
+        >
+          <LoginScriptForm />
+        </Modal>
+      </>
     );
   }
 }

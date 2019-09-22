@@ -182,7 +182,7 @@ let tableListDataSource: SiteListItem[] = [
 ];
 
 function getSites(
-  req: { url: any; body: any },
+  req: { url: string; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;
   },
@@ -224,7 +224,7 @@ function getSites(
 }
 
 function deleteSites(
-  req: { url: any; body: any },
+  req: { url: string; body: any },
   res: {
     json: (arg0: { code: number }) => void;
   },
@@ -251,7 +251,7 @@ function deleteSites(
 }
 
 function addSite(
-  req: { url: any; body: any },
+  req: { url: string; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;
   },
@@ -262,7 +262,7 @@ function addSite(
 }
 
 function editSite(
-  req: { url: any; body: any },
+  req: { url: string; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;
   },
