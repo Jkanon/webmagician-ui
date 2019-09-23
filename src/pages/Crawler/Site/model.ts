@@ -3,7 +3,7 @@ import { EffectsCommandMap } from 'dva';
 import { isEmpty, isNumber } from 'lodash';
 
 import { TableListItem } from '@/components/StandardTable';
-import { TableListData } from '@/components/Page/TablePage/index.d';
+import { TableListData } from '@/components/Page/TablePage';
 
 import { query as querySites, removeSites, addSite, editSite } from './service';
 

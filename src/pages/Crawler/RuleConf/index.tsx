@@ -47,7 +47,6 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     selectedRows: [],
   };
 
-  // @ts-ignore
   private pageRef: TablePage | null = null;
 
   columns: StandardTableColumnProps<PageInfoListItem>[] = [

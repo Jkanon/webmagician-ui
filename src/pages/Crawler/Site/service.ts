@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { stringify } from 'qs';
 
-import { TableListParams } from '@/components/Page/TablePage/index.d';
+import { TableListParams } from '@/components/Page/TablePage';
 import { SiteListItem } from '@/pages/Crawler/Site/model';
 
 export async function query(params: TableListParams) {

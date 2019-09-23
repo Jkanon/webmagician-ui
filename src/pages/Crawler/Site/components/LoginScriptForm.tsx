@@ -29,28 +29,47 @@ interface LoginScriptFormState {
   /**
    * Expression that determines whether need to log in
    */
-  loginJudgeExpression: string,
+  loginJudgeExpression: string;
   /**
    * Script that will be invoked to log in
    */
-  loginScript: string,
+  loginScript: string;
 }
 
 class LoginScriptForm extends PureComponent<any, LoginScriptFormState> {
   state = {
     current: 0,
     loginJudgeExpression: '',
+    // eslint-disable-next-line react/no-unused-state
     loginScript: '',
   };
 
-  loginJudgeForm: BaseForm | null = null;
+  loginJudgeFormRef: BaseForm | null = null;
 
   onChange = (current: number) => {
-    this.setState({ current });
+    if (current === 1) {
+      if (this.loginJudgeFormRef != null) {
+        // @ts-ignore
+        this.loginJudgeFormRef.submit();
+      } else {
+        this.setState({ current });
+      }
+    } else if (current === 0) {
+      this.setState({ current });
+    }
+  };
+
+  // @ts-ignore
+  onSubmit = ({ loginJudgeExpression }) => {
+    this.setState({ loginJudgeExpression }, () => {
+      this.setState({ current: 1 });
+    });
   };
 
   render() {
-    const { current } = this.state;
+    const { current, loginJudgeExpression } = this.state;
+    console.log(loginJudgeExpression);
+
     return (
       <>
         <Steps current={current} onChange={this.onChange}>
@@ -58,9 +77,17 @@ class LoginScriptForm extends PureComponent<any, LoginScriptFormState> {
           <Step title="填写自动登录脚本" />
         </Steps>
         <div style={{ marginTop: 20, maxHeight: 'calc(100vh - 230px)', overflowY: 'auto' }}>
-          {current === 0 && <BaseForm wrappedComponentRef={(v: BaseForm) => {
-            this.loginJudgeForm = v;
-          }} formItems={formItems} layout="vertical" />}
+          {current === 0 && (
+            <BaseForm
+              wrappedComponentRef={(v: BaseForm) => {
+                this.loginJudgeFormRef = v;
+              }}
+              formItems={formItems}
+              formValues={{ loginJudgeExpression }}
+              layout="vertical"
+              onSubmit={this.onSubmit}
+            />
+          )}
           {current === 1 && (
             <AceEditor
               placeholder="登录脚本"

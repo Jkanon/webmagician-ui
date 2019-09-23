@@ -9,7 +9,6 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
-import { TableListData, TableListParams, TableListPagination } from './index.d';
 
 import styles from './index.less';
 
@@ -17,6 +16,24 @@ const getValue = (obj: { [x: string]: string[] }) =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
+
+export interface TableListPagination {
+  total: number;
+  pageSize: number;
+  current: number;
+}
+
+export interface TableListData<T extends TableListItem> {
+  list: T[];
+  pagination: Partial<TableListPagination>;
+}
+
+export interface TableListParams {
+  sorter: string;
+  status: string;
+  pageSize: number;
+  currentPage: number;
+}
 
 interface TablePageProps extends FormComponentProps {
   dispatch: Dispatch<any>;
