@@ -14,7 +14,7 @@ import { ModalForm } from '@/components/Form';
 import { openWindow } from '@/utils/utils';
 
 import { PageInfoListItem, RuleConfStateType } from './model';
-import RuleConfFormItems from './Form/RuleConfFormItems';
+import RuleConfFormItems from './components/RuleConfFormItems';
 
 interface RuleConfProps {
   dispatch: Dispatch<any>;
@@ -167,11 +167,9 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     });
   };
 
-  handleAdd = (fields: any, form: WrappedFormUtils) =>
-    this.handleAddOrEdit('ruleConf/create', fields);
+  handleAdd = (fields: any) => this.handleAddOrEdit('ruleConf/create', fields);
 
-  handleEdit = (fields: any, form: WrappedFormUtils) =>
-    this.handleAddOrEdit('ruleConf/modify', fields);
+  handleEdit = (fields: any) => this.handleAddOrEdit('ruleConf/modify', fields);
 
   handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;

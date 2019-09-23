@@ -22,13 +22,28 @@ const formItems = [
 ];
 
 interface LoginScriptFormState {
+  /**
+   * Index of current step
+   */
   current: number;
+  /**
+   * Expression that determines whether need to log in
+   */
+  loginJudgeExpression: string,
+  /**
+   * Script that will be invoked to log in
+   */
+  loginScript: string,
 }
 
 class LoginScriptForm extends PureComponent<any, LoginScriptFormState> {
   state = {
     current: 0,
+    loginJudgeExpression: '',
+    loginScript: '',
   };
+
+  loginJudgeForm: BaseForm | null = null;
 
   onChange = (current: number) => {
     this.setState({ current });
@@ -43,7 +58,9 @@ class LoginScriptForm extends PureComponent<any, LoginScriptFormState> {
           <Step title="填写自动登录脚本" />
         </Steps>
         <div style={{ marginTop: 20, maxHeight: 'calc(100vh - 230px)', overflowY: 'auto' }}>
-          {current === 0 && <BaseForm formItems={formItems} layout="vertical" />}
+          {current === 0 && <BaseForm wrappedComponentRef={(v: BaseForm) => {
+            this.loginJudgeForm = v;
+          }} formItems={formItems} layout="vertical" />}
           {current === 1 && (
             <AceEditor
               placeholder="登录脚本"

@@ -12,7 +12,7 @@ import { StandardTableColumnProps } from '@/components/StandardTable';
 import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
 import { ModalForm } from '@/components/Form';
 
-import LoginScriptForm from './Form/LoginScriptForm';
+import LoginScriptForm from './components/LoginScriptForm';
 
 import { SiteStateType, SiteListItem } from './model';
 
