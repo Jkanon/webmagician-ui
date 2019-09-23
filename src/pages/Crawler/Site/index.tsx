@@ -228,6 +228,7 @@ class Site extends Component<SiteProps, SiteState> {
       payload: {
         ids: ids.join(','),
       },
+      // @ts-ignore
     }).then(() => {
       this.setState({
         selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
@@ -248,6 +249,7 @@ class Site extends Component<SiteProps, SiteState> {
     return dispatch({
       type,
       payload: fields,
+      // @ts-ignore
     }).then(() => {
       dispatch({
         type: 'site/fetch',

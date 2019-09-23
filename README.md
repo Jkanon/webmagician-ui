@@ -1,8 +1,18 @@
-English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
-
 <h1 align="center">Webmagician UI</h1>
 
-UI Application for webmagician based on ant-design-pro.
+English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
+
+## Introduction
+
+UI Application for [Webmagician](https://github.com/Jkanon/webmagician) based on ant-design. You can also take it as a front-end solution for admin interface.
+
+Encapsulated components
+
+- Basic Form
+- Modal Form
+- Inline Popup Confirm Dialog
+- Inline Popup Modal
+- General Table Page
 
 ## Usage
 

@@ -1,8 +1,18 @@
-[English](./README.md) | [简体中文](./README.zh-CN.md) | 日本語
-
 <h1 align="center">Webmagician UI</h1>
 
-ウェブ・マジシャン(Webmagician)の UI、ant-design-pro で作られている。
+[English](./README.md) | [简体中文](./README.zh-CN.md) | 日本語
+
+## 概要
+
+[ウェブ・マジシャン(Webmagician)](https://github.com/Jkanon/webmagician)の UI、ant-design で作られている。豊富なコンポーネントを提供しています、管理画面のフロントエンドのインタフェースと思ってもいい。
+
+二次実装するコンポーネント:
+
+- 基本的なフォーム
+- モーダルフォーム
+- インラインポップアップ確認ボックス
+- インラインポップアップモーダル
+- テーブルページ
 
 ## 使用法
 

@@ -1,8 +1,24 @@
-[English](./README.md) | 简体中文 | [日本語](./README.ja-JP.md)
-
 <h1 align="center">Webmagician UI</h1>
 
-Webmagician 的 UI，基于 Ant-design-pro。
+[English](./README.md) | 简体中文 | [日本語](./README.ja-JP.md)
+
+## 简介
+
+[Webmagician](https://github.com/Jkanon/webmagician) 的 UI，基于 Ant-design。鉴于本项目会对 ant-design 进行二次封装以提高开发效率，你也可以把它当做自己的前端框架来使用。
+
+目前提供组件有：
+
+- 基础表单
+- 模态表单
+- 行内弹出确认框
+- 行内弹出模态框
+- 通用表格页
+
+功能一览
+
+- 爬取站点配置
+- 爬取规则配置
+- 爬取队列管理
 
 ## 使用
 

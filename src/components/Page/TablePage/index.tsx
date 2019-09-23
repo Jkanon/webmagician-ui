@@ -232,7 +232,8 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     dispatch({
       type: action,
       payload: params,
-    });
+      // @ts-ignore
+    }).catch(() => {});
   };
 
   /**
