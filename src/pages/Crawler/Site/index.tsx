@@ -51,6 +51,9 @@ class Site extends Component<SiteProps, SiteState> {
     showLoginScriptModal: false,
   };
 
+  // @ts-ignore
+  private pageRef: TablePage | null = null;
+
   columns: StandardTableColumnProps<SiteListItem>[] = [
     {
       title: 'LOGO',
@@ -223,6 +226,7 @@ class Site extends Component<SiteProps, SiteState> {
     const { selectedRows } = this.state;
 
     if (!ids) return;
+    const that = this;
     dispatch({
       type: 'site/remove',
       payload: {
@@ -230,12 +234,10 @@ class Site extends Component<SiteProps, SiteState> {
       },
       // @ts-ignore
     }).then(() => {
-      this.setState({
+      that.setState({
         selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
       });
-      dispatch({
-        type: 'site/fetch',
-      });
+      that.pageRef.doSearch();
       message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
     });
   };
@@ -246,14 +248,13 @@ class Site extends Component<SiteProps, SiteState> {
 
   handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
+    const that = this;
     return dispatch({
       type,
       payload: fields,
       // @ts-ignore
     }).then(() => {
-      dispatch({
-        type: 'site/fetch',
-      });
+      that.pageRef.doSearch();
       message.success(
         formatMessage({
           id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') || 'edit'}-success`,
@@ -303,7 +304,11 @@ class Site extends Component<SiteProps, SiteState> {
     return (
       <>
         <TablePage
-          title="站点配置"
+          // @ts-ignore
+          wrappedComponentRef={(node: TablePage) => {
+            this.pageRef = node;
+          }}
+          title={formatMessage({ id: 'menu.site' })}
           action="site/fetch"
           columns={this.columns}
           data={data}

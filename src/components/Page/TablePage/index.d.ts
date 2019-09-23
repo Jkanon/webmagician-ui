@@ -1,4 +1,5 @@
 import { TableListItem } from '@/components/StandardTable';
+import { Component } from 'react';
 
 export interface TableListPagination {
   total: number;

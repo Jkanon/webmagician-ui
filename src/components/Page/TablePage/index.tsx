@@ -233,7 +233,9 @@ class TablePage extends Component<TablePageProps, TablePageState> {
       type: action,
       payload: params,
       // @ts-ignore
-    }).catch(() => {});
+    }).catch(err => {
+      console.error(err);
+    });
   };
 
   /**

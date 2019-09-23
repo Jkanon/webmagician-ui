@@ -47,6 +47,9 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     selectedRows: [],
   };
 
+  // @ts-ignore
+  private pageRef: TablePage | null = null;
+
   columns: StandardTableColumnProps<PageInfoListItem>[] = [
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.name" />,
@@ -148,18 +151,18 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     const { selectedRows } = this.state;
 
     if (!ids) return;
+    const that = this;
     dispatch({
       type: 'ruleConf/remove',
       payload: {
         ids: ids.join(','),
       },
+      // @ts-ignore
     }).then(() => {
-      this.setState({
+      that.setState({
         selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
       });
-      dispatch({
-        type: 'ruleConf/fetch',
-      });
+      that.pageRef.doSearch();
       message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
     });
   };
@@ -172,14 +175,13 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
 
   handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
-
+    const that = this;
     dispatch({
       type,
       payload: fields,
+      // @ts-ignore
     }).then(() => {
-      dispatch({
-        type: 'ruleConf/fetch',
-      });
+      that.pageRef.doSearch();
       message.success(
         formatMessage({
           id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') || 'edit'}-success`,
@@ -231,7 +233,11 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
 
     return (
       <TablePage
-        title="页面规则配置"
+        // @ts-ignore
+        wrappedComponentRef={(node: TablePage) => {
+          this.pageRef = node;
+        }}
+        title={formatMessage({ id: 'menu.rule-conf' })}
         action="ruleConf/fetch"
         columns={this.columns}
         data={data}

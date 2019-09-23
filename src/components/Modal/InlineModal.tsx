@@ -48,14 +48,15 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
     const { onOk } = this.props;
     if (onOk) {
       const ret = onOk(e);
-      const that = this;
       // @ts-ignore
       if (ret instanceof Promise) {
         ret
           .then(() => {
-            that.hideModalHandler();
+            this.hideModalHandler();
           })
-          .catch(() => {});
+          .catch(err => {
+            console.error(err);
+          });
         // @ts-ignore
       } else if (ret) {
         this.hideModalHandler();
