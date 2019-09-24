@@ -47,6 +47,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     selectedRows: [],
   };
 
+  // @ts-ignore
   private pageRef: TablePage | null = null;
 
   columns: StandardTableColumnProps<PageInfoListItem>[] = [
@@ -69,7 +70,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
           href={text}
           target="_blank"
           rel="noreferrer noopener"
-          title="点击新窗口打开链接"
+          title={formatMessage({ id: 'app.common.label.open-in-new-window' })}
           onClick={() => openWindow(text)}
         >
           {text}
@@ -79,7 +80,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.enable-js" />,
       dataIndex: 'jsRendering',
-      render: text => (text === 1 ? '是' : '否'),
+      render: text => formatMessage({ id: `app.common.label.${text === 1 ? 'yes' : 'no'}` }),
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.method" />,

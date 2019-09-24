@@ -116,7 +116,7 @@ class Site extends Component<SiteProps, SiteState> {
             }}
           >
             <Icon type="edit" />
-            登录脚本
+            <FormattedMessage id="app.crawler.site.edit-the-login-script" />
           </a>
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
@@ -331,6 +331,7 @@ class Site extends Component<SiteProps, SiteState> {
           width={500}
           footer={null}
           centered
+          destroyOnClose
           onCancel={() => this.setState({ showLoginScriptModal: false })}
         >
           <LoginScriptForm
