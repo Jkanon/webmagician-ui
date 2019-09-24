@@ -27,6 +27,7 @@ interface SiteProps {
 interface SiteState {
   selectedRows: SiteListItem[];
   showLoginScriptModal: boolean;
+  currentRecord?: SiteListItem;
 }
 
 @connect(
@@ -109,7 +110,11 @@ class Site extends Component<SiteProps, SiteState> {
             formValues={record}
           />
           <Divider type="vertical" />
-          <a onClick={this.showModal}>
+          <a
+            onClick={() => {
+              this.showModal(record);
+            }}
+          >
             <Icon type="edit" />
             登录脚本
           </a>
@@ -213,8 +218,8 @@ class Site extends Component<SiteProps, SiteState> {
     },
   ];
 
-  showModal = () => {
-    this.setState({ showLoginScriptModal: true });
+  showModal = (currentRecord: SiteListItem) => {
+    this.setState({ showLoginScriptModal: true, currentRecord });
   };
 
   /**
@@ -299,7 +304,7 @@ class Site extends Component<SiteProps, SiteState> {
       loading,
       site: { data },
     } = this.props;
-    const { selectedRows, showLoginScriptModal } = this.state;
+    const { selectedRows, showLoginScriptModal, currentRecord } = this.state;
 
     return (
       <>
@@ -328,7 +333,9 @@ class Site extends Component<SiteProps, SiteState> {
           centered
           onCancel={() => this.setState({ showLoginScriptModal: false })}
         >
-          <LoginScriptForm />
+          <LoginScriptForm
+            loginJudgeExpression={currentRecord && currentRecord.loginJudgeExpression}
+          />
         </Modal>
       </>
     );

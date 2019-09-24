@@ -22,6 +22,7 @@ export interface SiteListItem extends TableListItem {
   userAgent: string;
   sleepTime: number;
   timeOut: number;
+  loginJudgeExpression?: string;
 }
 
 export interface SiteStateType {

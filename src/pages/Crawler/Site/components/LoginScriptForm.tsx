@@ -4,7 +4,8 @@ import { Input, Steps } from 'antd';
 import { BaseForm } from '@/components/Form';
 
 import AceEditor from 'react-ace';
-
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'brace/ext/searchbox';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'brace/ext/language_tools';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -21,6 +22,10 @@ const formItems = [
   },
 ];
 
+interface LoginScriptFormProps {
+  loginJudgeExpression?: string;
+}
+
 interface LoginScriptFormState {
   /**
    * Index of current step
@@ -36,43 +41,47 @@ interface LoginScriptFormState {
   loginScript: string;
 }
 
-class LoginScriptForm extends PureComponent<any, LoginScriptFormState> {
-  state = {
-    current: 0,
-    loginJudgeExpression: '',
-    // eslint-disable-next-line react/no-unused-state
-    loginScript: '',
-  };
-
+class LoginScriptForm extends PureComponent<LoginScriptFormProps, LoginScriptFormState> {
   loginJudgeFormRef: BaseForm | null = null;
 
-  onChange = (current: number) => {
+  autoLoginExpressionRef: AceEditor | null = null;
+
+  constructor(pros: LoginScriptFormProps) {
+    super(pros);
+    this.state = {
+      current: 0,
+      loginJudgeExpression: pros.loginJudgeExpression || '',
+      loginScript: '',
+    };
+  }
+
+  onStepChange = (current: number) => {
     if (current === 1) {
       if (this.loginJudgeFormRef != null) {
         // @ts-ignore
-        this.loginJudgeFormRef.submit();
-      } else {
-        this.setState({ current });
+        this.loginJudgeFormRef.submit().then(({ values: { loginJudgeExpression } }) => {
+          this.setState({ loginJudgeExpression, current });
+        });
+        return;
       }
     } else if (current === 0) {
-      this.setState({ current });
+      if (this.autoLoginExpressionRef != null) {
+        this.setState({
+          loginScript: this.autoLoginExpressionRef.editor.getValue(),
+          current,
+        });
+        return;
+      }
     }
-  };
-
-  // @ts-ignore
-  onSubmit = ({ loginJudgeExpression }) => {
-    this.setState({ loginJudgeExpression }, () => {
-      this.setState({ current: 1 });
-    });
+    this.setState({ current });
   };
 
   render() {
-    const { current, loginJudgeExpression } = this.state;
-    console.log(loginJudgeExpression);
+    const { current, loginJudgeExpression, loginScript } = this.state;
 
     return (
       <>
-        <Steps current={current} onChange={this.onChange}>
+        <Steps current={current} onChange={this.onStepChange}>
           <Step title="填写登录验证表达式" />
           <Step title="填写自动登录脚本" />
         </Steps>
@@ -85,27 +94,32 @@ class LoginScriptForm extends PureComponent<any, LoginScriptFormState> {
               formItems={formItems}
               formValues={{ loginJudgeExpression }}
               layout="vertical"
-              onSubmit={this.onSubmit}
             />
           )}
           {current === 1 && (
             <AceEditor
+              ref={(ref: AceEditor) => {
+                this.autoLoginExpressionRef = ref;
+              }}
               placeholder="登录脚本"
               mode="javascript"
               theme="github"
               name="autoLoginScript"
               fontSize={14}
               width="100%"
+              height="calc(100vh - 250px)"
+              value={loginScript}
               showPrintMargin
               showGutter
               highlightActiveLine
               setOptions={{
                 enableBasicAutocompletion: true,
-                enableLiveAutocompletion: false,
+                enableLiveAutocompletion: true,
                 enableSnippets: false,
                 showLineNumbers: true,
                 tabSize: 2,
                 wrap: true,
+                foldStyle: true,
               }}
             />
           )}

@@ -18,6 +18,7 @@ let tableListDataSource: SiteListItem[] = [
     userAgent: '',
     sleepTime: 500,
     timeOut: 100,
+    loginJudgeExpression: "$.css('span')",
   },
   {
     id: '911527780227661836',
