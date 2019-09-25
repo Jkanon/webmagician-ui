@@ -162,7 +162,9 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       that.setState({
         selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
       });
-      that.pageRef.doSearch();
+      if (that.pageRef) {
+        that.pageRef.doSearch();
+      }
       message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
     });
   };
@@ -179,7 +181,9 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       payload: fields,
       // @ts-ignore
     }).then(() => {
-      that.pageRef.doSearch();
+      if (that.pageRef) {
+        that.pageRef.doSearch();
+      }
       message.success(
         formatMessage({
           id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') || 'edit'}-success`,
@@ -200,7 +204,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     const { getFieldDecorator } = form;
     return (
       <Col md={8} sm={24}>
-        <Form.Item label="站点名称">
+        <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
           {getFieldDecorator('name')(<Input placeholder="请输入" />)}
         </Form.Item>
       </Col>

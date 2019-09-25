@@ -25,6 +25,7 @@ export default {
   'app.crawler.rule-conf.label.url-regex': 'URLの正規表現',
   'app.crawler.rule-conf.label.example-url': 'URLの例',
   'app.crawler.rule-conf.label.enable-js': 'JSでレンダリング',
+  'app.crawler.rule-conf.label.enable-redirect': 'リダイレクトを許可する',
   'app.crawler.rule-conf.label.method': 'リクエストメソッド',
   'app.crawler.rule-conf.label.example-params': 'リクエストパラメータの例',
   'app.crawler.rule-conf.label.validation-selector': 'ページの入力規則',

@@ -4,7 +4,7 @@ import { FormattedMessage, formatMessage, getLocale } from 'umi-plugin-react/loc
 
 import { checkUrlRegex } from '../service';
 
-async function urlRegexValidator(rules: any, value: string, callback) {
+async function urlRegexValidator(rules: any, value: string) {
   // @ts-ignore
   const response = checkUrlRegex(this.getFieldValue('urlRegex'), this.getFieldValue('urlExample'));
   console.log(response);
@@ -71,6 +71,12 @@ function getItems() {
     {
       label: <FormattedMessage id="app.crawler.rule-conf.label.enable-js" />,
       name: 'enableJs',
+      itemRender: <Switch />,
+      formItemLayout: layout,
+    },
+    {
+      label: <FormattedMessage id="app.crawler.rule-conf.label.enable-redirect" />,
+      name: 'enableRedirect',
       itemRender: <Switch />,
       formItemLayout: layout,
     },

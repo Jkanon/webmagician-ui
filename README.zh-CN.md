@@ -40,7 +40,16 @@ $ npm start         # visit http://localhost:8000
 
 ## 系统效果
 
-![](https://s2.ax1x.com/2019/09/17/n4kyqJ.png)
+<table>
+    <tr>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVAJP0.png"/></td>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVAYGV.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVA3an.png"/></td>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVA85q.png"/></td>
+    </tr>
+</table>
 
 ## 最后
 

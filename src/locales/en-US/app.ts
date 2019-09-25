@@ -25,6 +25,7 @@ export default {
   'app.crawler.rule-conf.label.url-regex': 'Regular Expression Of URL',
   'app.crawler.rule-conf.label.example-url': 'An Example For The URL',
   'app.crawler.rule-conf.label.enable-js': 'Enable JS Rendering',
+  'app.crawler.rule-conf.label.enable-redirect': 'Allow Redirect',
   'app.crawler.rule-conf.label.method': 'Http Request Method',
   'app.crawler.rule-conf.label.example-params': 'An Example For The Params',
   'app.crawler.rule-conf.label.validation-selector': 'The Selector Expression For Validating',

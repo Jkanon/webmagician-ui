@@ -33,4 +33,13 @@ Modern browsers and IE11.
 
 ## Screenshot
 
-![](https://s2.ax1x.com/2019/09/17/n4Q75D.png)
+<table>
+    <tr>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVEZw9.png"/></td>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVEeoR.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVEAL4.png"/></td>
+        <td><img src="https://s2.ax1x.com/2019/09/25/uVEVeJ.png"/></td>
+    </tr>
+</table>

@@ -25,6 +25,7 @@ export default {
   'app.crawler.rule-conf.label.url-regex': 'URL正则',
   'app.crawler.rule-conf.label.example-url': 'URL示例',
   'app.crawler.rule-conf.label.enable-js': 'JS渲染',
+  'app.crawler.rule-conf.label.enable-redirect': '跟随重定向',
   'app.crawler.rule-conf.label.method': '请求方式',
   'app.crawler.rule-conf.label.example-params': '请求参数示例',
   'app.crawler.rule-conf.label.validation-selector': '页面验证表达式',
