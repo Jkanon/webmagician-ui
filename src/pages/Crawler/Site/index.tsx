@@ -238,13 +238,15 @@ class Site extends Component<SiteProps, SiteState> {
         ids: ids.join(','),
       },
       // @ts-ignore
-    }).then(() => {
-      that.setState({
-        selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
-      });
-      that.pageRef.doSearch();
-      message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
-    });
+    })
+      .then(() => {
+        that.setState({
+          selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
+        });
+        that.pageRef.doSearch();
+        message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
+      })
+      .catch(() => {});
   };
 
   handleAdd = (fields: any, form: WrappedFormUtils) => this.handleAddOrEdit('site/create', fields);

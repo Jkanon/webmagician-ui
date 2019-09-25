@@ -1,5 +1,5 @@
 import { Button, Col, Divider, Form, Icon, Input, message } from 'antd';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -107,7 +107,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       key: 'operation',
       width: 180,
       render: (text, record) => (
-        <Fragment>
+        <>
           <ModalForm
             visible={false}
             title="编辑"
@@ -137,7 +137,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
           ></ModalForm>
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
-        </Fragment>
+        </>
       ),
     },
   ];
@@ -158,15 +158,17 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         ids: ids.join(','),
       },
       // @ts-ignore
-    }).then(() => {
-      that.setState({
-        selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
-      });
-      if (that.pageRef) {
-        that.pageRef.doSearch();
-      }
-      message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
-    });
+    })
+      .then(() => {
+        that.setState({
+          selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
+        });
+        if (that.pageRef) {
+          that.pageRef.doSearch();
+        }
+        message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
+      })
+      .catch(() => {});
   };
 
   handleAdd = (fields: any) => this.handleAddOrEdit('ruleConf/create', fields);
@@ -176,7 +178,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
   handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
     const that = this;
-    dispatch({
+    return dispatch({
       type,
       payload: fields,
       // @ts-ignore

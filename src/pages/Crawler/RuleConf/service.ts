@@ -2,12 +2,19 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 import { TableListParams } from '@/components/Page/TablePage';
+import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
 
 export async function query(params: TableListParams) {
   return request(`/api/crawler/rules?${stringify(params)}`);
 }
 
-export async function add(params: TableListParams) {
+export async function remove(params: PageInfoListItem) {
+  return request(`/api/crawler/rules?${stringify(params)}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function add(params: PageInfoListItem) {
   return request('/api/crawler/rules', {
     method: 'POST',
     data: {
@@ -16,7 +23,7 @@ export async function add(params: TableListParams) {
   });
 }
 
-export async function edit(params: TableListParams) {
+export async function edit(params: PageInfoListItem) {
   return request('/api/crawler/rules', {
     method: 'PUT',
     data: {

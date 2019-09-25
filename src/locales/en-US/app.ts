@@ -1,4 +1,5 @@
 export default {
+  'app.common.err.record.exist': 'The record already exists',
   'app.common.label.operation': 'Operation',
   'app.common.label.memo': 'Remarks',
   'app.common.label.refresh': 'Refresh',

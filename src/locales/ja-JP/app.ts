@@ -1,4 +1,5 @@
 export default {
+  'app.common.err.record.exist': 'レコードが既に存在します',
   'app.common.label.operation': '操作',
   'app.common.label.memo': '備考',
   'app.common.label.refresh': 'リフレッシュ',

@@ -6,9 +6,14 @@ import { checkUrlRegex } from '../service';
 
 async function urlRegexValidator(rules: any, value: string) {
   // @ts-ignore
-  const response = checkUrlRegex(this.getFieldValue('urlRegex'), this.getFieldValue('urlExample'));
-  console.log(response);
-  return Promise.resolve(value);
+  return checkUrlRegex(this.getFieldValue('urlRegex'), this.getFieldValue('urlExample')).then(
+    ({ data }) => {
+      if (data) {
+        return Promise.resolve(value);
+      }
+      return Promise.reject(new Error(formatMessage({ id: 'app.common.err.record.exist' })));
+    },
+  );
 }
 
 function getItems() {
@@ -73,12 +78,15 @@ function getItems() {
       name: 'enableJs',
       itemRender: <Switch />,
       formItemLayout: layout,
+      fieldDecoratorProps: { valuePropName: 'checked' },
     },
     {
       label: <FormattedMessage id="app.crawler.rule-conf.label.enable-redirect" />,
       name: 'enableRedirect',
       itemRender: <Switch />,
       formItemLayout: layout,
+      defaultValue: true,
+      fieldDecoratorProps: { valuePropName: 'checked' },
     },
     {
       label: <FormattedMessage id="app.crawler.rule-conf.label.method" />,
@@ -97,6 +105,7 @@ function getItems() {
           <Radio value="DELETE">DELETE</Radio>
         </Radio.Group>
       ),
+      defaultValue: 'GET',
       formItemLayout: layout,
       formItemProps: {
         className: 'wrap-label',

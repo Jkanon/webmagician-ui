@@ -4,7 +4,7 @@ import { PageInfoListItem } from './model';
 // mock tableListDataSource
 let tableListDataSource: PageInfoListItem[] = [
   {
-    id: 913382373068836866,
+    id: '913382373068836866',
     name: 'OSCHINA文章页',
     urlRegex: 'https://www.oschina.net/question/[0-9]+_[0-9]+',
     urlExample: 'https://www.oschina.net/question/2720166_2305295',

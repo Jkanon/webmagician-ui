@@ -1,4 +1,5 @@
 export default {
+  'app.common.err.record.exist': '记录已存在',
   'app.common.label.operation': '操作',
   'app.common.label.memo': '备注',
   'app.common.label.refresh': '刷新',

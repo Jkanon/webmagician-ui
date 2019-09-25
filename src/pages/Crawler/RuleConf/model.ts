@@ -5,7 +5,7 @@ import { isEmpty, isNumber } from 'lodash';
 import { TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
 
-import { query, add, edit } from './service';
+import { query, add, edit, remove } from './service';
 
 export interface PageInfoListItem extends TableListItem {
   id: string;
@@ -37,8 +37,10 @@ export interface RuleConfModelType {
     fetch: Effect;
     create: Effect;
     modify: Effect;
+    remove: Effect;
   };
   reducers: {
+    del: Reducer<RuleConfStateType>;
     save: Reducer<RuleConfStateType>;
     add: Reducer<RuleConfStateType>;
     edit: Reducer<RuleConfStateType>;
@@ -79,9 +81,42 @@ const RuleConfModel: RuleConfModelType = {
         payload: response.data,
       });
     },
+
+    *remove({ payload }, { call, put }) {
+      yield call(remove, payload);
+      yield put({
+        type: 'del',
+        payload,
+      });
+    },
   },
 
   reducers: {
+    del(
+      state = {
+        data: {
+          list: [],
+          pagination: {},
+        },
+      },
+      action,
+    ) {
+      const { ids } = action.payload;
+      const { list, pagination } = state.data;
+      const newList = list.filter(item => ids.indexOf(item.id) === -1);
+      if (!isEmpty(pagination) && isNumber(pagination.total)) {
+        pagination.total -= list.length - newList.length;
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          list: newList,
+          pagination,
+        },
+      };
+    },
+
     add(
       state = {
         data: {

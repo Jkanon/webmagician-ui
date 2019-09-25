@@ -41,9 +41,11 @@ export function editTableList(
 ) {
   let body = (b && b.body) || req.body;
   if (!isEmpty(body) && body.id) {
-    tableListDataSource.forEach(r => {
+    tableListDataSource.forEach((r, i) => {
       if (r.id === body.id) {
         body = Object.assign({}, r, body);
+        // eslint-disable-next-line no-param-reassign
+        tableListDataSource[i] = body;
       }
     });
   }
