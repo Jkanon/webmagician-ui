@@ -79,6 +79,11 @@ function getItems() {
       itemRender: <Switch />,
       formItemLayout: layout,
       fieldDecoratorProps: { valuePropName: 'checked' },
+      rules: [
+        {
+          required: true,
+        },
+      ],
     },
     {
       label: <FormattedMessage id="app.crawler.rule-conf.label.enable-redirect" />,
@@ -87,6 +92,11 @@ function getItems() {
       formItemLayout: layout,
       defaultValue: true,
       fieldDecoratorProps: { valuePropName: 'checked' },
+      rules: [
+        {
+          required: true,
+        },
+      ],
     },
     {
       label: <FormattedMessage id="app.crawler.rule-conf.label.method" />,

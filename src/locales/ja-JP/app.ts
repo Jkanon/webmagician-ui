@@ -21,6 +21,9 @@ export default {
   'app.crawler.site.label.retry-times': '再試行回数',
   'app.crawler.site.label.cycle-retry-times': 'サイクル再試行回数',
   'app.crawler.site.label.rate-limit': 'レート制限',
+  'app.crawler.site.label.cookies': 'デフォルトのクッキー',
+  'app.crawler.site.label.headers': 'デフォルトのヘッダ',
+
   'app.crawler.rule-conf.add-new-rule-conf': 'クロールルールを追加する',
   'app.crawler.rule-conf.label.name': 'ページの名称',
   'app.crawler.rule-conf.label.url-regex': 'URLの正規表現',

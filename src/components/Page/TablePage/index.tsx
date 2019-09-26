@@ -1,5 +1,6 @@
 import { Button, Card, Checkbox, Col, Dropdown, Form, Menu, Modal, Row, Tooltip } from 'antd';
-import React, { Component } from 'react';
+import React, { Component, RefObject } from 'react';
+import ReactDOM from 'react-dom';
 
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -63,9 +64,12 @@ interface TablePageState {
   switchDropdownVisible: boolean;
   // 选中的显示行
   selectedDisplayColumnsKey: string[];
+  tableMaxHeight?: number;
 }
 
 class TablePage extends Component<TablePageProps, TablePageState> {
+  private tableRef: RefObject<StandardTable> = React.createRef();
+
   constructor(props: TablePageProps) {
     super(props);
     this.state = {
@@ -86,6 +90,21 @@ class TablePage extends Component<TablePageProps, TablePageState> {
 
   componentDidMount() {
     this.doSearch();
+    if (this.tableRef) {
+      // eslint-disable-next-line react/no-find-dom-node
+      const standardTableDom = ReactDOM.findDOMNode(this.tableRef.current);
+      if (standardTableDom) {
+        // @ts-ignore
+        const el = standardTableDom.querySelector('.ant-table-tbody');
+        if (el) {
+          let height: number | undefined = window.innerHeight - el.getBoundingClientRect().top - 96;
+          height = height > 50 ? height : undefined;
+          this.setState({
+            tableMaxHeight: height,
+          });
+        }
+      }
+    }
   }
 
   handleFormReset = () => {
@@ -347,7 +366,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
           <div>
             {operatorRender()}
             {selectedRows.length > 0 && (
-              <Button onClick={this.handleMenuClick}>
+              <Button onClick={this.handleMenuClick} icon="delete" type="danger">
                 <FormattedMessage id="component.common.text.delete" />
               </Button>
             )}
@@ -366,15 +385,31 @@ class TablePage extends Component<TablePageProps, TablePageState> {
   }
 
   renderTableList() {
-    const { loading, data, expandedRowRender, tableOptions, columns } = this.props;
-    const { selectedRows, selectedDisplayColumnsKey } = this.state;
+    const { loading, data, expandedRowRender, tableOptions = {}, columns } = this.props;
+    const { selectedRows, selectedDisplayColumnsKey, tableMaxHeight } = this.state;
     // eslint-disable-next-line max-len
     const displayColumns = columns.filter(
       (item, index) =>
         selectedDisplayColumnsKey.indexOf((item.key || item.dataIndex || index).toString()) >= 0,
     );
+
+    const { scroll = {}, bodyStyle, ...rest } = tableOptions;
+    const tableOpts = {
+      size: 'small',
+      bordered: true,
+      ...rest,
+      scroll: {
+        y: tableMaxHeight,
+        x: scroll && scroll.x,
+      },
+      bodyStyle: {
+        ...bodyStyle,
+        // height: data && data.list && data.list.length > 0 && tableMaxHeight,
+      },
+    };
     return (
       <StandardTable
+        ref={this.tableRef}
         selectedRows={selectedRows}
         loading={loading}
         data={data}
@@ -382,7 +417,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
         expandedRowRender={expandedRowRender}
         onSelectRow={this.handleSelectRows}
         onChange={this.handleStandardTableChange}
-        {...tableOptions}
+        {...tableOpts}
       />
     );
   }

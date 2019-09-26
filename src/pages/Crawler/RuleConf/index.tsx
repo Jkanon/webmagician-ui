@@ -95,6 +95,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.example-params" />,
       dataIndex: 'pageParamsExample',
+      width: 200,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.validation-selector" />,
@@ -105,7 +106,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
       key: 'operation',
-      width: 180,
+      width: 250,
       render: (text, record) => (
         <>
           <ModalForm
@@ -157,8 +158,8 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       payload: {
         ids: ids.join(','),
       },
-      // @ts-ignore
     })
+      // @ts-ignore
       .then(() => {
         that.setState({
           selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),

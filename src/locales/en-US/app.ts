@@ -21,6 +21,9 @@ export default {
   'app.crawler.site.label.retry-times': 'Retry Times',
   'app.crawler.site.label.cycle-retry-times': 'Cycle Retry Times',
   'app.crawler.site.label.rate-limit': 'Rate Limit',
+  'app.crawler.site.label.cookies': 'Default Cookies',
+  'app.crawler.site.label.headers': 'Default Headers',
+
   'app.crawler.rule-conf.add-new-rule-conf': 'Add a new crawling rule',
   'app.crawler.rule-conf.label.name': "Page's Name",
   'app.crawler.rule-conf.label.url-regex': 'Regular Expression Of URL',

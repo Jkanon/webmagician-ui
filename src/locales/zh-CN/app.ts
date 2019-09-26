@@ -21,6 +21,9 @@ export default {
   'app.crawler.site.label.retry-times': '重试次数',
   'app.crawler.site.label.cycle-retry-times': '循环重试次数',
   'app.crawler.site.label.rate-limit': '流量限制',
+  'app.crawler.site.label.cookies': '默认Cookies',
+  'app.crawler.site.label.headers': '默认Headers',
+
   'app.crawler.rule-conf.add-new-rule-conf': '新增采集规则',
   'app.crawler.rule-conf.label.name': '页面名称',
   'app.crawler.rule-conf.label.url-regex': 'URL正则',

@@ -1,5 +1,5 @@
 import { Button, Col, Divider, Form, Icon, Input, Modal, message } from 'antd';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -60,17 +60,27 @@ class Site extends Component<SiteProps, SiteState> {
       title: 'LOGO',
       dataIndex: 'logo',
       render: (text: string, record: SiteListItem) => {
-        if (text) return <img src={text} style={{ height: 50 }} alt={record.name} />;
+        // TODO TO FIXED 这边图片加载失败会使得表格错位
+        if (text) {
+          return (
+            <div style={{ height: 50 }}>
+              <img src={text} style={{ height: '100%' }} alt={record.name} />
+            </div>
+          );
+        }
         return '暂无图片';
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.site.label.name" />,
       dataIndex: 'name',
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.site.label.short-name" />,
       dataIndex: 'shortName',
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.site.label.home-page" />,
@@ -86,17 +96,55 @@ class Site extends Component<SiteProps, SiteState> {
           {text}
         </a>
       ),
+      width: 250,
     },
     {
       title: <FormattedMessage id="app.crawler.site.label.timeout" />,
       dataIndex: 'timeOut',
+      width: 100,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.site.label.rate-limit" />,
+      dataIndex: 'rateLimit',
+      width: 100,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.site.label.retry-times" />,
+      dataIndex: 'retryTimes',
+      width: 100,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.site.label.cycle-retry-times" />,
+      dataIndex: 'cycleRetryTimes',
+      width: 100,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.site.label.charset" />,
+      dataIndex: 'charset',
+      width: 100,
+    },
+    {
+      title: 'UserAgent',
+      dataIndex: 'userAgent',
+      width: 100,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.site.label.headers" />,
+      dataIndex: 'headers',
+      width: 100,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.site.label.cookies" />,
+      dataIndex: 'defaultCookies',
     },
     {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
       key: 'operation',
+      width: 220,
+      fixed: 'right',
       render: (text: string, record: SiteListItem) => (
-        <Fragment>
+        <>
           <ModalForm
             title={formatMessage({ id: 'app.crawler.site.edit-the-site' })}
             onSubmit={this.handleEdit}
@@ -120,7 +168,7 @@ class Site extends Component<SiteProps, SiteState> {
           </a>
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
-        </Fragment>
+        </>
       ),
     },
   ];
@@ -205,13 +253,13 @@ class Site extends Component<SiteProps, SiteState> {
       toggleField: true,
     },
     {
-      label: '默认Headers',
+      label: <FormattedMessage id="app.crawler.site.label.headers" />,
       name: 'headers',
       itemRender: <Input.TextArea placeholder="请输入Headers" style={{ minHeight: 150 }} />,
       toggleField: true,
     },
     {
-      label: '默认Cookies',
+      label: <FormattedMessage id="app.crawler.site.label.cookies" />,
       name: 'defaultCookies',
       itemRender: <Input.TextArea placeholder="请输入默认Cookies" style={{ minHeight: 100 }} />,
       toggleField: true,
@@ -237,8 +285,8 @@ class Site extends Component<SiteProps, SiteState> {
       payload: {
         ids: ids.join(','),
       },
-      // @ts-ignore
     })
+      // @ts-ignore
       .then(() => {
         that.setState({
           selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
@@ -326,6 +374,11 @@ class Site extends Component<SiteProps, SiteState> {
           handleSelectRows={this.handleSelectRows}
           onDelete={(rows: SiteListItem[]) => this.onDelete(rows.map(row => row.id))}
           dispatch={dispatch}
+          tableOptions={{
+            scroll: {
+              x: 1700,
+            },
+          }}
         />
         <Modal
           title="配置登录脚本"
