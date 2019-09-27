@@ -97,11 +97,39 @@ class TablePage extends Component<TablePageProps, TablePageState> {
         // @ts-ignore
         const el = standardTableDom.querySelector('.ant-table-tbody');
         if (el) {
+          // TODO 尺寸可能得跟着表格尺寸进行调整
           let height: number | undefined = window.innerHeight - el.getBoundingClientRect().top - 96;
-          height = height > 50 ? height : undefined;
+          height = height > 50 ? height : 50;
           this.setState({
             tableMaxHeight: height,
           });
+        }
+      }
+    }
+  }
+
+  componentDidUpdate(
+    prevProps: Readonly<TablePageProps>,
+    prevState: Readonly<TablePageState>,
+    snapshot?: any,
+  ): void {
+    if (
+      this.tableRef &&
+      this.state.tableMaxHeight &&
+      prevState.tableMaxHeight !== this.state.tableMaxHeight
+    ) {
+      const { data } = this.props;
+      if (data && data.list && data.list.length === 0) {
+        // eslint-disable-next-line react/no-find-dom-node
+        const standardTableDom = ReactDOM.findDOMNode(this.tableRef.current);
+        if (standardTableDom) {
+          // @ts-ignore
+          const el = standardTableDom.querySelector('.ant-table-placeholder');
+
+          if (el) {
+            // TODO 尺寸可能得跟着表格尺寸进行调整
+            el.style.height = `${this.state.tableMaxHeight + 48}px`;
+          }
         }
       }
     }
@@ -400,11 +428,11 @@ class TablePage extends Component<TablePageProps, TablePageState> {
       ...rest,
       scroll: {
         y: tableMaxHeight,
-        x: scroll && scroll.x,
+        x: (scroll && scroll.x) || 'max-content',
       },
       bodyStyle: {
         ...bodyStyle,
-        // height: data && data.list && data.list.length > 0 && tableMaxHeight,
+        height: data && data.list && data.list.length > 0 && tableMaxHeight,
       },
     };
     return (

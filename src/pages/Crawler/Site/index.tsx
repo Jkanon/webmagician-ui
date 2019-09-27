@@ -60,7 +60,6 @@ class Site extends Component<SiteProps, SiteState> {
       title: 'LOGO',
       dataIndex: 'logo',
       render: (text: string, record: SiteListItem) => {
-        // TODO TO FIXED 这边图片加载失败会使得表格错位
         if (text) {
           return (
             <div style={{ height: 50 }}>
@@ -374,11 +373,6 @@ class Site extends Component<SiteProps, SiteState> {
           handleSelectRows={this.handleSelectRows}
           onDelete={(rows: SiteListItem[]) => this.onDelete(rows.map(row => row.id))}
           dispatch={dispatch}
-          tableOptions={{
-            scroll: {
-              x: 1700,
-            },
-          }}
         />
         <Modal
           title="配置登录脚本"

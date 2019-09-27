@@ -81,6 +81,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       title: <FormattedMessage id="app.crawler.rule-conf.label.enable-js" />,
       dataIndex: 'jsRendering',
       render: text => formatMessage({ id: `app.common.label.${text === 1 ? 'yes' : 'no'}` }),
+      width: 80,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.method" />,
@@ -106,6 +107,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
       key: 'operation',
+      fixed: 'right',
       width: 250,
       render: (text, record) => (
         <>

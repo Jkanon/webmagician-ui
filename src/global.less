@@ -48,6 +48,15 @@ ol {
   word-break: break-all;
 }
 
+/* fix border-bottom is missing when ant-table-tbody is shorter than ant-table-body  */
+.ant-table-body > table {
+  border-bottom: 1px solid #e8e8e8 !important;
+}
+
+.ant-table-bordered .ant-table-placeholder {
+  border-top: 0 !important;
+}
+
 /* 滚动条整体 */
 ::-webkit-scrollbar {
   width: 6px;
@@ -96,6 +105,7 @@ ol {
   height: 64px !important;
 }
 
+/* limit modal dialog's height */
 .ant-modal-wrap[role='dialog'] {
   .ant-modal {
     max-height: calc(100vh - 30px);
