@@ -400,7 +400,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
             )}
           </div>
           <div className={styles.tableListOperatorRight}>
-            <Tooltip title={formatMessage({ id: 'app.common.label.refresh' })}>
+            <Tooltip title={formatMessage({ id: 'app.common.label.operation.refresh' })}>
               <Button shape="circle" icon="sync" onClick={this.doSearch} />
             </Tooltip>
             <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>

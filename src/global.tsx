@@ -4,6 +4,10 @@ import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import defaultSettings from '../config/defaultSettings';
 
+import { mockXHR } from '../mock/mockjs';
+
+mockXHR();
+
 const { pwa } = defaultSettings;
 // if pwa is true
 if (pwa) {

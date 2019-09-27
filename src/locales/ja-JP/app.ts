@@ -2,7 +2,7 @@ export default {
   'app.common.err.record.exist': 'レコードが既に存在します',
   'app.common.label.operation': '操作',
   'app.common.label.memo': '備考',
-  'app.common.label.refresh': 'リフレッシュ',
+  'app.common.label.operation.refresh': 'リフレッシュ',
   'app.common.label.columns-display-settings': '表示列の設定',
   'app.common.label.select-all': 'すべて選択',
   'app.common.label.select-reversely': '反転',

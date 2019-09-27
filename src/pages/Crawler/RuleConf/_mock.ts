@@ -17,7 +17,7 @@ let tableListDataSource: PageInfoListItem[] = [
   },
 ];
 
-export function getRuleConf(
+function getRuleConf(
   req: { url: any; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;
@@ -60,7 +60,7 @@ export function getRuleConf(
   return result;
 }
 
-export function addRuleConf(
+function addRuleConf(
   req: { url: any; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;
@@ -71,7 +71,7 @@ export function addRuleConf(
   return addTableList(req, res, b, tableListDataSource);
 }
 
-export function editRuleConf(
+function editRuleConf(
   req: { url: any; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;
@@ -82,7 +82,7 @@ export function editRuleConf(
   return editTableList(req, res, b, tableListDataSource);
 }
 
-export function deleteRuleConf(
+function deleteRuleConf(
   req: { url: any; body: any },
   res: {
     json: (arg0: { code: number }) => void;
@@ -109,7 +109,7 @@ export function deleteRuleConf(
   return result;
 }
 
-export function checkUrlRegex(
+function checkUrlRegex(
   req: { url: any; body: any },
   res: {
     json: (arg0: { code: number; data: any }) => void;

@@ -113,7 +113,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         <>
           <ModalForm
             visible={false}
-            title="编辑"
+            title={formatMessage({ id: 'component.common.text.edit' })}
             onSubmit={this.handleEdit}
             element={
               <a>
