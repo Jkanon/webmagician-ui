@@ -6,7 +6,7 @@ import { SiteListItem } from './model';
 let tableListDataSource: SiteListItem[] = [
   {
     id: '911527780227661826',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -23,7 +23,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661836',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -39,7 +39,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661820',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -55,7 +55,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661829',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -71,7 +71,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661828',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -87,7 +87,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661827',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -103,7 +103,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661825',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -119,7 +119,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661824',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -135,7 +135,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661823',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -151,7 +151,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661822',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',
@@ -167,7 +167,7 @@ let tableListDataSource: SiteListItem[] = [
   },
   {
     id: '911527780227661821',
-    homePage: 'https://www.jianshu.com',
+    homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png',
     name: '简书',
     shortName: '',

@@ -69,7 +69,7 @@ class Site extends Component<SiteProps, SiteState> {
         }
         return '暂无图片';
       },
-      width: 100,
+      width: 120,
     },
     {
       title: <FormattedMessage id="app.crawler.site.label.name" />,

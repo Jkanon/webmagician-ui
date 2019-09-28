@@ -7,9 +7,7 @@ export default [
     routes: [
       {
         path: '/',
-        name: 'welcome',
-        icon: 'smile',
-        component: './Welcome',
+        redirect: '/crawler/site',
       },
       {
         path: '/crawler/site',
