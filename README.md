@@ -15,6 +15,7 @@ Encapsulated components
 - Inline Popup Confirm Dialog
 - Inline Popup Modal
 - General Table Page
+- Pure front-end mock
 
 ## Usage
 

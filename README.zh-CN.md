@@ -6,7 +6,7 @@
 
 [Webmagician](https://github.com/Jkanon/webmagician) 的 UI，基于 Ant-design。鉴于本项目会对 ant-design 进行二次封装以提高开发效率，你也可以把它当做自己的前端框架来使用。
 
-- [预览](https://jkanon.github.io/webmagician-ui)
+- [预览](http://jkanon.gitee.io/webmagician-ui)
 
 目前提供组件有：
 
@@ -15,6 +15,7 @@
 - 行内弹出确认框
 - 行内弹出模态框
 - 通用表格页
+- 纯前端 mock
 
 功能一览
 
