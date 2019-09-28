@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import { getUrlParams, addTableList, editTableList } from '../../../../mock/utils';
 import { PageInfoListItem } from './model';
 
@@ -17,13 +18,7 @@ let tableListDataSource: PageInfoListItem[] = [
   },
 ];
 
-function getRuleConf(
-  req: { url: any; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-  u: any,
-) {
+function getRuleConf(req: Request, res: Response, u: string) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     // eslint-disable-next-line prefer-destructuring
@@ -60,35 +55,15 @@ function getRuleConf(
   return result;
 }
 
-function addRuleConf(
-  req: { url: any; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-  u: any,
-  b: { body: any },
-) {
+function addRuleConf(req: Request, res: Response, u: string, b: Request) {
   return addTableList(req, res, b, tableListDataSource);
 }
 
-function editRuleConf(
-  req: { url: any; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-  u: any,
-  b: { body: any },
-) {
+function editRuleConf(req: Request, res: Response, u: string, b: Request) {
   return editTableList(req, res, b, tableListDataSource);
 }
 
-function deleteRuleConf(
-  req: { url: any; body: any },
-  res: {
-    json: (arg0: { code: number }) => void;
-  },
-  u: any,
-) {
+function deleteRuleConf(req: Request, res: Response, u: string) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     // eslint-disable-next-line prefer-destructuring
@@ -109,12 +84,7 @@ function deleteRuleConf(
   return result;
 }
 
-function checkUrlRegex(
-  req: { url: any; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-) {
+function checkUrlRegex(req: Request, res: Response) {
   return res.json({
     code: 0,
     data: true,

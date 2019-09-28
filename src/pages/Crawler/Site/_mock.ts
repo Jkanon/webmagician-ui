@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import { getUrlParams, addTableList, editTableList } from '../../../../mock/utils';
 import { SiteListItem } from './model';
 
@@ -182,13 +183,7 @@ let tableListDataSource: SiteListItem[] = [
   },
 ];
 
-function getSites(
-  req: { url: string; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-  u: any,
-) {
+function getSites(req: Request, res: Response, u: string) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     // eslint-disable-next-line prefer-destructuring
@@ -224,13 +219,7 @@ function getSites(
   return result;
 }
 
-function deleteSites(
-  req: { url: string; body: any },
-  res: {
-    json: (arg0: { code: number }) => void;
-  },
-  u: any,
-) {
+function deleteSites(req: Request, res: Response, u: string) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     // eslint-disable-next-line prefer-destructuring
@@ -251,25 +240,11 @@ function deleteSites(
   return result;
 }
 
-function addSite(
-  req: { url: string; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-  u: any,
-  b: { body: any },
-) {
+function addSite(req: Request, res: Response, u: string, b: Request) {
   return addTableList(req, res, b, tableListDataSource);
 }
 
-function editSite(
-  req: { url: string; body: any },
-  res: {
-    json: (arg0: { code: number; data: any }) => void;
-  },
-  u: any,
-  b: { body: any },
-) {
+function editSite(req: Request, res: Response, u: string, b: Request) {
   return editTableList(req, res, b, tableListDataSource);
 }
 

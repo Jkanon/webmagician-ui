@@ -64,6 +64,9 @@ const plugins: IPlugin[] = [
 
 export default {
   plugins,
+  base: '/webmagician-ui/',
+  publicPath: '/webmagician-ui/',
+  history: 'hash',
   block: {
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
   },

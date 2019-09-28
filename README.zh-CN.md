@@ -6,6 +6,8 @@
 
 [Webmagician](https://github.com/Jkanon/webmagician) 的 UI，基于 Ant-design。鉴于本项目会对 ant-design 进行二次封装以提高开发效率，你也可以把它当做自己的前端框架来使用。
 
+- [预览](https://jkanon.github.io/webmagician-ui)
+
 目前提供组件有：
 
 - 基础表单
@@ -37,19 +39,6 @@ $ npm start         # visit http://localhost:8000
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
 | --- | --- | --- | --- | --- |
 | IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## 系统效果
-
-<table>
-    <tr>
-        <td><img src="https://s2.ax1x.com/2019/09/25/uVAJP0.png"/></td>
-        <td><img src="https://s2.ax1x.com/2019/09/25/uVAYGV.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://s2.ax1x.com/2019/09/25/uVA3an.png"/></td>
-        <td><img src="https://s2.ax1x.com/2019/09/25/uVA85q.png"/></td>
-    </tr>
-</table>
 
 ## 最后
 

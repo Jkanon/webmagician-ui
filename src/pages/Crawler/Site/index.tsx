@@ -135,6 +135,7 @@ class Site extends Component<SiteProps, SiteState> {
     {
       title: <FormattedMessage id="app.crawler.site.label.cookies" />,
       dataIndex: 'defaultCookies',
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.common.label.operation" />,

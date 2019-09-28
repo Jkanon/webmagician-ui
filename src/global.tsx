@@ -6,7 +6,9 @@ import defaultSettings from '../config/defaultSettings';
 
 import { mockXHR } from '../mock/mockjs';
 
-mockXHR();
+if (MOCK_JS) {
+  mockXHR();
+}
 
 const { pwa } = defaultSettings;
 // if pwa is true

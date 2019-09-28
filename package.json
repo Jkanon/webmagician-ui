@@ -8,13 +8,14 @@
     "name": "Jkanon",
     "email": "im.Jkanon@gmail.com"
   },
+  "homepage": "https://jkanon.github.io/webmagician-ui",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
-    "deploy": "cross-env ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION=site npm run site && npm run gh-pages",
+    "deploy": "cross-env MOCK_JS=true UMI_ENV=gh-pages npm run build && npm run gh-pages",
     "fetch:blocks": "fetch-blocks",
     "format-imports": "import-sort --write '**/*.{js,jsx,ts,tsx}'",
-    "gh-pages": "cp CNAME ./dist/ && gh-pages -d dist",
+    "gh-pages": "gh-pages -d dist",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
@@ -79,6 +80,7 @@
   "devDependencies": {
     "@ant-design/colors": "^3.1.0",
     "@types/classnames": "^2.2.7",
+    "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.133",
@@ -92,6 +94,7 @@
     "cross-env": "^6.0.0",
     "cross-port-killer": "^1.1.1",
     "enzyme": "^3.9.0",
+    "express": "^4.17.1",
     "eslint": "^5.16.0",
     "fetch-blocks": "^1.0.0",
     "gh-pages": "^2.0.1",

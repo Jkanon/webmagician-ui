@@ -1,8 +1,9 @@
 import Mock from 'mockjs';
 
 import { resolve } from 'path';
+import fs from 'fs';
 
-const fs = require('fs');
+import mockFetch from './mockjs-fetch';
 
 if (typeof require.context === 'undefined') {
   require.context = (base = '.', scanSubDirectories = false, regularExpression = /\.[jt]s$/) => {
@@ -58,7 +59,7 @@ let mocks = {};
 
 const modulesFiles = [
   require.context('./', true),
-  // require.context('../src/pages/', true, /_mock\.[jt]s$/),
+  require.context('../src/pages/', true, /_mock\.[jt]s$/),
 ];
 const tmp = [];
 modulesFiles.forEach(x => {
@@ -79,6 +80,7 @@ modulesFiles.forEach(x => {
 // please use it cautiously, it will redefine XMLHttpRequest,
 // which will cause many of your third-party libraries to be invalidated(like progress event).
 export function mockXHR() {
+  mockFetch(Mock);
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send;
   Mock.XHR.prototype.send = () => {
     if (this.custom.xhr) {
@@ -96,13 +98,21 @@ export function mockXHR() {
     return options => {
       let result = null;
       if (respond instanceof Function) {
-        const { body, type, url } = options;
+        const { body = '{}', method, url } = options;
         // https://expressjs.com/en/4x/api.html#req
-        result = respond({
-          method: type,
-          body: JSON.parse(body),
-          query: param2Obj(url),
-        });
+        result = respond(
+          {
+            url: options.url,
+            method,
+            body: JSON.parse(body),
+            query: param2Obj(url),
+          },
+          undefined,
+          options.url,
+          {
+            body: JSON.parse(body),
+          },
+        );
       } else {
         result = respond;
       }
@@ -112,13 +122,13 @@ export function mockXHR() {
 
   Object.keys(mocks).forEach(i => {
     let url = i;
-    let type = 'GET';
+    let method = 'GET';
     const res = /^(GET|POST|DELETE|PUT) /.exec(i.toUpperCase());
     if (res && res.length === 2) {
       // eslint-disable-next-line prefer-destructuring
-      type = res[1];
-      url = url.substring(0, type.length + 1);
+      method = res[1];
+      url = url.substring(method.length + 1);
     }
-    Mock.mock(new RegExp(url), type, XHR2ExpressReqWrap(mocks[i]));
+    Mock.mock(new RegExp(url), method, XHR2ExpressReqWrap(mocks[i]));
   });
 }
