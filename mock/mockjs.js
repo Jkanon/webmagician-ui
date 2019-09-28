@@ -5,6 +5,8 @@ import fs from 'fs';
 
 import mockFetch from './mockjs-fetch';
 
+import { param2Obj } from './utils';
+
 if (typeof require.context === 'undefined') {
   require.context = (base = '.', scanSubDirectories = false, regularExpression = /\.[jt]s$/) => {
     const files = {};
@@ -36,24 +38,6 @@ if (typeof require.context === 'undefined') {
     return Module;
   };
 }
-
-/**
- * @param {string} url
- * @returns {Object}
- */
-const param2Obj = url => {
-  const search = url.split('?')[1];
-  if (!search) {
-    return {};
-  }
-  return JSON.parse(
-    `{"${decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"')
-      .replace(/\+/g, ' ')}"}`,
-  );
-};
 
 let mocks = {};
 

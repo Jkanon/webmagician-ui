@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { getUrlParams, addTableList, editTableList } from '../../../../mock/utils';
+import { addTableList, editTableList, getTableList, deleteTableList } from '../../../../mock/utils';
 import { SiteListItem } from './model';
 
 // mock tableListDataSource
-let tableListDataSource: SiteListItem[] = [
+const tableListDataSource: SiteListItem[] = [
   {
     id: '911527780227661826',
     homePage: 'https://www.jianshu.com/u/53671b43e905',
@@ -183,69 +183,27 @@ let tableListDataSource: SiteListItem[] = [
   },
 ];
 
-function getSites(req: Request, res: Response, u: string) {
-  let url = u;
-  if (!url || Object.prototype.toString.call(url) !== '[object String]') {
-    // eslint-disable-next-line prefer-destructuring
-    url = req.url;
+function getSites(req: Request, res: Response) {
+  const params = req.query;
+
+  let dataSource = [...tableListDataSource];
+  if (params.name) {
+    dataSource = dataSource.filter(x => x.name.indexOf(params.name) !== -1);
   }
-  const params = getUrlParams(url);
 
-  const dataSource = [...tableListDataSource];
-
-  let pageSize = 10;
-  if (params.pageSize) {
-    pageSize = parseInt(`${params.pageSize}`, 10);
-  }
-  const current = parseInt(`${params.currentPage}`, 10) || 1;
-
-  const data = {
-    list: dataSource.slice((current - 1) * pageSize, current * pageSize),
-    pagination: {
-      total: dataSource.length,
-      pageSize,
-      current,
-    },
-  };
-
-  const result = {
-    code: 0,
-    data,
-  };
-
-  if (res && res.json) {
-    return res.json(result);
-  }
-  return result;
+  return getTableList(req, res, dataSource);
 }
 
-function deleteSites(req: Request, res: Response, u: string) {
-  let url = u;
-  if (!url || Object.prototype.toString.call(url) !== '[object String]') {
-    // eslint-disable-next-line prefer-destructuring
-    url = req.url;
-  }
-
-  const params = getUrlParams(url);
-  const { ids } = params;
-  tableListDataSource = tableListDataSource.filter(item => ids.indexOf(item.id.toString()) === -1);
-
-  const result = {
-    code: 0,
-  };
-
-  if (res && res.json) {
-    return res.json(result);
-  }
-  return result;
+function deleteSites(req: Request, res: Response) {
+  return deleteTableList(req, res, tableListDataSource);
 }
 
-function addSite(req: Request, res: Response, u: string, b: Request) {
-  return addTableList(req, res, b, tableListDataSource);
+function addSite(req: Request, res: Response) {
+  return addTableList(req, res, tableListDataSource);
 }
 
-function editSite(req: Request, res: Response, u: string, b: Request) {
-  return editTableList(req, res, b, tableListDataSource);
+function editSite(req: Request, res: Response) {
+  return editTableList(req, res, tableListDataSource);
 }
 
 export default {

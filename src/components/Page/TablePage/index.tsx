@@ -113,23 +113,25 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     prevState: Readonly<TablePageState>,
     snapshot?: any,
   ): void {
+    const { data: { list: preList } = { list: [] } } = prevProps;
+    const { data: { list } = { list: [] } } = this.props;
     if (
       this.tableRef &&
       this.state.tableMaxHeight &&
-      prevState.tableMaxHeight !== this.state.tableMaxHeight
+      // 高度变化
+      (prevState.tableMaxHeight !== this.state.tableMaxHeight ||
+        // 数据变化
+        (preList.length !== list.length && (preList.length === 0 || list.length === 0)))
     ) {
-      const { data } = this.props;
-      if (data && data.list && data.list.length === 0) {
-        // eslint-disable-next-line react/no-find-dom-node
-        const standardTableDom = ReactDOM.findDOMNode(this.tableRef.current);
-        if (standardTableDom) {
-          // @ts-ignore
-          const el = standardTableDom.querySelector('.ant-table-placeholder');
+      // eslint-disable-next-line react/no-find-dom-node
+      const standardTableDom = ReactDOM.findDOMNode(this.tableRef.current);
+      if (standardTableDom) {
+        // @ts-ignore
+        const el = standardTableDom.querySelector('.ant-table-placeholder');
 
-          if (el) {
-            // TODO 尺寸可能得跟着表格尺寸进行调整
-            el.style.height = `${this.state.tableMaxHeight + 48}px`;
-          }
+        if (el) {
+          // TODO 尺寸可能得跟着表格尺寸进行调整
+          el.style.height = `${this.state.tableMaxHeight + 48}px`;
         }
       }
     }
