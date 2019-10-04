@@ -40,6 +40,7 @@ export interface DefaultSettings {
   // Usage: https://github.com/ant-design/ant-design-pro/pull/3517
   iconfontUrl: string;
   colorWeak: boolean;
+  tabsView: boolean;
 }
 
 export default {
@@ -57,4 +58,5 @@ export default {
   title: 'Webmagician UI',
   pwa: false,
   iconfontUrl: '',
+  tabsView: true,
 } as DefaultSettings;

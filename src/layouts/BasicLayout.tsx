@@ -4,30 +4,35 @@
  * https://github.com/ant-design/ant-design-pro-layout
  */
 
-import ProLayout, {
-  MenuDataItem,
-  BasicLayoutProps as ProLayoutProps,
-  Settings,
-} from '@ant-design/pro-layout';
+import { MenuDataItem, BasicLayoutProps as ProLayoutProps, Settings } from '@ant-design/pro-layout';
 import GlobalFooter from '@ant-design/pro-layout/lib/GlobalFooter';
 import { Icon } from 'antd';
 import React, { useEffect, Fragment } from 'react';
 import Link from 'umi/link';
+import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
+import RouteContext from '@ant-design/pro-layout/es/RouteContext';
+import ProLayout from './Components/ProLayout';
 import defaultSettings from '../../config/defaultSettings';
+
+import TabsView from './Components/TabsView';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState, Dispatch } from '@/models/connect';
+import { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.png';
 import logoCollapsed from '../assets/logo-collapsed.png';
+
+interface MySettings extends Settings {
+  tabsView: boolean;
+}
 
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
   };
-  settings: Settings;
+  settings: MySettings;
   dispatch: Dispatch;
 }
 export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
@@ -81,6 +86,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => (
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const { dispatch, children, settings, collapsed } = props;
+  const { tabsView } = settings;
   /**
    * constructor
    */
@@ -99,12 +105,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   /**
    * init variables
    */
-  const handleMenuCollapse = (payload: boolean): void =>
-    dispatch &&
-    dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload,
-    });
+  const handleMenuCollapse = (payload: boolean): void => {
+    if (dispatch) {
+      dispatch({
+        type: 'global/changeLayoutCollapsed',
+        payload,
+      });
+    }
+  };
 
   return (
     <ProLayout
@@ -133,7 +141,19 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       {...props}
       {...settings}
     >
-      {children}
+      <div style={{ margin: '-24px -24px 0' }}>
+        {tabsView ? (
+          <RouteContext.Consumer>
+            {value => (
+              <TabsView {...value}>
+                <div className="ant-pro-page-header-wrap-children-content">{children}</div>
+              </TabsView>
+            )}
+          </RouteContext.Consumer>
+        ) : (
+          <div className="ant-pro-page-header-wrap-children-content">{children}</div>
+        )}
+      </div>
     </ProLayout>
   );
 };

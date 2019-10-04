@@ -3,6 +3,7 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
+import router from 'umi/router';
 import { notification } from 'antd';
 
 const codeMessage = {
@@ -26,14 +27,38 @@ const codeMessage = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): Response => {
+const errorHandler = (error: { response: Response }) => {
   const { response } = error;
   let message;
   let description;
   if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
 
+    // if (status === 401) {
+    //   notification.error({
+    //     message: '未登录或登录已过期，请重新登录。',
+    //   });
+    //   // eslint-disable-next-line no-underscore-dangle
+    //   window.g_app._store.dispatch({
+    //     type: 'login/logout',
+    //   });
+    //   return;
+    // }
+
+    if (status === 403) {
+      router.push('/exception/403');
+      return;
+    }
+    if (status <= 504 && status >= 500) {
+      router.push('/exception/500');
+      return;
+    }
+    if (status >= 404 && status < 422) {
+      router.push('/exception/404');
+      return;
+    }
+
+    const errorText = codeMessage[status] || response.statusText;
     message = `请求错误 ${status}: ${url}`;
     description = errorText;
   } else if (!response) {
