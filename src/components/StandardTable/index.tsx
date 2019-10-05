@@ -119,8 +119,13 @@ class StandardTable<T extends TableListItem> extends Component<
       ...pagination,
     };
 
+    const { scroll } = this.props;
+    let scrollX = false;
+    if (scroll && scroll.x) {
+      scrollX = true;
+    }
     const rowSelection: TableRowSelection<T> = {
-      fixed: true,
+      fixed: scrollX,
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
       getCheckboxProps: (record: T) => ({
