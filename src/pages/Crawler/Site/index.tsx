@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Form, Icon, Input, Modal, message } from 'antd';
+import { Button, Col, Divider, Form, Icon, Input, Modal, message, Tag } from 'antd';
 import React, { Component } from 'react';
 
 import { Dispatch } from 'redux';
@@ -105,6 +105,16 @@ class Site extends Component<SiteProps, SiteState> {
     {
       title: <FormattedMessage id="app.crawler.site.label.rate-limit" />,
       dataIndex: 'rateLimit',
+      render: text => {
+        if (typeof text === 'undefined') {
+          return (
+            <Tag color="green">
+              <FormattedMessage id="app.crawler.site.label.no-limit" />
+            </Tag>
+          );
+        }
+        return text;
+      },
       width: 100,
     },
     {
@@ -173,7 +183,7 @@ class Site extends Component<SiteProps, SiteState> {
     },
   ];
 
-  modalFormItems = [
+  modalFormItems = () => [
     {
       label: 'id',
       name: 'id',
@@ -243,7 +253,9 @@ class Site extends Component<SiteProps, SiteState> {
     {
       label: <FormattedMessage id="app.crawler.site.label.rate-limit" />,
       name: 'rateLimit',
-      itemRender: <Input placeholder="请输入流量限制，单位请求次数/秒。默认无限制" />,
+      itemRender: (
+        <Input placeholder={formatMessage({ id: 'app.crawler.site.placeholder.rate-limit' })} />
+      ),
       toggleField: true,
     },
     {

@@ -13,6 +13,7 @@ import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
 import defaultLocale from 'antd/es/locale/default';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import classNames from 'classnames';
+import RouteContext from '@ant-design/pro-layout/es/RouteContext';
 
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
 
@@ -75,6 +76,8 @@ interface TablePageState<T extends TableListItem> {
 class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, TablePageState<T>> {
   private tableRef: RefObject<StandardTable<T>> = React.createRef();
 
+  private isMobile?: boolean;
+
   constructor(props: TablePageProps<T>) {
     super(props);
     this.state = {
@@ -102,12 +105,19 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
         // @ts-ignore
         const el = standardTableDom.querySelector('.ant-table-tbody');
         if (el) {
-          // TODO 尺寸可能得跟着表格尺寸进行调整
-          let height: number | undefined = window.innerHeight - el.getBoundingClientRect().top - 96;
-          height = height > 50 ? height : 50;
-          this.setState({
-            tableMaxHeight: height,
-          });
+          if (this.isMobile === true) {
+            this.setState({
+              tableMaxHeight: undefined,
+            });
+          } else {
+            // TODO 尺寸可能得跟着表格尺寸进行调整
+            let height: number | undefined =
+              window.innerHeight - el.getBoundingClientRect().top - 96;
+            height = height > 50 ? height : 50;
+            this.setState({
+              tableMaxHeight: height,
+            });
+          }
         }
       }
     }
@@ -503,9 +513,18 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     return (
       <Card bordered={false}>
         <div className={styles.tableList}>
-          {this.renderSearchPanel()}
-          {this.renderOperatorPanel()}
-          {this.renderTableList()}
+          <RouteContext.Consumer>
+            {({ isMobile }) => {
+              this.isMobile = isMobile;
+              return (
+                <>
+                  {this.renderSearchPanel()}
+                  {this.renderOperatorPanel()}
+                  {this.renderTableList()}
+                </>
+              );
+            }}
+          </RouteContext.Consumer>
         </div>
       </Card>
     );

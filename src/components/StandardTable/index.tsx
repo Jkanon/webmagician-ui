@@ -120,6 +120,7 @@ class StandardTable<T extends TableListItem> extends Component<
     };
 
     const rowSelection: TableRowSelection<T> = {
+      fixed: true,
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
       getCheckboxProps: (record: T) => ({

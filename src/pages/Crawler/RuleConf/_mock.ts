@@ -6,9 +6,9 @@ import { PageInfoListItem } from './model';
 const tableListDataSource: PageInfoListItem[] = [
   {
     id: '913382373068836866',
-    name: 'OSCHINA文章页',
-    urlRegex: 'https://www.oschina.net/question/[0-9]+_[0-9]+',
-    urlExample: 'https://www.oschina.net/question/2720166_2305295',
+    name: '简书用户首页',
+    urlRegex: 'https://www.jianshu.com/u/[a-zA-Z0-9]+',
+    urlExample: 'https://www.jianshu.com/u/53671b43e905',
     enableJs: false,
     method: 'GET',
     contentType: 'html',
@@ -25,9 +25,9 @@ const tableListDataSource: PageInfoListItem[] = [
   },
   {
     id: '913382373068836867',
-    name: 'OSCHINA文章页',
-    urlRegex: 'https://www.oschina.net/question/[0-9]+_[0-9]+',
-    urlExample: 'https://www.oschina.net/question/2720166_2305295',
+    name: '简书文章页',
+    urlRegex: 'https://www.jianshu.com/p/[a-zA-Z0-9]+',
+    urlExample: 'https://www.jianshu.com/p/22f70071c5c4',
     enableJs: false,
     method: 'GET',
     contentType: 'html',
@@ -74,6 +74,8 @@ function checkUrlRegex(req: Request, res: Response) {
   });
 }
 
+function addPageRegion(req: Request, res: Response) {}
+
 function editPageRegions(req: Request, res: Response) {}
 
 export default {
@@ -83,5 +85,6 @@ export default {
   'DELETE /api/crawler/rules/': deleteRuleConf,
   'GET /api/crawler/rules/url/*/*': checkUrlRegex,
 
+  'POST /api/crawler/rules/[0-9]+/pageRegions': addPageRegion,
   'PUT /api/crawler/rules/[0-9]+/pageRegions': editPageRegions,
 };

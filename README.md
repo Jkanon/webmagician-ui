@@ -16,6 +16,7 @@ Encapsulated components
 - Inline Popup Modal
 - General Table Page
 - Pure front-end mock
+- Tab Layout Support
 
 ## Usage
 

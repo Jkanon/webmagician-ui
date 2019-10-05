@@ -23,6 +23,8 @@ export default {
   'app.crawler.site.label.rate-limit': 'レート制限',
   'app.crawler.site.label.cookies': 'デフォルトのクッキー',
   'app.crawler.site.label.headers': 'デフォルトのヘッダ',
+  'app.crawler.site.label.no-limit': '無制限',
+  'app.crawler.site.placeholder.rate-limit': 'リクエスト数/秒。0または空値は無制限をします',
 
   'app.crawler.rule-conf.add-new-rule-conf': 'クロールルールを追加する',
   'app.crawler.rule-conf.label.name': 'ページの名称',

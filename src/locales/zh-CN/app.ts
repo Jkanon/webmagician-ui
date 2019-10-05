@@ -23,6 +23,8 @@ export default {
   'app.crawler.site.label.rate-limit': '流量限制',
   'app.crawler.site.label.cookies': '默认Cookies',
   'app.crawler.site.label.headers': '默认Headers',
+  'app.crawler.site.label.no-limit': '无限制',
+  'app.crawler.site.placeholder.rate-limit': '请求次数/秒。为空或者0表示无限制',
 
   'app.crawler.rule-conf.add-new-rule-conf': '新增采集规则',
   'app.crawler.rule-conf.label.name': '页面名称',
