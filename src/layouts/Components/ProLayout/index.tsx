@@ -81,6 +81,7 @@ export interface BasicLayoutProps
    * 是否禁用移动端模式，有的管理系统不需要移动端模式，此属性设置为true即可
    */
   disableMobile?: boolean;
+  tabsView?: boolean;
 }
 
 const headerRender = (props: BasicLayoutProps): React.ReactNode => {
@@ -185,6 +186,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     siderWidth = 256,
     menu,
     menuDataRender,
+    tabsView,
   } = props;
 
   const formatMessage = ({
@@ -284,7 +286,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
                   onCollapse,
                 })}
                 <Content
-                  className="ant-pro-basicLayout-content"
+                  className={`ant-pro-basicLayout-content${
+                    tabsView ? ' ant-pro-tabsLayout-content' : ''
+                  }`}
                   style={!fixedHeader ? { paddingTop: 0 } : {}}
                 >
                   <RouteContext.Provider

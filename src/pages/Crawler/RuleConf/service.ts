@@ -33,7 +33,7 @@ export async function edit(params: PageInfoListItem) {
 }
 
 export async function checkUrlRegex(urlRegex: string, url: string) {
-  return request(`/api/crawler/rules/url/${url}/${urlRegex}`, {
+  return request(`/api/crawler/rules/url/${btoa(url)}/${btoa(urlRegex)}`, {
     method: 'GET',
   });
 }

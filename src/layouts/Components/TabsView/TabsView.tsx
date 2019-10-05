@@ -49,25 +49,24 @@ export interface TabView {
 export interface TabsViewProps {
   activeKey: string;
   activeTitle: string;
-  handleTabChange: (keyToSwitch: string, activedTabs: any[]) => void;
+  handleTabChange: (keyToSwitch: string, activedTabs: TabView[]) => void;
   extraTabProperties?: {};
   tabsConfig?: TabsProps;
-  afterRemoveTab?: (removeKey: string, nextTabKey?: string, activedTabs: TabView[]) => void;
+  afterRemoveTab?: (removeKey: string, nextTabKey: string, activedTabs: TabView[]) => void;
   /** children is used to create tab, switch and update tab */
   children: React.ReactChildren;
+  isMobile?: boolean;
+  collapsed?: boolean;
+  fixedHeader?: boolean;
+  layout?: string;
+  siderWidth?: number;
 }
 
 interface TabsViewState {
   activedTabs: TabView[];
-  activeKey?: string;
-  nextTabKey?: string;
+  activeKey: string;
+  nextTabKey: string;
 }
-
-const renderTabBar = (props: TabsProps, DefaultTabBar: React.ComponentClass<any>) => (
-  <div style={{ padding: '0 20px', background: '#fff', borderBottom: '1px solid #ccc' }}>
-    <DefaultTabBar {...props} />
-  </div>
-);
 
 class TabsView extends React.Component<TabsViewProps, TabsViewState> {
   static getDerivedStateFromProps(props: TabsViewProps, state: TabsViewState) {
@@ -110,11 +109,14 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     };
   }
 
-  state = {
-    activedTabs: [],
-    activeKey: undefined,
-    nextTabKey: undefined,
-  };
+  constructor(props: TabsViewProps) {
+    super(props);
+    this.state = {
+      activedTabs: [],
+      activeKey: '',
+      nextTabKey: '',
+    };
+  }
 
   handleTabsMenuClick = (tabKey: string): MenuProps['onClick'] => event => {
     const { key } = event;
@@ -180,8 +182,17 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     );
   };
 
+  getHeadWidth = () => {
+    const { isMobile, collapsed, fixedHeader, layout, siderWidth = 256 } = this.props;
+    if (isMobile || !fixedHeader || layout === 'topmenu') {
+      return '100%';
+    }
+    return collapsed ? 'calc(100% - 80px)' : `calc(100% - ${siderWidth}px)`;
+  };
+
   render() {
     const { activedTabs, activeKey } = this.state;
+    const width = this.getHeadWidth();
 
     const setMenu = (key: string) => (
       <Menu onClick={this.handleTabsMenuClick(key)}>
@@ -204,6 +215,24 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       </span>
     );
 
+    const renderTabBar = (props: TabsProps, DefaultTabBar: React.ComponentClass<any>) => (
+      <div
+        style={{
+          padding: '4px 20px 0 20px',
+          background: '#fff',
+          borderBottom: '1px solid #ccc',
+          zIndex: 1,
+          position: 'fixed',
+          right: 0,
+          top: 64,
+          width,
+          transition: 'width 0.2s',
+        }}
+      >
+        <DefaultTabBar {...props} />
+      </div>
+    );
+
     return (
       <Tabs
         className="ant-pro-page-header-wrap-tabs"
@@ -218,7 +247,11 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       >
         {activedTabs && activedTabs.length
           ? activedTabs.map((item: TabView) => (
-              <Tabs.TabPane tab={setTab(item.tab, item.key)} key={item.key}>
+              <Tabs.TabPane
+                tab={setTab(item.tab, item.key)}
+                key={item.key}
+                closable={item.closable}
+              >
                 {item.content}
               </Tabs.TabPane>
             ))

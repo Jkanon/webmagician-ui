@@ -1,12 +1,10 @@
 import { Alert, Table } from 'antd';
 import { ColumnProps, TableRowSelection, TableProps } from 'antd/es/table';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
 import styles from './index.less';
-
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface TableListItem {
   id?: number | string;
@@ -15,12 +13,12 @@ export interface TableListItem {
 
 export interface StandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
   columns: StandardTableColumnProps<T>[];
-  data: {
+  data?: {
     list: T[];
-    pagination: StandardTableProps<TableListItem>['pagination'];
+    pagination: StandardTableProps<T>['pagination'];
   };
-  selectedRows: T[];
-  onSelectRow: (rows: T[]) => void;
+  selectedRows?: T[];
+  onSelectRow?: (rows: T[]) => void;
 }
 
 export interface StandardTableColumnProps<T> extends ColumnProps<T> {
@@ -28,11 +26,11 @@ export interface StandardTableColumnProps<T> extends ColumnProps<T> {
   total?: number;
 }
 
-function initTotalList(columns: StandardTableColumnProps<any>[]) {
+function initTotalList<T>(columns: StandardTableColumnProps<T>[]) {
   if (!columns) {
     return [];
   }
-  const totalList: StandardTableColumnProps<any>[] = [];
+  const totalList: StandardTableColumnProps<T>[] = [];
   columns.forEach(column => {
     if (column.needTotal) {
       totalList.push({ ...column, total: 0 });
@@ -46,13 +44,13 @@ interface StandardTableState<T> {
   needTotalList: StandardTableColumnProps<T>[];
 }
 
-class StandardTable extends Component<
-  StandardTableProps<TableListItem>,
-  StandardTableState<TableListItem>
+class StandardTable<T extends TableListItem> extends Component<
+  StandardTableProps<T>,
+  StandardTableState<T>
 > {
-  static getDerivedStateFromProps(nextProps: StandardTableProps<TableListItem>) {
+  static getDerivedStateFromProps<T>(nextProps: StandardTableProps<T>) {
     // clean state
-    if (nextProps.selectedRows.length === 0) {
+    if (nextProps.selectedRows && nextProps.selectedRows.length === 0) {
       const needTotalList = initTotalList(nextProps.columns);
       return {
         selectedRowKeys: [],
@@ -62,7 +60,7 @@ class StandardTable extends Component<
     return null;
   }
 
-  constructor(props: StandardTableProps<TableListItem>) {
+  constructor(props: StandardTableProps<T>) {
     super(props);
     const { columns } = props;
     const needTotalList = initTotalList(columns);
@@ -73,9 +71,9 @@ class StandardTable extends Component<
     };
   }
 
-  handleRowSelectChange: TableRowSelection<TableListItem>['onChange'] = (
+  handleRowSelectChange: TableRowSelection<T>['onChange'] = (
     selectedRowKeys,
-    selectedRows: TableListItem[],
+    selectedRows: T[],
   ) => {
     const currySelectedRowKeys = selectedRowKeys as string[];
     let { needTotalList } = this.state;
@@ -91,12 +89,7 @@ class StandardTable extends Component<
     this.setState({ selectedRowKeys: currySelectedRowKeys, needTotalList });
   };
 
-  handleTableChange: TableProps<TableListItem>['onChange'] = (
-    pagination,
-    filters,
-    sorter,
-    ...rest
-  ) => {
+  handleTableChange: TableProps<T>['onChange'] = (pagination, filters, sorter, ...rest) => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(pagination, filters, sorter, ...rest);
@@ -111,7 +104,7 @@ class StandardTable extends Component<
 
   render() {
     const { selectedRowKeys, needTotalList } = this.state;
-    const { data, rowKey, ...rest } = this.props;
+    const { data, rowKey, onSelectRow, ...rest } = this.props;
     const { list = [], pagination = false } = data || {};
 
     const paginationProps = {
@@ -126,47 +119,47 @@ class StandardTable extends Component<
       ...pagination,
     };
 
-    const rowSelection: TableRowSelection<TableListItem> = {
+    const rowSelection: TableRowSelection<T> = {
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
-      getCheckboxProps: (record: TableListItem) => ({
+      getCheckboxProps: (record: T) => ({
         disabled: record.disabled,
       }),
     };
 
     return (
       <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
-          <Alert
-            message={
-              <Fragment>
-                <FormattedMessage
-                  id="component.standardTable.items.selected"
-                  values={{ count: <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> }}
-                />
-                {needTotalList.map((item, index) => (
-                  <span style={{ marginLeft: 8 }} key={item.dataIndex}>
-                    {item.title}
-                    总计&nbsp;
-                    <span style={{ fontWeight: 600 }}>
-                      {item.render
-                        ? item.render(item.total, item as TableListItem, index)
-                        : item.total}
+        {onSelectRow && (
+          <div className={styles.tableAlert}>
+            <Alert
+              message={
+                <>
+                  <FormattedMessage
+                    id="component.standardTable.items.selected"
+                    values={{ count: <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> }}
+                  />
+                  {needTotalList.map((item, index) => (
+                    <span style={{ marginLeft: 8 }} key={item.dataIndex}>
+                      {item.title}
+                      总计&nbsp;
+                      <span style={{ fontWeight: 600 }}>
+                        {item.render ? item.render(item.total, item as any, index) : item.total}
+                      </span>
                     </span>
-                  </span>
-                ))}
-                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
-                  <FormattedMessage id="component.standardTable.items.clear" />
-                </a>
-              </Fragment>
-            }
-            type="info"
-            showIcon
-          />
-        </div>
+                  ))}
+                  <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
+                    <FormattedMessage id="component.standardTable.items.clear" />
+                  </a>
+                </>
+              }
+              type="info"
+              showIcon
+            />
+          </div>
+        )}
         <Table
           rowKey={rowKey || 'id'}
-          rowSelection={rowSelection}
+          rowSelection={onSelectRow && rowSelection}
           dataSource={list}
           pagination={paginationProps}
           onChange={this.handleTableChange}

@@ -139,7 +139,6 @@ function getItems() {
         className: 'wrap-label',
       },
     },
-
     {
       label: <FormattedMessage id="app.common.label.memo" />,
       name: 'remarks',

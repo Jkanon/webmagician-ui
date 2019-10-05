@@ -6,6 +6,7 @@ import { TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
 
 import { query, add, edit, remove } from './service';
+import { PageRegionListItem } from './components/PageRegion';
 
 export interface PageInfoListItem extends TableListItem {
   id: string;
@@ -19,6 +20,7 @@ export interface PageInfoListItem extends TableListItem {
   pageValidationSelector?: string;
   remarks?: string;
   gmtCreate: number;
+  pageRegions?: PageRegionListItem[];
 }
 
 export interface RuleConfStateType {

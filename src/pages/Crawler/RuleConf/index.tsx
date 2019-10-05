@@ -15,6 +15,8 @@ import { openWindow } from '@/utils/utils';
 
 import { PageInfoListItem, RuleConfStateType } from './model';
 import RuleConfFormItems from './components/RuleConfFormItems';
+import PageRegion from './components/PageRegion';
+import pageRegionFormItems from './components/PageRegionFormItems';
 
 interface RuleConfProps {
   dispatch: Dispatch<any>;
@@ -25,6 +27,13 @@ interface RuleConfProps {
 interface RuleConfState {
   selectedRows: PageInfoListItem[];
 }
+
+const expandedRowRender = (record: PageInfoListItem) => {
+  if (record.pageRegions && record.pageRegions.length > 0) {
+    return <PageRegion data={{ list: record.pageRegions || [], pagination: {} }} />;
+  }
+  return null;
+};
 
 @connect(
   ({
@@ -54,17 +63,17 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.name" />,
       dataIndex: 'name',
-      width: 100,
+      width: '10%',
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.url-regex" />,
       dataIndex: 'urlRegex',
-      width: 200,
+      width: '10%',
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.example-url" />,
       dataIndex: 'urlExample',
-      width: 200,
+      width: '10%',
       render: text => (
         <a
           href={text}
@@ -81,34 +90,27 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       title: <FormattedMessage id="app.crawler.rule-conf.label.enable-js" />,
       dataIndex: 'jsRendering',
       render: text => formatMessage({ id: `app.common.label.${text === 1 ? 'yes' : 'no'}` }),
-      width: 80,
+      width: '10%',
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.method" />,
       dataIndex: 'method',
-      width: 80,
-    },
-    {
-      title: '请求类型',
-      dataIndex: 'contentType',
-      width: 80,
+      width: '10%',
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.example-params" />,
       dataIndex: 'pageParamsExample',
-      width: 200,
+      width: '10%',
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.validation-selector" />,
       dataIndex: 'pageValidationSelector',
-      width: 150,
     },
     {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
       key: 'operation',
-      fixed: 'right',
-      width: 250,
+      width: 200,
       render: (text, record) => (
         <>
           <ModalForm
@@ -136,8 +138,9 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
                 区域
               </a>
             }
+            formItems={pageRegionFormItems}
             formValues={{ pageInfo: { id: record.id } }}
-          ></ModalForm>
+          />
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
         </>
@@ -247,6 +250,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         title={formatMessage({ id: 'menu.rule-conf' })}
         action="ruleConf/fetch"
         columns={this.columns}
+        expandedRowRender={expandedRowRender}
         data={data}
         loading={loading}
         searchFormRender={this.searchFormRender}
@@ -255,6 +259,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         selectedRows={selectedRows}
         onDelete={(rows: PageInfoListItem[]) => this.onDelete(rows.map(row => row.id))}
         dispatch={dispatch}
+        tableOptions={{ scroll: { x: false } }}
       />
     );
   }

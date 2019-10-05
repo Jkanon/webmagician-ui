@@ -1,13 +1,18 @@
-import { Button, Card, Checkbox, Col, Dropdown, Form, Menu, Modal, Row, Tooltip } from 'antd';
 import React, { Component, RefObject } from 'react';
 import ReactDOM from 'react-dom';
-
 import { Dispatch } from 'redux';
+
+import { Button, Card, Checkbox, Col, Dropdown, Form, Menu, Modal, Row, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { WrappedFormUtils } from 'antd/es/form/Form';
-import { SorterResult } from 'antd/es/table';
+import { SorterResult, ExpandIconProps } from 'antd/es/table';
+import { TableLocale } from 'antd/es/table/interface';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import TransButton from 'antd/es/_util/transButton';
+import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
+import defaultLocale from 'antd/es/locale/default';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import classNames from 'classnames';
 
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
 
@@ -36,41 +41,41 @@ export interface TableListParams {
   currentPage: number;
 }
 
-interface TablePageProps extends FormComponentProps {
+interface TablePageProps<T extends TableListItem> extends FormComponentProps {
   dispatch: Dispatch<any>;
   loading: boolean;
   // action of searching page list
   action: string;
-  columns: StandardTableColumnProps<any>[];
-  data: TableListData<any>;
-  selectedRows?: TableListItem[];
+  columns: StandardTableColumnProps<T>[];
+  data: TableListData<T>;
+  selectedRows?: T[];
   searchFormValues?: any;
   pageHeader?: boolean;
   title?: string;
   tableOptions?: any;
-  handleSelectRows?: (rows: any[]) => void;
-  onDelete?: (rows: any[]) => void;
+  handleSelectRows?: (rows: T[]) => void;
+  onDelete?: (rows: T[]) => void;
   searchFormRender?: (form: WrappedFormUtils) => React.ReactNode;
   operatorRender?: () => React.ReactNode;
-  expandedRowRender?: () => React.ReactNode;
+  expandedRowRender?: (record: T) => React.ReactNode;
 }
 
-interface TablePageState {
-  selectedRows: TableListItem[];
+interface TablePageState<T extends TableListItem> {
+  selectedRows: T[];
   searchFormValues: any;
   pagination: Partial<TableListPagination>;
   filters?: any;
-  sorter?: SorterResult<TableListItem>;
+  sorter?: SorterResult<T>;
   switchDropdownVisible: boolean;
   // 选中的显示行
   selectedDisplayColumnsKey: string[];
   tableMaxHeight?: number;
 }
 
-class TablePage extends Component<TablePageProps, TablePageState> {
-  private tableRef: RefObject<StandardTable> = React.createRef();
+class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, TablePageState<T>> {
+  private tableRef: RefObject<StandardTable<T>> = React.createRef();
 
-  constructor(props: TablePageProps) {
+  constructor(props: TablePageProps<T>) {
     super(props);
     this.state = {
       selectedRows: props.selectedRows || [],
@@ -109,8 +114,8 @@ class TablePage extends Component<TablePageProps, TablePageState> {
   }
 
   componentDidUpdate(
-    prevProps: Readonly<TablePageProps>,
-    prevState: Readonly<TablePageState>,
+    prevProps: Readonly<TablePageProps<T>>,
+    prevState: Readonly<TablePageState<T>>,
     snapshot?: any,
   ): void {
     const { data: { list: preList } = { list: [] } } = prevProps;
@@ -150,8 +155,8 @@ class TablePage extends Component<TablePageProps, TablePageState> {
 
   handleStandardTableChange = (
     pagination: Partial<TableListPagination>,
-    filtersArg: Record<keyof TableListItem, string[]>,
-    sorter: SorterResult<TableListItem>,
+    filtersArg: Record<keyof T, string[]>,
+    sorter: SorterResult<T>,
   ) => {
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
       const newObj = { ...obj };
@@ -175,7 +180,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
    * Callback after selecting/unselecting rows
    * @param rows
    */
-  handleSelectRows = (rows: TableListItem[]) => {
+  handleSelectRows = (rows: T[]) => {
     this.setState(
       {
         selectedRows: rows,
@@ -304,6 +309,45 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     });
   };
 
+  expandIcon = ({
+    expanded,
+    expandable,
+    record,
+    needIndentSpaced,
+    onExpand,
+  }: ExpandIconProps<T>) => {
+    const prefixCls = 'ant-table';
+    if (expandable) {
+      const { expandedRowRender } = this.props;
+      if (expandedRowRender && expandedRowRender(record) == null) {
+        return null;
+      }
+      return (
+        <LocaleReceiver componentName="Table" defaultLocale={defaultLocale.Table}>
+          {(locale: TableLocale) => (
+            <TransButton
+              className={classNames(`${prefixCls}-row-expand-icon`, {
+                [`${prefixCls}-row-collapsed`]: !expanded,
+                [`${prefixCls}-row-expanded`]: expanded,
+              })}
+              onClick={event => {
+                onExpand(record, event);
+              }}
+              aria-label={expanded ? locale.collapse : locale.expand}
+              noStyle
+            />
+          )}
+        </LocaleReceiver>
+      );
+    }
+
+    if (needIndentSpaced) {
+      return <span className={`${prefixCls}-row-expand-icon ${prefixCls}-row-spaced`} />;
+    }
+
+    return null;
+  };
+
   /**
    * Search form render
    */
@@ -336,7 +380,7 @@ class TablePage extends Component<TablePageProps, TablePageState> {
     );
   }
 
-  renderSwitchMenus(items: StandardTableColumnProps<any>[]): React.ReactElement<any>[] {
+  renderSwitchMenus(items: StandardTableColumnProps<T>[]): React.ReactElement<any>[] {
     const { selectedDisplayColumnsKey } = this.state;
 
     return items.map((item, index) => {
@@ -430,12 +474,15 @@ class TablePage extends Component<TablePageProps, TablePageState> {
       ...rest,
       scroll: {
         y: tableMaxHeight,
-        x: (scroll && scroll.x) || 'max-content',
+        x:
+          (scroll && scroll.x) ||
+          (scroll !== false && scroll && scroll.x !== false && 'max-content'),
       },
       bodyStyle: {
         ...bodyStyle,
         height: data && data.list && data.list.length > 0 && tableMaxHeight,
       },
+      expandIcon: this.expandIcon,
     };
     return (
       <StandardTable
@@ -474,4 +521,5 @@ class TablePage extends Component<TablePageProps, TablePageState> {
   }
 }
 
+// @ts-ignore
 export default Form.create<TablePageProps>()(TablePage);

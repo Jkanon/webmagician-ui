@@ -73,6 +73,7 @@ const TabsViewWrapper = (props: TabsViewProps) => {
       extraTabProperties={{
         location,
       }}
+      {...props}
     >
       {children}
     </TabsView>
