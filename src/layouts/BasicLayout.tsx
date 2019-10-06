@@ -86,7 +86,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => (
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const { dispatch, children, settings, collapsed } = props;
-  const { tabsView } = settings;
+  const { tabsView, fixedHeader } = settings;
   /**
    * constructor
    */
@@ -134,24 +134,26 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         },
         ...routers,
       ]}
-      footerRender={footerRender}
+      footerRender={tabsView && fixedHeader ? false : footerRender}
       menuDataRender={menuDataRender}
       formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
       {...settings}
     >
-      <div style={{ margin: '-24px -24px 0' }}>
+      <div style={{ position: 'relative' }} className="ant-pro-page-content-wrap">
         {tabsView ? (
           <RouteContext.Consumer>
             {value => (
               <TabsView {...value}>
-                <div className="ant-pro-page-header-wrap-children-content">{children}</div>
+                <div className="ant-pro-page-content-wrap-children-content">{children}</div>
+                {// @ts-ignore
+                fixedHeader && footerRender()}
               </TabsView>
             )}
           </RouteContext.Consumer>
         ) : (
-          <div className="ant-pro-page-header-wrap-children-content">{children}</div>
+          <div className="ant-pro-page-content-wrap-children-content">{children}</div>
         )}
       </div>
     </ProLayout>

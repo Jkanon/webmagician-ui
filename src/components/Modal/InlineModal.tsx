@@ -2,6 +2,8 @@ import React, { Component, Fragment, ReactElement } from 'react';
 import { ModalProps } from 'antd/es/modal';
 import { Modal } from 'antd';
 
+import defaultSettings from '../../../config/defaultSettings';
+
 interface InlineModalProps extends ModalProps {
   element: ReactElement;
   beforeOpen?: Function;
@@ -88,7 +90,15 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
   render() {
     const { children, title, element, onCancel, onOk, ...modalOptions } = this.props;
     const { visible } = this.state;
+    const { tabsView, fixedHeader } = defaultSettings;
 
+    const opt: Partial<ModalProps> = {};
+    if (tabsView && fixedHeader) {
+      // @ts-ignore
+      opt.getContainer = document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active');
+      opt.maskStyle = { position: 'absolute' };
+      opt.wrapClassName = 'ant-modal-absolute';
+    }
     return (
       <Fragment>
         {element && React.cloneElement(element, { onClick: this.showModalHandler })}
@@ -98,6 +108,7 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
           centered
           onOk={this.okHandler}
           onCancel={this.cancelHandler}
+          {...opt}
           {...modalOptions}
         >
           {children}
