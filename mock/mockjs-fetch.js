@@ -1,3 +1,5 @@
+import { parse } from 'url';
+
 /**
  * 鉴于Mock.js不支持拦截fetch发起的ajax，本模块即为Mock.js的补充。
  * 兼容Mock.js以下语法：
@@ -20,13 +22,14 @@ function mockFetch(Mock) {
     if (Mock.XHR._settings.debug) {
       console.log(`${method} ${url}`, 'options: ', options);
     }
+    const { pathname: path } = parse(url);
     // eslint-disable-next-line no-underscore-dangle,guard-for-in,no-restricted-syntax
     for (const key in Mock._mocked) {
       // eslint-disable-next-line no-underscore-dangle
       const item = Mock._mocked[key];
       const urlMatch =
-        (typeof item.rurl === 'string' && url.indexOf(item.rurl) >= 0) ||
-        (item.rurl instanceof RegExp && item.rurl.test(url));
+        (typeof item.rurl === 'string' && path.indexOf(item.rurl) >= 0) ||
+        (item.rurl instanceof RegExp && item.rurl.test(path));
       const methodMatch = !item.rtype || item.rtype === method;
       if (urlMatch && methodMatch) {
         // eslint-disable-next-line no-underscore-dangle

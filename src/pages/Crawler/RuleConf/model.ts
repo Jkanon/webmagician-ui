@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber, isPlainObject } from 'lodash';
 
 import { TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
@@ -128,7 +128,9 @@ const RuleConfModel: RuleConfModelType = {
       const { ids } = action.payload;
       const { list, pagination } = state.data;
       const newList = list.filter(item => ids.indexOf(item.id) === -1);
-      if (!isEmpty(pagination) && isNumber(pagination.total)) {
+      // @ts-ignore
+      if (!isEmpty(pagination) && isPlainObject(pagination) && isNumber(pagination.total)) {
+        // @ts-ignore
         pagination.total -= list.length - newList.length;
       }
       return {
@@ -153,7 +155,9 @@ const RuleConfModel: RuleConfModelType = {
       const { list, pagination } = state.data;
       const newList = list;
       newList.unshift(action.payload);
-      if (!isEmpty(pagination) && isNumber(pagination.total)) {
+      // @ts-ignore
+      if (!isEmpty(pagination) && isPlainObject(pagination) && isNumber(pagination.total)) {
+        // @ts-ignore
         pagination.total += 1;
       }
 
