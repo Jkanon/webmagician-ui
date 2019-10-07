@@ -10,6 +10,8 @@ export default {
   'app.common.label.open-in-new-window': 'Open in a new window',
   'app.common.label.yes': 'Yes',
   'app.common.label.no': 'No',
+  'app.common.validation.not-empty': 'Required items cannot be empty',
+
   'app.crawler.site.filter.name': "Site's Name",
   'app.crawler.site.add-new-site': 'Add a new site',
   'app.crawler.site.edit-the-site': 'Edit the site',
@@ -29,6 +31,7 @@ export default {
     'The number of requests per second.An empty value or value of 0 means no limit',
 
   'app.crawler.rule-conf.add-new-rule-conf': 'Add a new crawling rule',
+  'app.crawler.rule-conf.add-new-page-region': 'Add a new crawling region',
   'app.crawler.rule-conf.label.name': "Page's Name",
   'app.crawler.rule-conf.label.url-regex': 'Regular Expression Of URL',
   'app.crawler.rule-conf.label.example-url': 'An Example For The URL',
@@ -36,8 +39,13 @@ export default {
   'app.crawler.rule-conf.label.enable-redirect': 'Allow Redirect',
   'app.crawler.rule-conf.label.method': 'Http Request Method',
   'app.crawler.rule-conf.label.example-params': 'An Example For The Params',
-  'app.crawler.rule-conf.label.validation-selector': 'The Selector Expression For Validating',
-  'app.crawler.rule-conf.validation.name.not-empty': "Page's Name cannot be empty",
+  'app.crawler.rule-conf.label.validation-selector': 'The Selector For Validating',
+  'app.crawler.rule-conf.label.region.name': 'Region Name',
+  'app.crawler.rule-conf.label.region.selector': 'Selector For Region',
+
+  'app.crawler.rule-conf.operation.label.add-region': 'Region',
+
+  'app.crawler.rule-conf.validation.name.not-empty': "Page's name cannot be empty",
   'app.crawler.rule-conf.validation.url-regex.not-empty':
     'Please enter the regular expression tha matches the page url you want to crawl',
   'app.crawler.rule-conf.validation.url.not-match': 'The value you input is not a valid url',

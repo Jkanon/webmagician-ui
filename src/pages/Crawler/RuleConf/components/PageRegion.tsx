@@ -1,40 +1,37 @@
 import React, { PureComponent } from 'react';
 import { Dispatch } from 'redux';
-import { connect } from 'dva';
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { Icon, message } from 'antd';
 import { ModalForm } from '@/components/Form';
 import pageRegionFormItems from './PageRegionFormItems';
+import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
 
 export interface PageRegionListItem extends TableListItem {
   id: string;
   name: string;
-  selectExpression: string;
+  selector: string;
+  pageInfo?: PageInfoListItem;
 }
 
 interface PageRegionProps {
   dispatch: Dispatch<any>;
-  loading: boolean;
   data?: TableListData<PageRegionListItem>;
 }
 
-@connect(({ loading }: { loading: { models: { [key: string]: boolean } } }) => ({
-  loading: loading.models.ruleConf,
-}))
 class PageRegion extends PureComponent<PageRegionProps> {
   columns: StandardTableColumnProps<PageRegionListItem>[] = [
     {
-      title: '区域表达式',
-      dataIndex: 'selectExpression',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.selector" />,
+      dataIndex: 'selector',
     },
     {
-      title: '区域名称',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.name" />,
       dataIndex: 'name',
     },
     {
-      title: '备注',
+      title: <FormattedMessage id="app.common.label.memo" />,
       dataIndex: 'remarks',
     },
     {
@@ -62,7 +59,9 @@ class PageRegion extends PureComponent<PageRegionProps> {
     },
   ];
 
-  handleEdit = (fields: any) => this.handleAddOrEdit('ruleConf/modify', fields);
+  handleAdd = (fields: any) => this.handleAddOrEdit('ruleConf/createPageRegion', fields);
+
+  handleEdit = (fields: any) => this.handleAddOrEdit('ruleConf/modifyPageRegion', fields);
 
   handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
@@ -81,7 +80,6 @@ class PageRegion extends PureComponent<PageRegionProps> {
 
   render() {
     const { data } = this.props;
-
     return <StandardTable<PageRegionListItem> columns={this.columns} data={data} />;
   }
 }

@@ -28,13 +28,6 @@ interface RuleConfState {
   selectedRows: PageInfoListItem[];
 }
 
-const expandedRowRender = (record: PageInfoListItem) => {
-  if (record.pageRegions && record.pageRegions.length > 0) {
-    return <PageRegion data={{ list: record.pageRegions || [], pagination: {} }} />;
-  }
-  return null;
-};
-
 @connect(
   ({
     ruleConf,
@@ -130,12 +123,12 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
           <Divider type="vertical" />
           <ModalForm
             visible={false}
-            title="添加解析区域"
-            onSubmit={this.handleAddPageRegions}
+            title={formatMessage({ id: 'app.crawler.rule-conf.add-new-page-region' })}
+            onSubmit={this.handleAddPageRegion}
             element={
               <a>
                 <Icon type="plus" />
-                区域
+                <FormattedMessage id="app.crawler.rule-conf.operation.label.add-region" />
               </a>
             }
             formItems={pageRegionFormItems}
@@ -147,6 +140,19 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       ),
     },
   ];
+
+  expandedRowRender = (record: PageInfoListItem) => {
+    const { dispatch } = this.props;
+    if (record.pageRegions && record.pageRegions.length > 0) {
+      return (
+        <PageRegion
+          data={{ list: record.pageRegions || [], pagination: record.pageRegions.length > 10 }}
+          dispatch={dispatch}
+        />
+      );
+    }
+    return null;
+  };
 
   /**
    * 删除回调函数
@@ -177,6 +183,8 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       .catch(() => {});
   };
 
+  handleAddPageRegion = (fields: any) => this.handleAddOrEdit('ruleConf/createPageRegion', fields);
+
   handleAdd = (fields: any) => this.handleAddOrEdit('ruleConf/create', fields);
 
   handleEdit = (fields: any) => this.handleAddOrEdit('ruleConf/modify', fields);
@@ -189,7 +197,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       payload: fields,
       // @ts-ignore
     }).then(() => {
-      if (that.pageRef) {
+      if ((type.endsWith('create') || type.endsWith('modify')) && that.pageRef) {
         that.pageRef.doSearch();
       }
       message.success(
@@ -205,8 +213,6 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       selectedRows: rows,
     });
   };
-
-  handleAddPageRegions = () => {};
 
   searchFormRender = (form: WrappedFormUtils) => {
     const { getFieldDecorator } = form;
@@ -250,7 +256,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         title={formatMessage({ id: 'menu.rule-conf' })}
         action="ruleConf/fetch"
         columns={this.columns}
-        expandedRowRender={expandedRowRender}
+        expandedRowRender={this.expandedRowRender}
         data={data}
         loading={loading}
         searchFormRender={this.searchFormRender}

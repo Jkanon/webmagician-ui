@@ -10,24 +10,30 @@ const formItems = [
     hidden: true,
   },
   {
-    label: '名称',
+    label: 'pageInfoId',
+    name: 'pageInfo.id',
+    itemRender: <Input type="hidden" />,
+    hidden: true,
+  },
+  {
+    label: <FormattedMessage id="app.crawler.rule-conf.label.region.name" />,
     name: 'name',
     itemRender: <Input placeholder="" />,
     rules: [
       {
         required: true,
-        message: <FormattedMessage id="app.crawler.rule-conf.validation.name.not-empty" />,
+        message: <FormattedMessage id="app.common.validation.not-empty" />,
       },
     ],
   },
   {
-    label: '区域表达式',
+    label: <FormattedMessage id="app.crawler.rule-conf.label.region.selector" />,
     name: 'selector',
     itemRender: <Input />,
     rules: [
       {
         required: true,
-        message: <FormattedMessage id="app.crawler.rule-conf.validation.name.not-empty" />,
+        message: <FormattedMessage id="app.common.validation.not-empty" />,
       },
     ],
   },

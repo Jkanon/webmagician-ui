@@ -9,6 +9,8 @@ export default {
   'app.common.label.open-in-new-window': '點擊新窗口打開鏈接',
   'app.common.label.yes': '是',
   'app.common.label.no': '否',
+  'app.common.validation.not-empty': '必填項不能為空',
+
   'app.crawler.site.filter.name': '站點名稱',
   'app.crawler.site.add-new-site': '新增站點',
   'app.crawler.site.edit-the-site': '編輯站點',
@@ -27,6 +29,7 @@ export default {
   'app.crawler.site.placeholder.rate-limit': '請求次數/秒。為空或者0表示無限制',
 
   'app.crawler.rule-conf.add-new-rule-conf': '新增採集規則',
+  'app.crawler.rule-conf.add-new-page-region': '新增採集區域',
   'app.crawler.rule-conf.label.name': '頁面名稱',
   'app.crawler.rule-conf.label.url-regex': 'URL正則',
   'app.crawler.rule-conf.label.example-url': 'URL示例',
@@ -35,6 +38,11 @@ export default {
   'app.crawler.rule-conf.label.method': '請求方式',
   'app.crawler.rule-conf.label.example-params': '請求參數示例',
   'app.crawler.rule-conf.label.validation-selector': '頁面驗證表達式',
+  'app.crawler.rule-conf.label.region.name': '區域名稱',
+  'app.crawler.rule-conf.label.region.selector': '區域選擇器',
+
+  'app.crawler.rule-conf.operation.label.add-region': '區域',
+
   'app.crawler.rule-conf.validation.name.not-empty': '頁面名稱不能為空',
   'app.crawler.rule-conf.validation.url-regex.not-empty': '請輸入匹配的URL正則表達式',
   'app.crawler.rule-conf.validation.url.not-match': '請輸入正確的鏈接地址',

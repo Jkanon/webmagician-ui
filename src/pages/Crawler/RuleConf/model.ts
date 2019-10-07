@@ -5,7 +5,7 @@ import { isEmpty, isNumber } from 'lodash';
 import { TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
 
-import { query, add, edit, remove } from './service';
+import { query, add, edit, remove, addPageRegion, editdPageRegion } from './service';
 import { PageRegionListItem } from './components/PageRegion';
 
 export interface PageInfoListItem extends TableListItem {
@@ -40,12 +40,18 @@ export interface RuleConfModelType {
     create: Effect;
     modify: Effect;
     remove: Effect;
+
+    createPageRegion: Effect;
+    modifyPageRegion: Effect;
   };
   reducers: {
     del: Reducer<RuleConfStateType>;
     save: Reducer<RuleConfStateType>;
     add: Reducer<RuleConfStateType>;
     edit: Reducer<RuleConfStateType>;
+
+    addPageRegion: Reducer<RuleConfStateType>;
+    editPageRegion: Reducer<RuleConfStateType>;
   };
 }
 
@@ -89,6 +95,22 @@ const RuleConfModel: RuleConfModelType = {
       yield put({
         type: 'del',
         payload,
+      });
+    },
+
+    *createPageRegion({ payload }, { call, put }) {
+      const response = yield call(addPageRegion, payload);
+      yield put({
+        type: 'addPageRegion',
+        payload: response.data,
+      });
+    },
+
+    *modifyPageRegion({ payload }, { call, put }) {
+      const response = yield call(editdPageRegion, payload);
+      yield put({
+        type: 'editPageRegion',
+        payload: response.data,
       });
     },
   },
@@ -170,6 +192,65 @@ const RuleConfModel: RuleConfModelType = {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+
+    addPageRegion(
+      state = {
+        data: {
+          list: [],
+          pagination: {},
+        },
+      },
+      action,
+    ) {
+      const { list } = state.data;
+      const record = action.payload;
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          list: list.map(r => {
+            const { pageRegions } = r;
+            return r.id === record.pageInfo.id
+              ? {
+                  ...r,
+                  pageRegions: pageRegions === undefined ? [record] : pageRegions.concat(record),
+                }
+              : r;
+          }),
+        },
+      };
+    },
+
+    editPageRegion(
+      state = {
+        data: {
+          list: [],
+          pagination: {},
+        },
+      },
+      action,
+    ) {
+      const { list } = state.data;
+      const record = action.payload;
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          list: list.map(r => {
+            const { pageRegions } = r;
+            return r.id === record.pageInfo.id
+              ? {
+                  ...r,
+                  // @ts-ignore
+                  pageRegions: pageRegions.map(pr => (pr.id === record.id ? record : pr)),
+                }
+              : r;
+          }),
+        },
       };
     },
   },

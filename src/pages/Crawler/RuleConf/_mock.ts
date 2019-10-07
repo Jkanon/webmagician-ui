@@ -1,5 +1,12 @@
 import { Request, Response } from 'express';
-import { getTableList, addTableList, editTableList, deleteTableList } from '../../../../mock/utils';
+import { uniqueId, isEmpty } from 'lodash';
+import {
+  getTableList,
+  addTableList,
+  editTableList,
+  deleteTableList,
+  response,
+} from '../../../../mock/utils';
 import { PageInfoListItem } from './model';
 
 // mock tableListDataSource
@@ -19,7 +26,7 @@ const tableListDataSource: PageInfoListItem[] = [
       {
         id: '913382675704647681',
         name: '列表',
-        selectExpression: '',
+        selector: '',
       },
     ],
   },
@@ -45,7 +52,23 @@ function getRuleConf(req: Request, res: Response) {
     dataSource = dataSource.filter(x => x.name.indexOf(params.name) !== -1);
   }
 
-  return getTableList(req, res, dataSource);
+  return getTableList(
+    req,
+    res,
+    dataSource.map(x => {
+      const { pageRegions, ...rest } = x;
+      if (pageRegions) {
+        return {
+          ...rest,
+          pageRegions: pageRegions.map(pr => ({
+            ...pr,
+            pageInfo: x,
+          })),
+        };
+      }
+      return x;
+    }),
+  );
 }
 
 function addRuleConf(req: Request, res: Response) {
@@ -61,30 +84,70 @@ function deleteRuleConf(req: Request, res: Response) {
 }
 
 function checkUrlRegex(req: Request, res: Response) {
-  const { url } = req;
-  let match = false;
-  const result = /\/api\/crawler\/rules\/url\/(.*)\/(.*)/.exec(url);
-  if (result && result[2]) {
-    const regex = Buffer.from(result[2], 'base64').toString();
-    match = tableListDataSource.find(x => x.urlRegex === regex) === undefined;
-  }
-  return res.json({
+  const {
+    query: { id = '' },
+    params: { regex },
+  } = req;
+  const regexstr = Buffer.from(regex, 'base64').toString();
+  const match =
+    tableListDataSource.find(x => x.urlRegex === regexstr && (id === '' || id !== x.id)) ===
+    undefined;
+  return response(res, {
     code: 0,
     data: match,
   });
 }
 
-function addPageRegion(req: Request, res: Response) {}
+function addPageRegion(req: Request, res: Response) {
+  const { body } = req;
+  if (!isEmpty(body) && body.pageInfo && body.pageInfo.id) {
+    tableListDataSource.forEach((r, i) => {
+      if (r.id === body.pageInfo.id) {
+        body.id = uniqueId().toString();
+        if (typeof tableListDataSource[i].pageRegions === 'undefined') {
+          tableListDataSource[i].pageRegions = [];
+        }
+        // @ts-ignore
+        tableListDataSource[i].pageRegions.unshift(body);
+      }
+    });
+  }
 
-function editPageRegions(req: Request, res: Response) {}
+  return response(res, { code: 0, data: body });
+}
+
+function editPageRegions(req: Request, res: Response) {
+  let { body } = req;
+  if (!isEmpty(body) && body.id && body.pageInfo && body.pageInfo.id) {
+    tableListDataSource.forEach((r, i) => {
+      const { pageRegions } = tableListDataSource[i];
+      if (r.id === body.pageInfo.id && pageRegions) {
+        tableListDataSource[i].pageRegions = pageRegions.map(pr => {
+          if (pr.id === body.id) {
+            body = Object.assign({}, pr, body);
+            return body;
+          }
+          return pr;
+        });
+      }
+    });
+  }
+
+  const result = {
+    code: 0,
+    data: body,
+  };
+
+  return response(res, result);
+}
 
 export default {
   'GET /api/crawler/rules': getRuleConf,
   'POST /api/crawler/rules': addRuleConf,
   'PUT /api/crawler/rules': editRuleConf,
   'DELETE /api/crawler/rules/': deleteRuleConf,
-  'GET /api/crawler/rules/url/*/*': checkUrlRegex,
+  'GET /api/crawler/rules/url/:url/:regex': checkUrlRegex,
 
-  'POST /api/crawler/rules/[0-9]+/pageRegions': addPageRegion,
-  'PUT /api/crawler/rules/[0-9]+/pageRegions': editPageRegions,
+  'POST /api/crawler/rules/([0-9]+)/pageRegions': addPageRegion,
+  'PUT /api/crawler/rules/([0-9]+)/pageRegions': editPageRegions,
 };

@@ -167,7 +167,7 @@ class StandardTable<T extends TableListItem> extends Component<
           rowKey={rowKey || 'id'}
           rowSelection={onSelectRow && rowSelection}
           dataSource={list}
-          pagination={paginationProps}
+          pagination={pagination ? paginationProps : false}
           onChange={this.handleTableChange}
           {...rest}
         />

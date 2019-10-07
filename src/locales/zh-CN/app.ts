@@ -9,6 +9,8 @@ export default {
   'app.common.label.open-in-new-window': '点击新窗口打开链接',
   'app.common.label.yes': '是',
   'app.common.label.no': '否',
+  'app.common.validation.not-empty': '必填项不能为空',
+
   'app.crawler.site.filter.name': '站点名称',
   'app.crawler.site.add-new-site': '新增站点',
   'app.crawler.site.edit-the-site': '编辑站点',
@@ -27,6 +29,7 @@ export default {
   'app.crawler.site.placeholder.rate-limit': '请求次数/秒。为空或者0表示无限制',
 
   'app.crawler.rule-conf.add-new-rule-conf': '新增采集规则',
+  'app.crawler.rule-conf.add-new-page-region': '新增采集区域',
   'app.crawler.rule-conf.label.name': '页面名称',
   'app.crawler.rule-conf.label.url-regex': 'URL正则',
   'app.crawler.rule-conf.label.example-url': 'URL示例',
@@ -35,6 +38,11 @@ export default {
   'app.crawler.rule-conf.label.method': '请求方式',
   'app.crawler.rule-conf.label.example-params': '请求参数示例',
   'app.crawler.rule-conf.label.validation-selector': '页面验证表达式',
+  'app.crawler.rule-conf.label.region.name': '区域名称',
+  'app.crawler.rule-conf.label.region.selector': '区域选择器',
+
+  'app.crawler.rule-conf.operation.label.add-region': '区域',
+
   'app.crawler.rule-conf.validation.name.not-empty': '页面名称不能为空',
   'app.crawler.rule-conf.validation.url-regex.not-empty': '请输入匹配的URL正则表达式',
   'app.crawler.rule-conf.validation.url.not-match': '请输入正确的链接地址',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'antd';
+import { get } from 'lodash';
 
 /**
  * 默认表单布局
@@ -55,16 +56,12 @@ export const renderFormItems = (
     const display =
       ((hidden === true || (item.toggleField && toggleFieldVisibility === false)) && 'none') ||
       'block';
-    let defaultVal = defaultValue;
-    if (formValues[item.name] !== undefined) {
-      defaultVal = formValues[item.name];
-    }
     return renderFormItem(
       {
         formItemLayout: layout === 'vertical' ? null : defaultFormLayout,
         ...restProps,
         style: { ...style, display },
-        defaultValue: defaultVal,
+        defaultValue: get(formValues, item.name, defaultValue),
       },
       getFieldDecorator,
     );

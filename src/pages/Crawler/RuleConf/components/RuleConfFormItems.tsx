@@ -6,14 +6,16 @@ import { checkUrlRegex } from '../service';
 
 async function urlRegexValidator(rules: any, value: string) {
   // @ts-ignore
-  return checkUrlRegex(this.getFieldValue('urlRegex'), this.getFieldValue('urlExample')).then(
-    ({ data }) => {
-      if (data) {
-        return Promise.resolve(value);
-      }
-      return Promise.reject(new Error(formatMessage({ id: 'app.common.err.record.exist' })));
-    },
-  );
+  return checkUrlRegex(
+    this.getFieldValue('urlRegex'),
+    this.getFieldValue('urlExample'),
+    this.getFieldValue('id'),
+  ).then(({ data }) => {
+    if (data) {
+      return Promise.resolve(value);
+    }
+    return Promise.reject(new Error(formatMessage({ id: 'app.common.err.record.exist' })));
+  });
 }
 
 function getItems() {
@@ -78,6 +80,7 @@ function getItems() {
       name: 'enableJs',
       itemRender: <Switch />,
       formItemLayout: layout,
+      defaultValue: false,
       fieldDecoratorProps: { valuePropName: 'checked' },
       rules: [
         {

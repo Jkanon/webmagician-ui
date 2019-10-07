@@ -9,6 +9,8 @@ export default {
   'app.common.label.open-in-new-window': '新しいウィンドウで開く',
   'app.common.label.yes': 'はい',
   'app.common.label.no': 'いいえ',
+  'app.common.validation.not-empty': 'このフィールドは必須です',
+
   'app.crawler.site.filter.name': 'サイトの名前',
   'app.crawler.site.add-new-site': 'サイトを追加する',
   'app.crawler.site.edit-the-site': 'サイトを編集する',
@@ -27,7 +29,8 @@ export default {
   'app.crawler.site.placeholder.rate-limit': 'リクエスト数/秒。0または空値は無制限をします',
 
   'app.crawler.rule-conf.add-new-rule-conf': 'クロールルールを追加する',
-  'app.crawler.rule-conf.label.name': 'ページの名称',
+  'app.crawler.rule-conf.add-new-page-region': 'クロールリージョンを追加する',
+  'app.crawler.rule-conf.label.name': 'ページ名',
   'app.crawler.rule-conf.label.url-regex': 'URLの正規表現',
   'app.crawler.rule-conf.label.example-url': 'URLの例',
   'app.crawler.rule-conf.label.enable-js': 'JSでレンダリング',
@@ -35,7 +38,12 @@ export default {
   'app.crawler.rule-conf.label.method': 'リクエストメソッド',
   'app.crawler.rule-conf.label.example-params': 'リクエストパラメータの例',
   'app.crawler.rule-conf.label.validation-selector': 'ページの入力規則',
-  'app.crawler.rule-conf.validation.name.not-empty': 'ページの名称を入力ください',
+  'app.crawler.rule-conf.label.region.name': 'リージョン名',
+  'app.crawler.rule-conf.label.region.selector': 'リージョンのセレクタ',
+
+  'app.crawler.rule-conf.operation.label.add-region': 'リージョン',
+
+  'app.crawler.rule-conf.validation.name.not-empty': 'ページの名前を入力ください',
   'app.crawler.rule-conf.validation.url-regex.not-empty':
     'ページをクロールするための正規表現を入力します。',
   'app.crawler.rule-conf.validation.url.not-match': '有効なURLではない',

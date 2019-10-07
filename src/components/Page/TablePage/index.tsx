@@ -32,7 +32,7 @@ export interface TableListPagination {
 
 export interface TableListData<T extends TableListItem> {
   list: T[];
-  pagination: Partial<TableListPagination>;
+  pagination: Partial<TableListPagination> | boolean;
 }
 
 export interface TableListParams {
@@ -64,7 +64,7 @@ interface TablePageProps<T extends TableListItem> extends FormComponentProps {
 interface TablePageState<T extends TableListItem> {
   selectedRows: T[];
   searchFormValues: any;
-  pagination: Partial<TableListPagination>;
+  pagination: Partial<TableListPagination> | boolean;
   filters?: any;
   sorter?: SorterResult<T>;
   switchDropdownVisible: boolean;
@@ -80,16 +80,18 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
 
   constructor(props: TablePageProps<T>) {
     super(props);
+    const pagination = props.data.pagination
+      ? {
+          pageSize: 10,
+          current: 1,
+          ...props.data.pagination,
+        }
+      : false;
     this.state = {
       selectedRows: props.selectedRows || [],
       searchFormValues: props.searchFormValues || {},
-      pagination: {
-        pageSize: 10,
-        current: 1,
-        ...props.data.pagination,
-      },
+      pagination,
       switchDropdownVisible: false,
-      // eslint-disable-next-line max-len
       selectedDisplayColumnsKey: props.columns.map((x, index) =>
         (x.key || x.dataIndex || index).toString(),
       ),
@@ -227,6 +229,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
         {
           searchFormValues: values,
           pagination: {
+            // @ts-ignore
             ...pagination,
             current: 1,
           },
@@ -284,13 +287,11 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   handleSwitchMenuSelectReverse = () => {
     const { columns } = this.props;
     const { selectedDisplayColumnsKey } = this.state;
-    // eslint-disable-next-line max-len
     const filterColumns = columns.filter(
       (x, index) =>
         selectedDisplayColumnsKey.indexOf((x.key || x.dataIndex || index).toString()) < 0,
     );
     this.setState({
-      // eslint-disable-next-line max-len
       selectedDisplayColumnsKey: filterColumns.map((x, index) =>
         (x.key || x.dataIndex || index).toString(),
       ),
@@ -301,7 +302,9 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     const { action, dispatch } = this.props;
     const { searchFormValues, pagination, filters, sorter } = this.state;
     const params: Partial<TableListParams> = {
+      // @ts-ignore
       currentPage: pagination.current,
+      // @ts-ignore
       pageSize: pagination.pageSize,
       ...searchFormValues,
       ...filters,

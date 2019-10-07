@@ -3,6 +3,7 @@ import { stringify } from 'qs';
 
 import { TableListParams } from '@/components/Page/TablePage';
 import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
+import { PageRegionListItem } from '@/pages/Crawler/RuleConf/components/PageRegion';
 
 export async function query(params: TableListParams) {
   return request(`/api/crawler/rules?${stringify(params)}`);
@@ -32,8 +33,30 @@ export async function edit(params: PageInfoListItem) {
   });
 }
 
-export async function checkUrlRegex(urlRegex: string, url: string) {
-  return request(`/api/crawler/rules/url/${btoa(url)}/${btoa(urlRegex)}`, {
+export async function checkUrlRegex(urlRegex: string, url: string, id?: string) {
+  let u = `/api/crawler/rules/url/${btoa(url)}/${btoa(urlRegex)}`;
+  if (id) {
+    u += `?id=${id}`;
+  }
+  return request(u, {
     method: 'GET',
+  });
+}
+
+export async function addPageRegion(params: PageRegionListItem) {
+  return request(`/api/crawler/rules/${params.pageInfo && params.pageInfo.id}/pageRegions`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function editdPageRegion(params: PageRegionListItem) {
+  return request(`/api/crawler/rules/${params.pageInfo && params.pageInfo.id}/pageRegions`, {
+    method: 'PUT',
+    data: {
+      ...params,
+    },
   });
 }
