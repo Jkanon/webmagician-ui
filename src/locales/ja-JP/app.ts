@@ -28,7 +28,7 @@ export default {
   'app.crawler.site.label.no-limit': '無制限',
   'app.crawler.site.placeholder.rate-limit': 'リクエスト数/秒。0または空値は無制限をします',
 
-  'app.crawler.rule-conf.add-new-rule-conf': 'クロールルールを追加する',
+  'app.crawler.rule-conf.add-new-rule-conf': 'クロールページを追加する',
   'app.crawler.rule-conf.add-new-page-region': 'クロールリージョンを追加する',
   'app.crawler.rule-conf.label.name': 'ページ名',
   'app.crawler.rule-conf.label.url-regex': 'URLの正規表現',

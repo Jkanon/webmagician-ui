@@ -28,7 +28,7 @@ export default {
   'app.crawler.site.label.no-limit': '無限制',
   'app.crawler.site.placeholder.rate-limit': '請求次數/秒。為空或者0表示無限制',
 
-  'app.crawler.rule-conf.add-new-rule-conf': '新增採集規則',
+  'app.crawler.rule-conf.add-new-rule-conf': '新增採集頁面',
   'app.crawler.rule-conf.add-new-page-region': '新增採集區域',
   'app.crawler.rule-conf.label.name': '頁面名稱',
   'app.crawler.rule-conf.label.url-regex': 'URL正則',

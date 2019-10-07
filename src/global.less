@@ -114,14 +114,11 @@ ol {
       min-height: calc(100vh - 190px);
     }
   }
-}
 
-.ant-layout-sider-collapsed .ant-pro-sider-menu-logo img {
-  height: 32px !important;
-}
-
-.ant-pro-sider-menu-logo img {
-  height: 64px !important;
+  .ant-modal-wrap,
+  .ant-modal-mask {
+    position: absolute;
+  }
 }
 
 /* limit modal dialog's height */
@@ -135,6 +132,18 @@ ol {
   }
 }
 
+.wm-modal-wrap-fullscreen {
+  .ant-modal {
+    width: 100% !important;
+    height: 100vh !important;
+    max-height: none !important;
+    .ant-modal-body {
+      height: 100vh !important;
+      max-height: none !important;
+    }
+  }
+}
+
 .ant-pro-tabsLayout-content {
   .ant-modal-wrap[role='dialog'] {
     .ant-modal {
@@ -144,11 +153,35 @@ ol {
         overflow-y: scroll;
       }
     }
+    &.wm-modal-wrap-fullscreen {
+      .ant-modal {
+        height: calc(100vh - 118px) !important;
+        .ant-modal-body {
+          height: calc(100vh - 228px) !important;
+        }
+      }
+    }
   }
 }
 
-.ant-modal-absolute {
-  position: absolute !important;
+.wm-modal-wrap {
+  .ant-modal-close {
+    top: 14px;
+    right: 14px;
+    .ant-modal-close-x {
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+}
+
+.ant-layout-sider-collapsed .ant-pro-sider-menu-logo img {
+  height: 32px !important;
+}
+
+.ant-pro-sider-menu-logo img {
+  height: 64px !important;
 }
 
 /* tab */

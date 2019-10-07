@@ -17,6 +17,7 @@ Encapsulated components
 - General Table Page
 - Pure front-end mock
 - Tab Layout Support
+- Fullscreen Modal
 
 ## Usage
 

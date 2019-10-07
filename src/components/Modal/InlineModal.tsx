@@ -1,6 +1,6 @@
 import React, { Component, Fragment, ReactElement } from 'react';
 import { ModalProps } from 'antd/es/modal';
-import { Modal } from 'antd';
+import { Modal, Icon } from 'antd';
 
 import defaultSettings from '../../../config/defaultSettings';
 
@@ -12,6 +12,8 @@ interface InlineModalProps extends ModalProps {
 
 interface InlineModalState {
   visible: boolean;
+  wrapClassName: string;
+  shrinkIcon: string;
 }
 
 class InlineModal extends Component<InlineModalProps, InlineModalState> {
@@ -19,6 +21,8 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
     super(props);
     this.state = {
       visible: !!props.visible,
+      wrapClassName: 'wm-modal-wrap',
+      shrinkIcon: 'arrows-alt',
     };
   }
 
@@ -87,23 +91,58 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
     }
   };
 
+  toggle = () => {
+    const { wrapClassName } = this.state;
+    if (wrapClassName.indexOf(' wm-modal-wrap-fullscreen') !== -1) {
+      this.setState({
+        wrapClassName: 'wm-modal-wrap',
+        shrinkIcon: 'arrows-alt',
+      });
+    } else {
+      this.setState({
+        wrapClassName: wrapClassName.concat(' wm-modal-wrap-fullscreen'),
+        shrinkIcon: 'shrink',
+      });
+    }
+  };
+
+  titleRender = () => {
+    const { title } = this.props;
+    const { shrinkIcon } = this.state;
+
+    return (
+      <>
+        {title}
+        <button
+          type="button"
+          className="ant-modal-close"
+          style={{ right: 42 }}
+          onClick={this.toggle}
+        >
+          <span className="ant-modal-close-x">
+            <Icon className="ant-modal-close-icon" type={shrinkIcon} />
+          </span>
+        </button>
+      </>
+    );
+  };
+
   render() {
     const { children, title, element, onCancel, onOk, ...modalOptions } = this.props;
-    const { visible } = this.state;
+    const { visible, wrapClassName } = this.state;
     const { tabsView, fixedHeader } = defaultSettings;
 
     const opt: Partial<ModalProps> = {};
     if (tabsView && fixedHeader) {
       // @ts-ignore
       opt.getContainer = document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active');
-      opt.maskStyle = { position: 'absolute' };
-      opt.wrapClassName = 'ant-modal-absolute';
     }
     return (
       <Fragment>
         {element && React.cloneElement(element, { onClick: this.showModalHandler })}
         <Modal
-          title={title}
+          wrapClassName={wrapClassName}
+          title={this.titleRender()}
           visible={visible}
           centered
           onOk={this.okHandler}
