@@ -1,5 +1,5 @@
 import { parse } from 'url';
-import { isEmpty, remove, ListIteratee } from 'lodash';
+import { isEmpty, remove, uniqueId, ListIteratee } from 'lodash';
 import { Request, Response } from 'express';
 
 /**
@@ -51,7 +51,7 @@ export function getTableList(req: Request, res: Response, tableListDataSource: a
 export function addTableList(req: Request, res: Response, tableListDataSource: any[]) {
   const { body } = req;
   if (!isEmpty(body)) {
-    body.id = tableListDataSource.length + 1;
+    body.id = uniqueId().toString();
     tableListDataSource.unshift(body);
   }
 
@@ -99,7 +99,7 @@ export function deleteTableList(
   });
 }
 
-function response(res: Response, result: { code: number; data?: any }) {
+export function response(res: Response, result: { code: number; data?: any }) {
   if (res && res.json) {
     return res.json(result);
   }

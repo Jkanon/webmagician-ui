@@ -1,5 +1,6 @@
 import Mock from 'mockjs';
 
+import pathToRegexp from 'path-to-regexp';
 import { resolve } from 'path';
 import fs from 'fs';
 
@@ -60,6 +61,22 @@ modulesFiles.forEach(x => {
   }, {});
 });
 
+function decodeParam(val) {
+  if (typeof val !== 'string' || val.length === 0) {
+    return val;
+  }
+  try {
+    return decodeURIComponent(val);
+  } catch (err) {
+    if (err instanceof URIError) {
+      err.message = `Failed to decode param ' ${val} '`;
+      err.status = 400;
+      err.statusCode = 400;
+    }
+    throw err;
+  }
+}
+
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
 // which will cause many of your third-party libraries to be invalidated(like progress event).
@@ -78,21 +95,36 @@ export function mockXHR() {
     this.proxy_send(...arguments);
   };
 
-  function XHR2ExpressReqWrap(respond) {
+  function XHR2ExpressReqWrap(respond, re, keys) {
     return options => {
       let result = null;
       if (respond instanceof Function) {
         const { body = '{}', method, url } = options;
+        const params = {};
+        if (keys && keys.length > 0) {
+          const match = re.exec(url);
+          if (match) {
+            for (let i = 1; i < match.length; i += 1) {
+              const key = keys[i - 1];
+              const prop = key.name;
+              const val = decodeParam(match[i]);
+              if (val !== undefined || !hasOwnProperty.call(params, prop)) {
+                params[prop] = val;
+              }
+            }
+          }
+        }
         // https://expressjs.com/en/4x/api.html#req
         result = respond(
           {
-            url: options.url,
+            url,
             method,
             body: JSON.parse(body),
             query: param2Obj(url),
+            params,
           },
           undefined,
-          options.url,
+          url,
           {
             body: JSON.parse(body),
           },
@@ -113,6 +145,9 @@ export function mockXHR() {
       method = res[1];
       url = url.substring(method.length + 1);
     }
-    Mock.mock(new RegExp(url), method, XHR2ExpressReqWrap(mocks[i]));
+
+    const keys = [];
+    const re = pathToRegexp(url, keys);
+    Mock.mock(re, method, XHR2ExpressReqWrap(mocks[i], re, keys));
   });
 }
