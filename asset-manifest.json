@@ -1,6 +1,6 @@
 {
   "/vendors.css": "/webmagician-ui/vendors.fb652aac.chunk.css",
-  "/vendors.js": "/webmagician-ui/vendors.31f2027a.async.js",
+  "/vendors.js": "/webmagician-ui/vendors.8f7f7446.async.js",
   "/layouts__BasicLayout.css": "/webmagician-ui/layouts__BasicLayout.9b100851.chunk.css",
   "/layouts__BasicLayout.js": "/webmagician-ui/layouts__BasicLayout.61ad8c32.async.js",
   "/p__404.css": "/webmagician-ui/p__404.ec5dfea0.chunk.css",
@@ -11,8 +11,8 @@
   "/p__Crawler__Site.css": "/webmagician-ui/p__Crawler__Site.3a35a9c0.chunk.css",
   "/p__Crawler__Site.js": "/webmagician-ui/p__Crawler__Site.e08e9f63.async.js",
   "/p__Crawler__Site__model.ts.js": "/webmagician-ui/p__Crawler__Site__model.ts.0027b589.async.js",
-  "/umi.css": "/webmagician-ui/umi.9fd41eff.css",
-  "/umi.js": "/webmagician-ui/umi.2656a997.js",
+  "/umi.css": "/webmagician-ui/umi.7ea701fe.css",
+  "/umi.js": "/webmagician-ui/umi.5e25bb31.js",
   "/favicon.png": "/webmagician-ui/favicon.png",
   "/icons/icon-128x128.png": "/webmagician-ui/icons/icon-128x128.png",
   "/icons/icon-192x192.png": "/webmagician-ui/icons/icon-192x192.png",
