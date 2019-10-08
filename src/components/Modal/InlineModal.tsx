@@ -1,8 +1,8 @@
-import React, { Component, Fragment, ReactElement } from 'react';
+import React, { Component, ReactElement } from 'react';
 import { ModalProps } from 'antd/es/modal';
 import { Modal, Icon } from 'antd';
 
-import defaultSettings from '../../../config/defaultSettings';
+import RouteContext from '@ant-design/pro-layout/es/RouteContext';
 
 export interface InlineModalProps extends ModalProps {
   element?: ReactElement;
@@ -129,27 +129,34 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
   render() {
     const { children, title, element, onCancel, onOk, maxmin, fullScreen: f, ...rest } = this.props;
     const { visible, fullScreen } = this.state;
-    const { tabsView, fixedHeader } = defaultSettings;
     return (
-      <Fragment>
-        {element && React.cloneElement(element, { onClick: this.showModalHandler })}
-        <Modal
-          wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}`}
-          title={this.titleRender()}
-          visible={visible}
-          centered
-          onOk={this.okHandler}
-          onCancel={this.cancelHandler}
-          getContainer={
-            tabsView &&
-            fixedHeader &&
-            (document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active') as HTMLElement)
-          }
-          {...rest}
-        >
-          {children}
-        </Modal>
-      </Fragment>
+      <RouteContext.Consumer>
+        {({
+          // @ts-ignore
+          tabsView,
+          fixedHeader,
+        }) => (
+          <>
+            {element && React.cloneElement(element, { onClick: this.showModalHandler })}
+            <Modal
+              wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}`}
+              title={this.titleRender()}
+              visible={visible}
+              centered
+              onOk={this.okHandler}
+              onCancel={this.cancelHandler}
+              getContainer={
+                tabsView &&
+                fixedHeader &&
+                (document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active') as HTMLElement)
+              }
+              {...rest}
+            >
+              {children}
+            </Modal>
+          </>
+        )}
+      </RouteContext.Consumer>
     );
   }
 }

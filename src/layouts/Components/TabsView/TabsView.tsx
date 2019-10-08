@@ -6,8 +6,6 @@ import { Dropdown, Menu } from 'antd/es';
 import { MenuProps } from 'antd/es/menu';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
-import defaultSettings from '../../../../config/defaultSettings';
-
 function addTab(newTab: TabView, activedTabs: TabView[]) {
   // filter 过滤路由 为 '/' 的 children
   // map 添加第一个 tab 不可删除
@@ -224,7 +222,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
           background: '#fff',
           borderBottom: '1px solid #ccc',
           zIndex: 1,
-          position: (defaultSettings.fixedHeader && 'fixed') || undefined,
+          position: (this.props.fixedHeader && 'fixed') || undefined,
           right: 0,
           top: 64,
           width,

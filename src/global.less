@@ -119,6 +119,17 @@ ol {
   .ant-modal-mask {
     position: absolute;
   }
+
+  .ant-modal-wrap[role='dialog'] {
+    &.wm-modal-wrap-fullscreen {
+      .ant-modal {
+        height: calc(100vh - 118px) !important;
+        .ant-modal-body {
+          height: calc(100vh - 226px) !important;
+        }
+      }
+    }
+  }
 }
 
 /* limit modal dialog's height */
@@ -145,7 +156,7 @@ ol {
     }
 
     .ant-modal-body {
-      height: 100vh !important;
+      height: calc(100vh - 108px) !important;
       max-height: none !important;
     }
   }
@@ -158,14 +169,6 @@ ol {
       .ant-modal-body {
         max-height: calc(100vh - 256px);
         overflow-y: scroll;
-      }
-    }
-    &.wm-modal-wrap-fullscreen {
-      .ant-modal {
-        height: calc(100vh - 118px) !important;
-        .ant-modal-body {
-          height: calc(100vh - 226px) !important;
-        }
       }
     }
   }

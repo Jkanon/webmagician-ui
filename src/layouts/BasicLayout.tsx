@@ -3,19 +3,18 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
-
+import React, { useEffect, useState } from 'react';
 import { MenuDataItem, BasicLayoutProps as ProLayoutProps, Settings } from '@ant-design/pro-layout';
 import GlobalFooter from '@ant-design/pro-layout/lib/GlobalFooter';
+import RouteContext from '@ant-design/pro-layout/es/RouteContext';
 import { Icon } from 'antd';
-import React, { useEffect, Fragment } from 'react';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
-import RouteContext from '@ant-design/pro-layout/es/RouteContext';
-import ProLayout from './Components/ProLayout';
-import defaultSettings from '../../config/defaultSettings';
 
+import ProLayout from './Components/ProLayout';
+import SettingDrawer from './Components/ProLayout/SettingDrawer';
 import TabsView from './Components/TabsView';
 
 import Authorized from '@/utils/Authorized';
@@ -53,40 +52,11 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
 
-const footerRender: BasicLayoutProps['footerRender'] = () => (
-  <GlobalFooter
-    links={[
-      {
-        key: 'github',
-        title: <Icon type="github" />,
-        href: 'https://github.com/Jkanon/webmagician-ui',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
-        blankTarget: true,
-      },
-    ]}
-    copyright={
-      <Fragment>
-        Copyright <Icon type="copyright" /> 2018 - {new Date().getFullYear()}{' '}
-        {defaultSettings.title}
-      </Fragment>
-    }
-  />
-);
-
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings, collapsed } = props;
-  const { tabsView, fixedHeader } = settings;
+  const { dispatch, children, settings: defaultSettings, collapsed } = props;
+  const [settings, setSettings] = useState<Partial<MySettings>>(defaultSettings);
+  const { tabsView, fixedHeader, title } = settings;
+
   /**
    * constructor
    */
@@ -101,6 +71,36 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
     }
   }, []);
+
+  const footerRender: BasicLayoutProps['footerRender'] = () => (
+    <GlobalFooter
+      links={[
+        {
+          key: 'github',
+          title: <Icon type="github" />,
+          href: 'https://github.com/Jkanon/webmagician-ui',
+          blankTarget: true,
+        },
+        {
+          key: 'Ant Design',
+          title: 'Ant Design',
+          href: 'https://ant.design',
+          blankTarget: true,
+        },
+        {
+          key: 'Ant Design Pro',
+          title: 'Ant Design Pro',
+          href: 'https://pro.ant.design',
+          blankTarget: true,
+        },
+      ]}
+      copyright={
+        <>
+          Copyright <Icon type="copyright" /> 2018 - {new Date().getFullYear()} {title}
+        </>
+      }
+    />
+  );
 
   /**
    * init variables
@@ -156,6 +156,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           <div className="ant-pro-page-content-wrap-children-content">{children}</div>
         )}
       </div>
+      <SettingDrawer settings={settings} onSettingChange={setSettings} />
     </ProLayout>
   );
 };

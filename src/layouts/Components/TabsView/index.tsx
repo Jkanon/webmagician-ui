@@ -37,6 +37,7 @@ export interface TabsViewProps {
   menuData: MenuDataItem[];
   location: RouteData;
   title: string;
+  fixedHeader?: boolean;
 }
 
 function routeTo(targetTab?: TabView) {
