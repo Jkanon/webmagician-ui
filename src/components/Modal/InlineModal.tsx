@@ -4,25 +4,30 @@ import { Modal, Icon } from 'antd';
 
 import defaultSettings from '../../../config/defaultSettings';
 
-interface InlineModalProps extends ModalProps {
-  element: ReactElement;
+export interface InlineModalProps extends ModalProps {
+  element?: ReactElement;
+  maxmin: boolean;
+  fullScreen: boolean;
   beforeOpen?: Function;
   beforeClose?: Function;
 }
 
 interface InlineModalState {
   visible: boolean;
-  wrapClassName: string;
-  shrinkIcon: string;
+  fullScreen: boolean;
 }
 
 class InlineModal extends Component<InlineModalProps, InlineModalState> {
+  static defaultProps = {
+    maxmin: true,
+    fullScreen: false,
+  };
+
   constructor(props: InlineModalProps) {
     super(props);
     this.state = {
       visible: !!props.visible,
-      wrapClassName: 'wm-modal-wrap',
-      shrinkIcon: 'arrows-alt',
+      fullScreen: props.fullScreen,
     };
   }
 
@@ -91,64 +96,56 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
     }
   };
 
-  toggle = () => {
-    const { wrapClassName } = this.state;
-    if (wrapClassName.indexOf(' wm-modal-wrap-fullscreen') !== -1) {
-      this.setState({
-        wrapClassName: 'wm-modal-wrap',
-        shrinkIcon: 'arrows-alt',
-      });
-    } else {
-      this.setState({
-        wrapClassName: wrapClassName.concat(' wm-modal-wrap-fullscreen'),
-        shrinkIcon: 'shrink',
-      });
-    }
+  toggleFullScreen = () => {
+    const { fullScreen } = this.state;
+    this.setState({
+      fullScreen: !fullScreen,
+    });
   };
 
   titleRender = () => {
-    const { title } = this.props;
-    const { shrinkIcon } = this.state;
+    const { title, maxmin } = this.props;
+    const { fullScreen } = this.state;
 
     return (
       <>
         {title}
-        <button
-          type="button"
-          className="ant-modal-close"
-          style={{ right: 42 }}
-          onClick={this.toggle}
-        >
-          <span className="ant-modal-close-x">
-            <Icon className="ant-modal-close-icon" type={shrinkIcon} />
-          </span>
-        </button>
+        {maxmin && (
+          <button
+            type="button"
+            className="ant-modal-close"
+            style={{ right: 42 }}
+            onClick={this.toggleFullScreen}
+          >
+            <span className="ant-modal-close-x">
+              <Icon className="ant-modal-close-icon" type={fullScreen ? 'shrink' : 'arrows-alt'} />
+            </span>
+          </button>
+        )}
       </>
     );
   };
 
   render() {
-    const { children, title, element, onCancel, onOk, ...modalOptions } = this.props;
-    const { visible, wrapClassName } = this.state;
+    const { children, title, element, onCancel, onOk, maxmin, fullScreen: f, ...rest } = this.props;
+    const { visible, fullScreen } = this.state;
     const { tabsView, fixedHeader } = defaultSettings;
-
-    const opt: Partial<ModalProps> = {};
-    if (tabsView && fixedHeader) {
-      // @ts-ignore
-      opt.getContainer = document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active');
-    }
     return (
       <Fragment>
         {element && React.cloneElement(element, { onClick: this.showModalHandler })}
         <Modal
-          wrapClassName={wrapClassName}
+          wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}`}
           title={this.titleRender()}
           visible={visible}
           centered
           onOk={this.okHandler}
           onCancel={this.cancelHandler}
-          {...opt}
-          {...modalOptions}
+          getContainer={
+            tabsView &&
+            fixedHeader &&
+            (document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active') as HTMLElement)
+          }
+          {...rest}
         >
           {children}
         </Modal>

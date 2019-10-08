@@ -107,7 +107,6 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       render: (text, record) => (
         <>
           <ModalForm
-            visible={false}
             title={formatMessage({ id: 'component.common.text.edit' })}
             onSubmit={this.handleEdit}
             element={
@@ -118,11 +117,9 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
             }
             formItems={RuleConfFormItems}
             formValues={record}
-            height={500}
           />
           <Divider type="vertical" />
           <ModalForm
-            visible={false}
             title={formatMessage({ id: 'app.crawler.rule-conf.add-new-page-region' })}
             onSubmit={this.handleAddPageRegion}
             element={
@@ -227,7 +224,6 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
 
   operatorRender = () => (
     <ModalForm
-      visible={false}
       title={<FormattedMessage id="app.crawler.rule-conf.add-new-rule-conf" />}
       onSubmit={this.handleAdd}
       formItems={RuleConfFormItems}

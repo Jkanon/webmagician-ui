@@ -1,8 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import BaseForm from '../BaseForm';
-import InlineModal from '../../Modal/InlineModal';
+import InlineModal, { InlineModalProps } from '../../Modal/InlineModal';
 
-class ModalForm extends Component {
+interface ModalFormProps {
+  modalOptions?: InlineModalProps;
+  element?: ReactElement;
+  title?: React.ReactNode | string;
+  width: number;
+  formValues?: any;
+  formItems: any;
+  layout?: string;
+  filter: Function;
+  onSubmit: Function;
+  onOk?: (e: React.MouseEvent<HTMLElement>) => void;
+  onCancel?: (e: React.MouseEvent<HTMLElement>) => void;
+  onValuesChange?: (props: any, changedValues: any, allValues: any) => void;
+}
+
+interface ModalFormState {
+  confirmLoading: boolean;
+}
+
+class ModalForm extends Component<ModalFormProps, ModalFormState> {
   static defaultProps = {
     /**
      * Modal width
@@ -12,14 +31,16 @@ class ModalForm extends Component {
      * Values of the form items
      */
     formValues: {},
-    filter: val => val,
+    filter: (val: any) => val,
     /**
      * Handler for form submit
      */
     onSubmit: () => {},
   };
 
-  constructor(props) {
+  formRef: BaseForm | null = null;
+
+  constructor(props: ModalFormProps) {
     super(props);
     this.state = {
       /**
@@ -41,9 +62,10 @@ class ModalForm extends Component {
     });
   };
 
-  okHandler = e => {
+  okHandler = (e: React.MouseEvent<HTMLElement>) => {
     if (e) e.preventDefault(); // 阻止默认行为
-    const { form: { submit } = {} } = this;
+    // @ts-ignore
+    const { formRef: { submit } = {} } = this;
     this.showLoading();
     if (submit) {
       // 通过子组件暴露的方法，显示提交表单
@@ -68,8 +90,8 @@ class ModalForm extends Component {
         layout={layout}
         onValuesChange={onValuesChange}
         onSubmit={onSubmit}
-        wrappedComponentRef={v => {
-          this.form = v;
+        wrappedComponentRef={(v: BaseForm) => {
+          this.formRef = v;
         }}
       >
         {children}
@@ -78,7 +100,7 @@ class ModalForm extends Component {
   };
 
   render() {
-    const { title, element, width, modalOptions } = this.props;
+    const { title, element, width, onOk, onCancel, modalOptions } = this.props;
     const { confirmLoading } = this.state;
 
     return (
@@ -87,8 +109,8 @@ class ModalForm extends Component {
         width={width}
         destroyOnClose
         confirmLoading={confirmLoading}
-        onOk={this.okHandler}
-        onCancel={this.cancelHandler}
+        onOk={onOk || this.okHandler}
+        onCancel={onCancel || this.cancelHandler}
         element={element}
         centered
         {...modalOptions}

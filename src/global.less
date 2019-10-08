@@ -137,6 +137,13 @@ ol {
     width: 100% !important;
     height: 100vh !important;
     max-height: none !important;
+
+    .ant-modal-content,
+    .ant-modal-header,
+    .ant-modal-footer {
+      border-radius: 0;
+    }
+
     .ant-modal-body {
       height: 100vh !important;
       max-height: none !important;
@@ -149,7 +156,7 @@ ol {
     .ant-modal {
       max-height: calc(100vh - 148px);
       .ant-modal-body {
-        max-height: calc(100vh - 258px);
+        max-height: calc(100vh - 256px);
         overflow-y: scroll;
       }
     }
@@ -157,7 +164,7 @@ ol {
       .ant-modal {
         height: calc(100vh - 118px) !important;
         .ant-modal-body {
-          height: calc(100vh - 228px) !important;
+          height: calc(100vh - 226px) !important;
         }
       }
     }
