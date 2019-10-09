@@ -4,8 +4,7 @@ import { Drawer, Icon, List, Select, Switch, Tooltip } from 'antd';
 import React, { Component } from 'react';
 import defaultSettings, { Settings } from '@ant-design/pro-layout/es/defaultSettings';
 
-import getLocales, { getLanguage } from '@ant-design/pro-layout/es/locales';
-import { isBrowser } from '@ant-design/pro-layout/es/utils/utils';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const { Option } = Select;
 
@@ -33,13 +32,11 @@ export interface SettingDrawerProps {
 
 export interface SettingDrawerState extends MergerSettingsType<Settings> {
   collapse?: boolean;
-  language?: string;
 }
 
 class SettingDrawer extends Component<SettingDrawerProps, SettingDrawerState> {
   state: SettingDrawerState = {
     collapse: false,
-    language: getLanguage(),
   };
 
   static getDerivedStateFromProps(props: SettingDrawerProps): SettingDrawerState | null {
@@ -51,33 +48,8 @@ class SettingDrawer extends Component<SettingDrawerProps, SettingDrawerState> {
     return null;
   }
 
-  componentDidMount(): void {
-    if (isBrowser()) {
-      window.addEventListener('languagechange', this.onLanguageChange, {
-        passive: true,
-      });
-    }
-  }
-
-  componentWillUnmount(): void {
-    if (isBrowser()) {
-      window.removeEventListener('languagechange', this.onLanguageChange);
-    }
-  }
-
-  onLanguageChange = (): void => {
-    const language = getLanguage();
-
-    if (language !== this.state.language) {
-      this.setState({
-        language,
-      });
-    }
-  };
-
   getLayoutSetting = (): SettingItemProps[] => {
     const { settings } = this.props;
-    const formatMessage = this.getFormatMessage();
     const { contentWidth, tabsView, fixedHeader, layout, fixSiderbar } =
       settings || defaultSettings;
     return [
@@ -111,7 +83,10 @@ class SettingDrawer extends Component<SettingDrawerProps, SettingDrawerState> {
         ),
       },
       {
-        title: '多页签导航',
+        title: formatMessage({
+          id: 'app.setting.tab-layout',
+          defaultMessage: 'Tab Layout',
+        }),
         action: (
           <Switch
             size="small"
@@ -192,26 +167,6 @@ class SettingDrawer extends Component<SettingDrawerProps, SettingDrawerState> {
         </List.Item>
       </Tooltip>
     );
-  };
-
-  getFormatMessage = (): ((data: { id: string; defaultMessage?: string }) => string) => {
-    const formatMessage = ({
-      id,
-      defaultMessage,
-    }: {
-      id: string;
-      defaultMessage?: string;
-    }): string => {
-      const locales = getLocales();
-      if (locales[id]) {
-        return locales[id];
-      }
-      if (defaultMessage) {
-        return defaultMessage as string;
-      }
-      return id;
-    };
-    return formatMessage;
   };
 
   render(): React.ReactNode {
