@@ -6,6 +6,8 @@
 
 [ウェブ・マジシャン(Webmagician)](https://github.com/Jkanon/webmagician)の UI、ant-design で作られている。豊富なコンポーネントを提供しています、管理画面のフロントエンドのインタフェースと思ってもいい。
 
+![](https://s2.ax1x.com/2019/10/10/u7RXAP.png)
+
 - [デモページ](https://jkanon.github.io/webmagician-ui)
 
 二次実装するコンポーネント:

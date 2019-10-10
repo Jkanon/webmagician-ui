@@ -6,6 +6,8 @@ English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
 UI Application for [Webmagician](https://github.com/Jkanon/webmagician) based on ant-design. You can also take it as a front-end solution for admin interface.
 
+![](https://s2.ax1x.com/2019/10/10/u7Rq0I.png)
+
 - [Preview](https://jkanon.github.io/webmagician-ui)
 
 Encapsulated components
