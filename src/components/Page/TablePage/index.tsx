@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import { Button, Card, Checkbox, Col, Dropdown, Form, Menu, Modal, Row, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { WrappedFormUtils } from 'antd/es/form/Form';
-import { SorterResult, ExpandIconProps } from 'antd/es/table';
+import { SorterResult, ExpandIconProps, PaginationConfig } from 'antd/es/table';
 import { TableLocale } from 'antd/es/table/interface';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TransButton from 'antd/es/_util/transButton';
@@ -24,7 +24,7 @@ const getValue = (obj: { [x: string]: string[] }) =>
     .map(key => obj[key])
     .join(',');
 
-export interface TableListPagination {
+export interface TableListPagination extends PaginationConfig {
   total: number;
   pageSize: number;
   current: number;
@@ -32,7 +32,7 @@ export interface TableListPagination {
 
 export interface TableListData<T extends TableListItem> {
   list: T[];
-  pagination: Partial<TableListPagination> | boolean;
+  pagination?: Partial<TableListPagination> | false;
 }
 
 export interface TableListParams {
@@ -64,7 +64,7 @@ interface TablePageProps<T extends TableListItem> extends FormComponentProps {
 interface TablePageState<T extends TableListItem> {
   selectedRows: T[];
   searchFormValues: any;
-  pagination: Partial<TableListPagination> | boolean;
+  pagination?: Partial<TableListPagination> | false;
   filters?: any;
   sorter?: SorterResult<T>;
   switchDropdownVisible: boolean;
@@ -80,13 +80,14 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
 
   constructor(props: TablePageProps<T>) {
     super(props);
-    const pagination = props.data.pagination
-      ? {
-          pageSize: 10,
-          current: 1,
-          ...props.data.pagination,
-        }
-      : false;
+    const pagination =
+      typeof props.data.pagination === 'boolean' || typeof props.data.pagination === 'undefined'
+        ? props.data.pagination
+        : {
+            pageSize: 10,
+            current: 1,
+            ...props.data.pagination,
+          };
     this.state = {
       selectedRows: props.selectedRows || [],
       searchFormValues: props.searchFormValues || {},

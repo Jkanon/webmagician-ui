@@ -128,6 +128,11 @@ ol {
           height: calc(100vh - 226px) !important;
         }
       }
+      &.wm-modal-wrap-nofooter {
+        .ant-modal-body {
+          height: calc(100vh - 173px) !important;
+        }
+      }
     }
   }
 }
@@ -139,6 +144,11 @@ ol {
     .ant-modal-body {
       max-height: calc(100vh - 140px);
       overflow-y: scroll;
+    }
+  }
+  &.wm-modal-wrap-nofooter {
+    .ant-modal-body {
+      max-height: calc(100vh - 87px);
     }
   }
 }
@@ -159,6 +169,12 @@ ol {
       height: calc(100vh - 108px) !important;
       max-height: none !important;
     }
+
+    .wm-modal-wrap-nofooter {
+      .ant-modal-body {
+        height: calc(100vh - 55px) !important;
+      }
+    }
   }
 }
 
@@ -169,6 +185,11 @@ ol {
       .ant-modal-body {
         max-height: calc(100vh - 256px);
         overflow-y: scroll;
+      }
+    }
+    &.wm-modal-wrap-nofooter {
+      .ant-modal-body {
+        max-height: calc(100vh - 203px);
       }
     }
   }
@@ -199,26 +220,41 @@ ol {
   margin: 12px 12px 0 !important;
 }
 
-.ant-pro-page-content-wrap-tabs.ant-tabs .ant-tabs-bar .ant-tabs-tab {
+.ant-pro-page-content-wrap-tabs.ant-tabs > div:first-child .ant-tabs-bar .ant-tabs-tab {
   border: none !important;
   border-bottom: 1px solid transparent !important;
 }
 
-.ant-pro-page-content-wrap-tabs.ant-tabs .ant-tabs-bar .ant-tabs-tab-active {
+.ant-pro-page-content-wrap-tabs.ant-tabs > div:first-child .ant-tabs-bar .ant-tabs-tab-active {
   border-color: #1890ff !important;
 }
-.ant-pro-page-content-wrap-tabs.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+.ant-pro-page-content-wrap-tabs.ant-tabs.ant-tabs-card
+  > div:first-child
+  .ant-tabs-card-bar
+  .ant-tabs-tab {
   background-color: #fff;
 }
 
-.ant-pro-page-content-wrap-tabs.ant-tabs .ant-tabs-card-bar .ant-tabs-tab .ant-tabs-close-x {
+.ant-pro-page-content-wrap-tabs.ant-tabs
+  .ant-tabs-card-bar
+  > div:first-child
+  .ant-tabs-tab
+  .ant-tabs-close-x {
   visibility: hidden;
 }
 
-.ant-pro-page-content-wrap-tabs.ant-tabs .ant-tabs-card-bar .ant-tabs-tab:hover .ant-tabs-close-x {
+.ant-pro-page-content-wrap-tabs.ant-tabs
+  .ant-tabs-card-bar
+  > div:first-child
+  .ant-tabs-tab:hover
+  .ant-tabs-close-x {
   visibility: visible;
 }
 
-.ant-pro-page-content-wrap-tabs.ant-tabs .ant-tabs-card-bar .ant-tabs-tab .ant-tabs-close-x:hover {
+.ant-pro-page-content-wrap-tabs.ant-tabs
+  .ant-tabs-card-bar
+  > div:first-child
+  .ant-tabs-tab
+  .ant-tabs-close-x:hover {
   color: rgba(0, 0, 0, 0.85);
 }

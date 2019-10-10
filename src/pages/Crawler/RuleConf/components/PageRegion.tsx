@@ -3,8 +3,9 @@ import { Dispatch } from 'redux';
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
-import { Icon, message } from 'antd';
+import { Divider, Icon, message, Tabs } from 'antd';
 import { ModalForm } from '@/components/Form';
+import InlineModal from '@/components/Modal/InlineModal';
 import pageRegionFormItems from './PageRegionFormItems';
 import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
 
@@ -41,8 +42,33 @@ class PageRegion extends PureComponent<PageRegionProps> {
       width: 200,
       render: (text, record) => (
         <>
+          <InlineModal
+            title={formatMessage({ id: 'component.common.text.detail' })}
+            element={
+              <a>
+                <Icon type="info-circle" />
+                <FormattedMessage id="component.common.text.detail" />
+              </a>
+            }
+            fullScreen
+            maxmin={false}
+            footer={false}
+          >
+            <Tabs tabPosition="left">
+              <Tabs.TabPane tab="Tab Title 1" key="1">
+                <p>Content of Tab Pane 1</p>
+                <p>Content of Tab Pane 1</p>
+                <p>Content of Tab Pane 1</p>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Tab Title 2" key="2">
+                <p>Content of Tab Pane 2</p>
+                <p>Content of Tab Pane 2</p>
+                <p>Content of Tab Pane 2</p>
+              </Tabs.TabPane>
+            </Tabs>
+          </InlineModal>
+          <Divider type="vertical" />
           <ModalForm
-            visible={false}
             title={formatMessage({ id: 'component.common.text.edit' })}
             element={
               <a>

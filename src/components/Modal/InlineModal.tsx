@@ -128,6 +128,7 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
 
   render() {
     const { children, title, element, onCancel, onOk, maxmin, fullScreen: f, ...rest } = this.props;
+    const { footer } = rest;
     const { visible, fullScreen } = this.state;
     return (
       <RouteContext.Consumer>
@@ -139,7 +140,9 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
           <>
             {element && React.cloneElement(element, { onClick: this.showModalHandler })}
             <Modal
-              wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}`}
+              wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}${
+                footer === false ? ' wm-modal-wrap-nofooter' : ''
+              }`}
               title={this.titleRender()}
               visible={visible}
               centered

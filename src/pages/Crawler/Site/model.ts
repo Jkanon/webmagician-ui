@@ -108,7 +108,7 @@ const SiteModel: SiteModelType = {
       const { ids } = action.payload;
       const { list, pagination } = state.data;
       const newList = list.filter(item => ids.indexOf(item.id) === -1);
-      if (!isEmpty(pagination) && isNumber(pagination.total)) {
+      if (typeof pagination === 'object' && !isEmpty(pagination) && isNumber(pagination.total)) {
         pagination.total -= list.length - newList.length;
       }
       return {
@@ -133,7 +133,7 @@ const SiteModel: SiteModelType = {
       const { list, pagination } = state.data;
       const newList = list;
       newList.unshift(action.payload);
-      if (!isEmpty(pagination) && isNumber(pagination.total)) {
+      if (typeof pagination === 'object' && !isEmpty(pagination) && isNumber(pagination.total)) {
         pagination.total += 1;
       }
       return {

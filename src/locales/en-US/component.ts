@@ -2,6 +2,7 @@ export default {
   'component.common.text.delete': 'Delete',
   'component.common.text.add': 'Add',
   'component.common.text.edit': 'Modify',
+  'component.common.text.detail': 'Detail',
   'component.common.text.delete-items': 'Are you sure you want to delete the {count} items?',
   'component.common.text.deleted-success': 'Deleted successfully',
   'component.common.text.add-success': 'Added successfully',

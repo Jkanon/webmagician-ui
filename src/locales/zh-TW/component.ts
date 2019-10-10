@@ -2,6 +2,7 @@ export default {
   'component.common.text.delete': '刪除',
   'component.common.text.add': '新建',
   'component.common.text.edit': '編輯',
+  'component.common.text.detail': '詳情',
   'component.common.text.delete-items': '確定要刪除這 {count} 項數據嗎？',
   'component.common.text.deleted-success': '刪除成功',
   'component.common.text.add-success': '添加成功',

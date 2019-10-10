@@ -2,6 +2,7 @@ export default {
   'component.common.text.delete': '削除',
   'component.common.text.add': '追加',
   'component.common.text.edit': '編集',
+  'component.common.text.detail': '詳細',
   'component.common.text.delete-items': '選択されている {count} の項目を削除してもよろしいですか？',
   'component.common.text.deleted-success': '削除に成功する',
   'component.common.text.add-success': '追加に成功する',

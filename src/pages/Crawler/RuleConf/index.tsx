@@ -143,7 +143,10 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     if (record.pageRegions && record.pageRegions.length > 0) {
       return (
         <PageRegion
-          data={{ list: record.pageRegions || [], pagination: record.pageRegions.length > 10 }}
+          data={{
+            list: record.pageRegions || [],
+            pagination: record.pageRegions.length > 10 ? undefined : false,
+          }}
           dispatch={dispatch}
         />
       );
