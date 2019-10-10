@@ -149,9 +149,10 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
               onOk={this.okHandler}
               onCancel={this.cancelHandler}
               getContainer={
-                tabsView &&
+                (tabsView &&
                 fixedHeader &&
-                (document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active') as HTMLElement)
+                (document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active') as HTMLElement))
+                || undefined
               }
               {...rest}
             >
