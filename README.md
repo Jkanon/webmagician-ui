@@ -8,7 +8,7 @@ UI Application for [Webmagician](https://github.com/Jkanon/webmagician) based on
 
 ![](https://s2.ax1x.com/2019/10/10/u7Rq0I.png)
 
-- [Preview](https://jkanon.github.io/webmagician-ui)
+- [Online Preview](https://jkanon.github.io/webmagician-ui)
 
 Encapsulated components
 

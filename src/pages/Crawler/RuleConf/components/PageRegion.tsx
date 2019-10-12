@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import { Dispatch } from 'redux';
-import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
-import { TableListData } from '@/components/Page/TablePage';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { Divider, Icon, message, Tabs } from 'antd';
+import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
+import { TableListData } from '@/components/Page/TablePage';
 import { ModalForm } from '@/components/Form';
 import InlineModal from '@/components/Modal/InlineModal';
 import pageRegionFormItems from './PageRegionFormItems';
+import RegionFields from './RegionFields';
 import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
 
 export interface PageRegionListItem extends TableListItem {
@@ -55,12 +56,10 @@ class PageRegion extends PureComponent<PageRegionProps> {
             footer={false}
           >
             <Tabs tabPosition="left">
-              <Tabs.TabPane tab="Tab Title 1" key="1">
-                <p>Content of Tab Pane 1</p>
-                <p>Content of Tab Pane 1</p>
-                <p>Content of Tab Pane 1</p>
+              <Tabs.TabPane tab="抽取字段" key="1">
+                <RegionFields />
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Tab Title 2" key="2">
+              <Tabs.TabPane tab="采集链接" key="2">
                 <p>Content of Tab Pane 2</p>
                 <p>Content of Tab Pane 2</p>
                 <p>Content of Tab Pane 2</p>

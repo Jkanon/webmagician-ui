@@ -105,9 +105,11 @@ ol {
   padding-top: 118px;
 
   .ant-pro-page-content-wrap {
-    .ant-tabs-content {
-      height: calc(100vh - 118px);
-      overflow-y: scroll;
+    .ant-pro-page-content-wrap-tabs {
+      > .ant-tabs-content {
+        height: calc(100vh - 118px);
+        overflow-y: scroll;
+      }
     }
 
     .ant-pro-page-content-wrap-children-content {

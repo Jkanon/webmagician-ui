@@ -46,7 +46,7 @@ interface TablePageProps<T extends TableListItem> extends FormComponentProps {
   dispatch: Dispatch<any>;
   loading: boolean;
   // action of searching page list
-  action: string;
+  action?: string;
   columns: StandardTableColumnProps<T>[];
   data: TableListData<T>;
   selectedRows?: T[];
@@ -73,19 +73,30 @@ interface TablePageState<T extends TableListItem> {
   tableMaxHeight?: number;
 }
 
+const defaultPagination = {
+  pageSize: 10,
+  current: 1,
+};
+
 class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, TablePageState<T>> {
   private tableRef: RefObject<StandardTable<T>> = React.createRef();
 
   private isMobile?: boolean;
 
+  static defaultProps = {
+    data: {
+      list: [],
+      pagination: defaultPagination,
+    },
+  };
+
   constructor(props: TablePageProps<T>) {
     super(props);
     const pagination =
-      typeof props.data.pagination === 'boolean' || typeof props.data.pagination === 'undefined'
+      typeof props.data.pagination === 'boolean'
         ? props.data.pagination
         : {
-            pageSize: 10,
-            current: 1,
+            ...defaultPagination,
             ...props.data.pagination,
           };
     this.state = {
@@ -314,13 +325,15 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
 
-    dispatch({
-      type: action,
-      payload: params,
-      // @ts-ignore
-    }).catch(err => {
-      console.error(err);
-    });
+    if (dispatch && action) {
+      dispatch({
+        type: action,
+        payload: params,
+        // @ts-ignore
+      }).catch(err => {
+        console.error(err);
+      });
+    }
   };
 
   expandIcon = ({
