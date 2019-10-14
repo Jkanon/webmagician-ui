@@ -370,9 +370,8 @@ class Site extends Component<SiteProps, SiteState> {
 
     return (
       <>
-        <TablePage
-          // @ts-ignore
-          wrappedComponentRef={(node: TablePage) => {
+        <TablePage<SiteListItem>
+          ref={(node: TablePage<SiteListItem>) => {
             this.pageRef = node;
           }}
           title={formatMessage({ id: 'menu.site' })}

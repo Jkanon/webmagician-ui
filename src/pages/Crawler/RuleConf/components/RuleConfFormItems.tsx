@@ -1,10 +1,11 @@
 import React from 'react';
 import { Input, Switch, Radio } from 'antd';
 import { FormattedMessage, formatMessage, getLocale } from 'umi-plugin-react/locale';
-
+import { WrappedFormUtils } from 'antd/es/form/Form';
 import { checkUrlRegex } from '../service';
 
-async function urlRegexValidator(rules: any, value: string) {
+
+async function urlRegexValidator(this: WrappedFormUtils<any>, rules: any, value: string) {
   // @ts-ignore
   return checkUrlRegex(
     this.getFieldValue('urlRegex'),

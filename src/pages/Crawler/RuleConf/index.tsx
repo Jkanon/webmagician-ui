@@ -247,9 +247,8 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     const { selectedRows } = this.state;
 
     return (
-      <TablePage
-        // @ts-ignore
-        wrappedComponentRef={(node: TablePage) => {
+      <TablePage<PageInfoListItem>
+        ref={(node: TablePage<PageInfoListItem>) => {
           this.pageRef = node;
         }}
         title={formatMessage({ id: 'menu.rule-conf' })}
