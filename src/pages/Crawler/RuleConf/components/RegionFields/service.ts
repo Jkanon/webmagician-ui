@@ -2,10 +2,10 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 import { TableListParams } from '@/components/Page/TablePage';
 
-import { RegionFieldsItem } from '@/pages/Crawler/RuleConf/components/RegionFields/model';
+import { RegionFieldsItem } from '@/pages/Crawler/RuleConf/models/components/regionFields';
 
 export async function query(params: TableListParams) {
-  return request(`/api/crawler/rules?${stringify(params)}`);
+  return request(`/api/crawler/fields?${stringify(params)}`);
 }
 
 export async function remove(params: RegionFieldsItem) {

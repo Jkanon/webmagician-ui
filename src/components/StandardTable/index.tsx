@@ -1,17 +1,34 @@
-import { Alert, Table } from 'antd';
-import { ColumnProps, TableRowSelection, TableProps } from 'antd/es/table';
 import React, { Component } from 'react';
+import { Alert, Form, Table } from 'antd';
+import { ColumnProps, TableRowSelection, TableProps } from 'antd/es/table';
 
 import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormComponentProps } from 'antd/es/form';
+import { WrappedFormUtils } from 'antd/es/form/Form';
+
+import EditableCell from './EditableCell';
 
 import styles from './index.less';
 
 export interface TableListItem {
   id?: number | string;
   disabled?: boolean;
+  editing?: boolean;
 }
 
-export interface StandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
+export interface StandardTableColumnProps<T> extends ColumnProps<T> {
+  editable?: boolean;
+  editingRender?: (
+                    text: any,
+                    record: any,
+                    index: number,
+                    form: WrappedFormUtils,
+                  )=> React.ReactNode;
+  needTotal?: boolean;
+  total?: number;
+}
+
+export interface StandardTableProps<T> extends Omit<TableProps<T>, 'columns'>, FormComponentProps {
   columns: StandardTableColumnProps<T>[];
   data?: {
     list: T[];
@@ -21,9 +38,9 @@ export interface StandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
   onSelectRow?: (rows: T[]) => void;
 }
 
-export interface StandardTableColumnProps<T> extends ColumnProps<T> {
-  needTotal?: boolean;
-  total?: number;
+interface StandardTableState<T> {
+  selectedRowKeys: string[];
+  needTotalList: StandardTableColumnProps<T>[];
 }
 
 function initTotalList<T>(columns: StandardTableColumnProps<T>[]) {
@@ -37,11 +54,6 @@ function initTotalList<T>(columns: StandardTableColumnProps<T>[]) {
     }
   });
   return totalList;
-}
-
-interface StandardTableState<T> {
-  selectedRowKeys: string[];
-  needTotalList: StandardTableColumnProps<T>[];
 }
 
 class StandardTable<T extends TableListItem> extends Component<
@@ -104,7 +116,7 @@ class StandardTable<T extends TableListItem> extends Component<
 
   render() {
     const { selectedRowKeys, needTotalList } = this.state;
-    const { data, rowKey, onSelectRow, ...rest } = this.props;
+    const { form, columns, data, rowKey, onSelectRow, ...rest } = this.props;
     const { list = [], pagination = false } = data || {};
 
     const paginationProps = {
@@ -132,6 +144,29 @@ class StandardTable<T extends TableListItem> extends Component<
         disabled: record.disabled,
       }),
     };
+
+    const components = {
+      body: {
+        cell: EditableCell,
+      },
+    };
+
+    const wrappedColumns = columns.map(col => {
+      if (col.editable === false) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: (record: T) => ({
+          record,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: record.editing,
+          editingRender: col.editingRender,
+          form,
+        }),
+      };
+    });
 
     return (
       <div className={styles.standardTable}>
@@ -168,6 +203,8 @@ class StandardTable<T extends TableListItem> extends Component<
           rowSelection={onSelectRow && rowSelection}
           dataSource={list}
           pagination={pagination ? paginationProps : false}
+          components={components}
+          columns={wrappedColumns}
           onChange={this.handleTableChange}
           {...rest}
         />
@@ -176,4 +213,4 @@ class StandardTable<T extends TableListItem> extends Component<
   }
 }
 
-export default StandardTable;
+export default Form.create<StandardTableProps<any>>()(StandardTable);

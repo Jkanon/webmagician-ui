@@ -142,7 +142,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
           )}
         </div>
         <div className={styles.tableListOperatorRight}>
-          <Tooltip title={<FormattedMessage id="app.common.label.operation.refresh" />}>
+          <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
             <Button shape="circle" icon="sync" onClick={onSearch} />
           </Tooltip>
           <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>

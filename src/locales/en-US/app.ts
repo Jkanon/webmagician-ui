@@ -2,8 +2,6 @@ export default {
   'app.common.err.record.exist': 'The record already exists',
   'app.common.label.operation': 'Operation',
   'app.common.label.memo': 'Remarks',
-  'app.common.label.operation.refresh': 'Refresh',
-  'app.common.label.operation.edit': 'Edit',
   'app.common.label.columns-display-settings': 'Column Toggle',
   'app.common.label.select-all': 'Check All',
   'app.common.label.select-reversely': 'Inverse',

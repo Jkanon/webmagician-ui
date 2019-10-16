@@ -6,8 +6,8 @@ import {
   editTableList,
   deleteTableList,
   response,
-} from '../../../../mock/utils';
-import { PageInfoListItem } from './model';
+} from '@/../mock/utils';
+import { PageInfoListItem } from './models/ruleConf';
 
 // mock tableListDataSource
 const tableListDataSource: PageInfoListItem[] = [

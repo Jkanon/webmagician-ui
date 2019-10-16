@@ -1,5 +1,5 @@
 import { Button, Col, Divider, Form, Icon, Input, message } from 'antd';
-import React, { Component } from 'react';
+import React, { Component, RefObject } from 'react';
 
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -13,7 +13,7 @@ import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
 import { ModalForm } from '@/components/Form';
 import { openWindow } from '@/utils/utils';
 
-import { PageInfoListItem, RuleConfStateType } from './model';
+import { PageInfoListItem, RuleConfStateType } from './models/ruleConf';
 import RuleConfFormItems from './components/RuleConfFormItems';
 import PageRegion from './components/PageRegion';
 import pageRegionFormItems from './components/PageRegionFormItems';
@@ -49,8 +49,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
     selectedRows: [],
   };
 
-  // @ts-ignore
-  private pageRef: TablePage | null = null;
+  private pageRef: RefObject<TablePage<PageInfoListItem>> = React.createRef();
 
   columns: StandardTableColumnProps<PageInfoListItem>[] = [
     {
@@ -175,8 +174,8 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         that.setState({
           selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
         });
-        if (that.pageRef) {
-          that.pageRef.doSearch();
+        if (that.pageRef.current) {
+          that.pageRef.current.doSearch();
         }
         message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
       })
@@ -197,8 +196,8 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
       payload: fields,
       // @ts-ignore
     }).then(() => {
-      if ((type.endsWith('create') || type.endsWith('modify')) && that.pageRef) {
-        that.pageRef.doSearch();
+      if ((type.endsWith('create') || type.endsWith('modify')) && that.pageRef.current) {
+        that.pageRef.current.doSearch();
       }
       message.success(
         formatMessage({
@@ -248,9 +247,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
 
     return (
       <TablePage<PageInfoListItem>
-        ref={(node: TablePage<PageInfoListItem>) => {
-          this.pageRef = node;
-        }}
+        ref={this.pageRef}
         title={formatMessage({ id: 'menu.rule-conf' })}
         action="ruleConf/fetch"
         columns={this.columns}

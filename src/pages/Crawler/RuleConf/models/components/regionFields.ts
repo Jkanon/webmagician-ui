@@ -4,7 +4,8 @@ import { isNumber } from 'lodash';
 
 import { TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
-import { query, add, edit, remove } from './service';
+import { PageRegionListItem } from '@/pages/Crawler/RuleConf/components/PageRegion';
+import { query, add, edit, remove } from '@/pages/Crawler/RuleConf/components/RegionFields/service';
 
 export interface RegionFieldsItem extends TableListItem {
   id: string;
@@ -19,6 +20,7 @@ export interface RegionFieldsItem extends TableListItem {
   temp: boolean;
   required: boolean;
   remarks: string;
+  pageRegion?: PageRegionListItem;
 }
 
 export interface RegionFieldsStateType {
@@ -30,7 +32,7 @@ export type Effect = (
   effects: EffectsCommandMap & { select: <T>(func: (state: RegionFieldsStateType) => T) => T },
 ) => void;
 
-export interface RegionFieldModelType {
+export interface RegionFieldsModelType {
   namespace: string;
   state: RegionFieldsStateType;
   effects: {
@@ -47,7 +49,7 @@ export interface RegionFieldModelType {
   };
 }
 
-const RegionFieldsModel: RegionFieldModelType = {
+const RegionFieldsModel: RegionFieldsModelType = {
   namespace: 'regionFields',
 
   state: {

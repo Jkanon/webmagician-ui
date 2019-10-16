@@ -105,7 +105,7 @@ class PageRegion extends PureComponent<PageRegionProps> {
 
   render() {
     const { data } = this.props;
-    return <StandardTable<PageRegionListItem> columns={this.columns} data={data} />;
+    return <StandardTable columns={this.columns} data={data} />;
   }
 }
 

@@ -2,7 +2,6 @@ export default {
   'app.common.err.record.exist': '记录已存在',
   'app.common.label.operation': '操作',
   'app.common.label.memo': '备注',
-  'app.common.label.operation.refresh': '刷新',
   'app.common.label.columns-display-settings': '显隐',
   'app.common.label.select-all': '全选',
   'app.common.label.select-reversely': '反选',

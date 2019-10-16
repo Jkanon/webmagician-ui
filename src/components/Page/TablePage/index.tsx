@@ -80,7 +80,8 @@ const defaultPagination = {
 };
 
 class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, TablePageState<T>> {
-  private tableRef: RefObject<StandardTable<T>> = React.createRef();
+  // @ts-ignore
+  private tableRef: RefObject<StandardTable> = React.createRef();
 
   private isMobile?: boolean;
 

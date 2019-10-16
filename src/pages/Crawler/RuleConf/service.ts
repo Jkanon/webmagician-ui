@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 import { TableListParams } from '@/components/Page/TablePage';
-import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
+import { PageInfoListItem } from '@/pages/Crawler/RuleConf/models/ruleConf';
 import { PageRegionListItem } from '@/pages/Crawler/RuleConf/components/PageRegion';
 
 export async function query(params: TableListParams) {

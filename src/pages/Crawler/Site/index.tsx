@@ -1,5 +1,5 @@
 import { Button, Col, Divider, Form, Icon, Input, Modal, message, Tag } from 'antd';
-import React, { Component } from 'react';
+import React, { Component, RefObject } from 'react';
 
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -52,8 +52,7 @@ class Site extends Component<SiteProps, SiteState> {
     showLoginScriptModal: false,
   };
 
-  // @ts-ignore
-  private pageRef: TablePage | null = null;
+  private pageRef: RefObject<TablePage<SiteListItem>> = React.createRef();
 
   columns: StandardTableColumnProps<SiteListItem>[] = [
     {
@@ -303,7 +302,9 @@ class Site extends Component<SiteProps, SiteState> {
         that.setState({
           selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
         });
-        that.pageRef.doSearch();
+        if (that.pageRef.current) {
+          that.pageRef.current.doSearch();
+        }
         message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
       })
       .catch(() => {});
@@ -321,7 +322,9 @@ class Site extends Component<SiteProps, SiteState> {
       payload: fields,
       // @ts-ignore
     }).then(() => {
-      that.pageRef.doSearch();
+      if (that.pageRef.current) {
+        that.pageRef.current.doSearch();
+      }
       message.success(
         formatMessage({
           id: `component.common.text.${(type.indexOf('create') !== -1 && 'add') || 'edit'}-success`,
@@ -371,9 +374,7 @@ class Site extends Component<SiteProps, SiteState> {
     return (
       <>
         <TablePage<SiteListItem>
-          ref={(node: TablePage<SiteListItem>) => {
-            this.pageRef = node;
-          }}
+          ref={this.pageRef}
           title={formatMessage({ id: 'menu.site' })}
           action="site/fetch"
           columns={this.columns}

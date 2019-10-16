@@ -5,8 +5,8 @@ import { isEmpty, isNumber, isPlainObject } from 'lodash';
 import { TableListItem } from '@/components/StandardTable';
 import { TableListData } from '@/components/Page/TablePage';
 
-import { query, add, edit, remove, addPageRegion, editdPageRegion } from './service';
-import { PageRegionListItem } from './components/PageRegion';
+import { query, add, edit, remove, addPageRegion, editdPageRegion } from '../service';
+import { PageRegionListItem } from '../components/PageRegion';
 
 export interface PageInfoListItem extends TableListItem {
   id: string;
