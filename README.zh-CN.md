@@ -6,7 +6,12 @@
 
 [Webmagician](https://github.com/Jkanon/webmagician) 的前端 UI 项目，基于 React 和 Ant-design。<br/> 鉴于本项目会对 ant-design 进行二次封装以提高开发效率，你也可以把它当做自己的前端框架来使用。
 
-![](https://s2.ax1x.com/2019/10/10/u7RL7t.png)
+<table>
+    <tr>
+    <td><img src="https://s2.ax1x.com/2019/10/10/u7RL7t.png"/></td>
+    <td><img src="https://s2.ax1x.com/2019/10/16/KkiRsK.png"/></td>
+    </tr>
+</table>
 
 - [预览](https://jkanon.github.io/webmagician-ui)
 - [Gitee 在线预览（国内用户可访问该地址）](http://jkanon.gitee.io/webmagician-ui)
