@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import { RegionFieldsItem } from '@/pages/Crawler/RuleConf/models/components/regionFields';
-import { deleteTableList, getTableList } from '@/../mock/utils';
+import { deleteTableList, editTableList, getTableList } from '@/../mock/utils';
 
 const tableListDataSource: RegionFieldsItem[] = [
   {
     id: '913382895263879170',
-    alias: '别名',
+    name: 'follow',
+    alias: '关注',
+    selector: '',
     pageRegion: {
       id: '913382675704647681',
       name: '列表',
@@ -14,7 +16,9 @@ const tableListDataSource: RegionFieldsItem[] = [
   },
   {
     id: '913382895163879170',
-    alias: '别名1',
+    name: 'fans',
+    alias: '粉丝',
+    selector: '',
     pageRegion: {
       id: '913382675704647681',
       name: '列表',
@@ -31,11 +35,11 @@ function get(req: Request, res: Response) {
     dataSource = dataSource.filter(x => x.pageRegion && x.pageRegion.id === regionId);
   }
 
-  return getTableList(
-    req,
-    res,
-    dataSource,
-  )
+  return getTableList(req, res, dataSource);
+}
+
+function edit(req: Request, res: Response) {
+  return editTableList(req, res, tableListDataSource);
 }
 
 function del(req: Request, res: Response) {
@@ -44,5 +48,6 @@ function del(req: Request, res: Response) {
 
 export default {
   'GET /api/crawler/fields': get,
+  'PUT /api/crawler/fields': edit,
   'DELETE /api/crawler/fields': del,
 };

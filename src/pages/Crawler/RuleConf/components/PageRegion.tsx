@@ -8,7 +8,7 @@ import { ModalForm } from '@/components/Form';
 import InlineModal from '@/components/Modal/InlineModal';
 import pageRegionFormItems from './PageRegionFormItems';
 import RegionFields from './RegionFields';
-import { PageInfoListItem } from '@/pages/Crawler/RuleConf/model';
+import { PageInfoListItem } from '@/pages/Crawler/RuleConf/models/ruleConf';
 
 export interface PageRegionListItem extends TableListItem {
   id: string;
@@ -105,6 +105,7 @@ class PageRegion extends PureComponent<PageRegionProps> {
 
   render() {
     const { data } = this.props;
+    // @ts-ignore
     return <StandardTable columns={this.columns} data={data} />;
   }
 }

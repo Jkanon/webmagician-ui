@@ -20,6 +20,7 @@ Encapsulated components
 - Pure front-end mock
 - Tab Layout Support
 - Fullscreen Modal
+- Editable Rows in Table
 
 ## Usage
 

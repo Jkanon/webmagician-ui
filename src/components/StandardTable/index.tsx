@@ -16,16 +16,19 @@ export interface TableListItem {
   editing?: boolean;
 }
 
-export interface StandardTableColumnProps<T> extends ColumnProps<T> {
+export interface StandardTableColumnProps<T> extends Omit<ColumnProps<T>, 'render'> {
   editable?: boolean;
   editingRender?: (
-                    text: any,
-                    record: any,
-                    index: number,
-                    form: WrappedFormUtils,
-                  )=> React.ReactNode;
+    text: any,
+    record: any,
+    index: number,
+    title: string,
+    dataIndex: string,
+    form: WrappedFormUtils,
+  ) => React.ReactNode;
   needTotal?: boolean;
   total?: number;
+  render?: (text: any, record: T, index: number, form?: WrappedFormUtils) => React.ReactNode;
 }
 
 export interface StandardTableProps<T> extends Omit<TableProps<T>, 'columns'>, FormComponentProps {
@@ -152,11 +155,20 @@ class StandardTable<T extends TableListItem> extends Component<
     };
 
     const wrappedColumns = columns.map(col => {
+      let { render } = col;
+      if (typeof render !== 'undefined') {
+        // @ts-ignore
+        render = (text: any, record: T, index: number) => col.render(text, record, index, form);
+      }
       if (col.editable === false) {
-        return col;
+        return {
+          ...col,
+          render,
+        };
       }
       return {
         ...col,
+        render,
         onCell: (record: T) => ({
           record,
           dataIndex: col.dataIndex,

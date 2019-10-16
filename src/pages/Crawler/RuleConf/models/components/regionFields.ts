@@ -12,14 +12,14 @@ export interface RegionFieldsItem extends TableListItem {
   alias: string;
   name: string;
   selector: string;
-  validationSelector: string;
-  type: string;
-  primaryKey: boolean;
-  repeated: boolean;
-  download: boolean;
-  temp: boolean;
-  required: boolean;
-  remarks: string;
+  validationSelector?: string;
+  type?: string;
+  primaryKey?: boolean;
+  repeated?: boolean;
+  download?: boolean;
+  temp?: boolean;
+  required?: boolean;
+  remarks?: string;
   pageRegion?: PageRegionListItem;
 }
 
