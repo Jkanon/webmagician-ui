@@ -8,6 +8,7 @@ const tableListDataSource: RegionFieldsItem[] = [
     name: 'follow',
     alias: '关注',
     selector: '',
+    primaryKey: true,
     pageRegion: {
       id: '913382675704647681',
       name: '列表',

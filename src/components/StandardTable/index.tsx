@@ -6,7 +6,7 @@ import { FormattedMessage } from 'umi-plugin-react/locale';
 import { FormComponentProps } from 'antd/es/form';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 
-import EditableCell from './EditableCell';
+import EditableCell, { EditingRender } from './EditableCell';
 
 import styles from './index.less';
 
@@ -18,14 +18,16 @@ export interface TableListItem {
 
 export interface StandardTableColumnProps<T> extends Omit<ColumnProps<T>, 'render'> {
   editable?: boolean;
-  editingRender?: (
-    text: any,
-    record: any,
-    index: number,
-    title: string,
-    dataIndex: string,
-    form: WrappedFormUtils,
-  ) => React.ReactNode;
+  editingRender?:
+    | ((
+        text: any,
+        record: any,
+        index: number,
+        title: string,
+        dataIndex: string,
+        form: WrappedFormUtils,
+      ) => React.ReactNode)
+    | EditingRender;
   needTotal?: boolean;
   total?: number;
   render?: (text: any, record: T, index: number, form?: WrappedFormUtils) => React.ReactNode;

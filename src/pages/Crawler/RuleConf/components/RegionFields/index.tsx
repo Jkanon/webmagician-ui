@@ -1,6 +1,8 @@
 import React, { Component, RefObject } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
+import { Divider, Icon, Input, message, Switch } from 'antd';
+import { WrappedFormUtils } from 'antd/es/form/Form';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 import { StandardTableColumnProps } from '@/components/StandardTable';
@@ -9,9 +11,7 @@ import {
   RegionFieldsItem,
   RegionFieldsStateType,
 } from '@/pages/Crawler/RuleConf/models/components/regionFields';
-import { Divider, Form, Icon, Input, message } from 'antd';
 import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
-import { WrappedFormUtils } from 'antd/es/form/Form';
 
 interface RegionFieldsProps {
   dispatch: Dispatch<any>;
@@ -28,41 +28,93 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     {
       title: '名称',
       dataIndex: 'name',
-      editingRender: (text, record, index, title, dataIndex, form) => {
-        const { getFieldDecorator } = form;
-        return (
-          <Form.Item style={{ margin: 0 }}>
-            {getFieldDecorator(dataIndex, {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please Input !',
-                },
-              ],
-              initialValue: text,
-            })(<Input />)}
-          </Form.Item>
-        );
+      editingRender: {
+        fieldDecoratorOptions: {
+          rules: [
+            {
+              required: true,
+              message: 'Please Input !',
+            },
+          ],
+        },
+        itemRender: () => <Input />,
       },
     },
     {
       title: '别名',
       dataIndex: 'alias',
-      editingRender: (text, record, index, title, dataIndex, form) => {
-        const { getFieldDecorator } = form;
-        return (
-          <Form.Item style={{ margin: 0 }}>
-            {getFieldDecorator(dataIndex, {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please Input !',
-                },
-              ],
-              initialValue: text,
-            })(<Input />)}
-          </Form.Item>
-        );
+      editingRender: {
+        fieldDecoratorOptions: {
+          rules: [
+            {
+              required: true,
+              message: 'Please Input !',
+            },
+          ],
+        },
+        itemRender: () => <Input />,
+      },
+    },
+    {
+      title: '必须字段',
+      dataIndex: 'required',
+      render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
+      editingRender: {
+        fieldDecoratorOptions: {
+          valuePropName: 'checked',
+        },
+        itemRender: () => <Switch />,
+      },
+    },
+    {
+      title: '主键',
+      dataIndex: 'primaryKey',
+      render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
+      editingRender: {
+        fieldDecoratorOptions: {
+          valuePropName: 'checked',
+        },
+        itemRender: () => <Switch />,
+      },
+    },
+    {
+      title: '数组',
+      dataIndex: 'repeated',
+      render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
+      editingRender: {
+        fieldDecoratorOptions: {
+          valuePropName: 'checked',
+        },
+        itemRender: () => <Switch />,
+      },
+    },
+    {
+      title: '临时字段',
+      dataIndex: 'temp',
+      render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
+      editingRender: {
+        fieldDecoratorOptions: {
+          valuePropName: 'checked',
+        },
+        itemRender: () => <Switch />,
+      },
+    },
+    {
+      title: '下载标志',
+      dataIndex: 'download',
+      render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
+      editingRender: {
+        fieldDecoratorOptions: {
+          valuePropName: 'checked',
+        },
+        itemRender: () => <Switch />,
+      },
+    },
+    {
+      title: '备注',
+      dataIndex: 'remarks',
+      editingRender: {
+        itemRender: () => <Input.TextArea autoSize />,
       },
     },
     {
@@ -74,7 +126,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         const { editingId } = this.state;
         return (
           <>
-            {editingId === record.id ? (
+            {record.editing ? (
               <>
                 <a onClick={() => this.handleEditSave(form)}>
                   <Icon type="check" />
@@ -87,10 +139,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
                 </a>
               </>
             ) : (
-              <a
-                disabled={editingId !== '' && record.id !== editingId}
-                onClick={() => this.handleEditClick(record.id)}
-              >
+              <a disabled={editingId !== ''} onClick={() => this.handleEditClick(record.id)}>
                 <Icon type="edit" />
                 <FormattedMessage id="component.common.text.edit" />
               </a>
