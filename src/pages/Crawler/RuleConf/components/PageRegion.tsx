@@ -7,7 +7,7 @@ import { TableListData } from '@/components/Page/TablePage';
 import { ModalForm } from '@/components/Form';
 import InlineModal from '@/components/Modal/InlineModal';
 import pageRegionFormItems from './PageRegionFormItems';
-import RegionFields from './RegionFields';
+import RegionFields from './RegionFields/index';
 import { PageInfoListItem } from '@/pages/Crawler/RuleConf/models/ruleConf';
 
 export interface PageRegionListItem extends TableListItem {
@@ -56,11 +56,16 @@ class PageRegion extends PureComponent<PageRegionProps> {
             footer={false}
           >
             <Tabs tabPosition="left">
-              <Tabs.TabPane tab="抽取字段" key="1">
-                <RegionFields />
+              <Tabs.TabPane
+                tab={formatMessage({ id: 'app.crawler.rule-conf.label.region.fields' })}
+                key="1"
+              >
+                <RegionFields regionId={record.id} />
               </Tabs.TabPane>
-              <Tabs.TabPane tab="采集链接" key="2">
-                <p>Content of Tab Pane 2</p>
+              <Tabs.TabPane
+                tab={formatMessage({ id: 'app.crawler.rule-conf.label.region.links' })}
+                key="2"
+              >
                 <p>Content of Tab Pane 2</p>
                 <p>Content of Tab Pane 2</p>
               </Tabs.TabPane>

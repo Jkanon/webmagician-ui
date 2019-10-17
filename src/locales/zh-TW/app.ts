@@ -39,6 +39,15 @@ export default {
   'app.crawler.rule-conf.label.validation-selector': '頁面驗證表達式',
   'app.crawler.rule-conf.label.region.name': '區域名稱',
   'app.crawler.rule-conf.label.region.selector': '區域選擇器',
+  'app.crawler.rule-conf.label.region.fields': '抽取字段',
+  'app.crawler.rule-conf.label.region.links': '採集鏈接',
+  'app.crawler.rule-conf.label.region.fields.name': '名稱',
+  'app.crawler.rule-conf.label.region.fields.alias': '別名',
+  'app.crawler.rule-conf.label.region.fields.required': '必須字段',
+  'app.crawler.rule-conf.label.region.fields.primary-key': '主鍵',
+  'app.crawler.rule-conf.label.region.fields.temp': '臨時字段',
+  'app.crawler.rule-conf.label.region.fields.repeated': '數組',
+  'app.crawler.rule-conf.label.region.fields.download': '下載標誌',
 
   'app.crawler.rule-conf.operation.label.add-region': '區域',
 

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { GetFieldDecoratorOptions, WrappedFormUtils } from 'antd/es/form/Form';
 import { Form } from 'antd';
+import { get } from 'lodash';
 
 export interface EditingRender {
   fieldDecoratorOptions?: GetFieldDecoratorOptions;
@@ -33,7 +34,7 @@ class EditableCell extends PureComponent<EditableCellProps> {
     const { form, editingRender, title, record, index, dataIndex } = this.props;
     const text = record[dataIndex];
     if (typeof editingRender === 'function') {
-      return editingRender(record[dataIndex], record, index, title, dataIndex, form);
+      return editingRender(get(record, dataIndex), record, index, title, dataIndex, form);
     }
     const { getFieldDecorator } = form;
     const { fieldDecoratorOptions = {}, itemRender } = editingRender;

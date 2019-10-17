@@ -5,4 +5,5 @@ export default {
   'app.setting.tab-layout': 'Tabsレイアウト',
   'app.setting.fixedheader': '固定ヘッダ',
   'app.setting.fixedsidebar': '固定サイドバー',
+  'app.setting.fixedsidebar.hint': 'サイドメニューレイアウトで動作する',
 };

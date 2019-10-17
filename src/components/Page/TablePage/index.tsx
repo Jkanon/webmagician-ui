@@ -48,6 +48,7 @@ interface TablePageProps<T extends TableListItem> {
   loading: boolean;
   // action of searching page list
   action?: string;
+  searchParams?: any;
   columns: StandardTableColumnProps<T>[];
   data: TableListData<T>;
   selectedRows?: T[];
@@ -265,13 +266,14 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   };
 
   doSearch = () => {
-    const { action, dispatch } = this.props;
+    const { action, dispatch, searchParams = {} } = this.props;
     const { searchFormValues, pagination, filters, sorter } = this.state;
     const params: Partial<TableListParams> = {
       // @ts-ignore
       currentPage: pagination.current,
       // @ts-ignore
       pageSize: pagination.pageSize,
+      ...searchParams,
       ...searchFormValues,
       ...filters,
     };

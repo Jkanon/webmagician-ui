@@ -40,6 +40,15 @@ export default {
   'app.crawler.rule-conf.label.validation-selector': 'The Selector For Validating',
   'app.crawler.rule-conf.label.region.name': 'Region Name',
   'app.crawler.rule-conf.label.region.selector': 'Selector For Region',
+  'app.crawler.rule-conf.label.region.fields': 'Extracted Fields',
+  'app.crawler.rule-conf.label.region.links': 'Scraping Links',
+  'app.crawler.rule-conf.label.region.fields.name': 'Name',
+  'app.crawler.rule-conf.label.region.fields.alias': 'Alias',
+  'app.crawler.rule-conf.label.region.fields.required': 'Required',
+  'app.crawler.rule-conf.label.region.fields.primary-key': 'Primary Key',
+  'app.crawler.rule-conf.label.region.fields.temp': 'temporary',
+  'app.crawler.rule-conf.label.region.fields.repeated': 'Repeated',
+  'app.crawler.rule-conf.label.region.fields.download': 'Download Flag',
 
   'app.crawler.rule-conf.operation.label.add-region': 'Region',
 

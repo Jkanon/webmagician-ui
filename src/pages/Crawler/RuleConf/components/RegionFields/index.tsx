@@ -17,6 +17,7 @@ interface RegionFieldsProps {
   dispatch: Dispatch<any>;
   loading: boolean;
   regionFields: RegionFieldsStateType;
+  regionId: string;
 }
 
 interface RegionFieldsState {
@@ -26,7 +27,7 @@ interface RegionFieldsState {
 class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
   columns: StandardTableColumnProps<RegionFieldsItem>[] = [
     {
-      title: '名称',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.name" />,
       dataIndex: 'name',
       editingRender: {
         fieldDecoratorOptions: {
@@ -41,7 +42,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '别名',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.alias" />,
       dataIndex: 'alias',
       editingRender: {
         fieldDecoratorOptions: {
@@ -56,7 +57,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '必须字段',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.required" />,
       dataIndex: 'required',
       render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
       editingRender: {
@@ -67,7 +68,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '主键',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.primary-key" />,
       dataIndex: 'primaryKey',
       render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
       editingRender: {
@@ -78,7 +79,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '数组',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.repeated" />,
       dataIndex: 'repeated',
       render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
       editingRender: {
@@ -89,7 +90,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '临时字段',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.temp" />,
       dataIndex: 'temp',
       render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
       editingRender: {
@@ -100,7 +101,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '下载标志',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.download" />,
       dataIndex: 'download',
       render: (text, record) => <Switch defaultChecked={text} disabled={!record.editing} />,
       editingRender: {
@@ -111,7 +112,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       },
     },
     {
-      title: '备注',
+      title: <FormattedMessage id="app.common.label.memo" />,
       dataIndex: 'remarks',
       editingRender: {
         itemRender: () => <Input.TextArea autoSize />,
@@ -236,10 +237,10 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       dispatch,
       loading,
       regionFields: { data: originalData },
+      regionId,
     } = this.props;
     const { editingId } = this.state;
     const { list, pagination } = originalData;
-
     const data =
       editingId === ''
         ? originalData
@@ -256,6 +257,8 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         loading={loading}
         data={data}
         action="regionFields/fetch"
+        searchParams={{ regionId }}
+        tableOptions={{ scroll: { x: false } }}
       />
     );
   }
