@@ -5,6 +5,7 @@ import { deleteTableList, editTableList, getTableList } from '@/../mock/utils';
 const tableListDataSource: RegionFieldsItem[] = [
   {
     id: '913382895263879170',
+    parentId: '913382675704647681',
     name: 'follow',
     alias: '关注',
     selector: '',
@@ -17,6 +18,7 @@ const tableListDataSource: RegionFieldsItem[] = [
   },
   {
     id: '913382895163879170',
+    parentId: '913382675704647681',
     name: 'fans',
     alias: '粉丝',
     selector: '',
@@ -25,6 +27,32 @@ const tableListDataSource: RegionFieldsItem[] = [
       name: '列表',
       selector: '',
     },
+  },
+  {
+    id: '913382825163879170',
+    parentId: '913382675704647681',
+    name: 'articles',
+    alias: '文章列表',
+    selector: '',
+    pageRegion: {
+      id: '913382675704647681',
+      name: '列表',
+      selector: '',
+    },
+    children: [
+      {
+        id: '913382825263879170',
+        parentId: '913382825163879170',
+        name: 'article_title',
+        alias: '标题',
+        selector: '',
+        pageRegion: {
+          id: '913382675704647681',
+          name: '列表',
+          selector: '',
+        },
+      },
+    ],
   },
 ];
 

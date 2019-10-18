@@ -8,6 +8,7 @@ export default {
   'app.common.label.open-in-new-window': '新しいウィンドウで開く',
   'app.common.label.yes': 'はい',
   'app.common.label.no': 'いいえ',
+  'app.common.bale.more': 'もっと',
   'app.common.validation.not-empty': 'このフィールドは必須です',
 
   'app.crawler.site.filter.name': 'サイトの名前',
@@ -50,6 +51,7 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': 'ダウンロードのフラグ',
 
   'app.crawler.rule-conf.operation.label.add-region': 'リージョン',
+  'app.crawler.rule-conf.operation.label.add-field': 'フィールド',
 
   'app.crawler.rule-conf.validation.name.not-empty': 'ページの名前を入力ください',
   'app.crawler.rule-conf.validation.url-regex.not-empty':

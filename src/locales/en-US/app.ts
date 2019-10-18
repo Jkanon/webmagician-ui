@@ -8,6 +8,7 @@ export default {
   'app.common.label.open-in-new-window': 'Open in a new window',
   'app.common.label.yes': 'Yes',
   'app.common.label.no': 'No',
+  'app.common.bale.more': 'More',
   'app.common.validation.not-empty': 'Required items cannot be empty',
 
   'app.crawler.site.filter.name': "Site's Name",
@@ -51,6 +52,7 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': 'Download Flag',
 
   'app.crawler.rule-conf.operation.label.add-region': 'Region',
+  'app.crawler.rule-conf.operation.label.add-field': 'Field',
 
   'app.crawler.rule-conf.validation.name.not-empty': "Page's name cannot be empty",
   'app.crawler.rule-conf.validation.url-regex.not-empty':

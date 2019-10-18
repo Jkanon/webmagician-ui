@@ -25,7 +25,7 @@ const tableListDataSource: PageInfoListItem[] = [
     pageRegions: [
       {
         id: '913382675704647681',
-        name: '列表',
+        name: '记录1',
         selector: '',
       },
     ],

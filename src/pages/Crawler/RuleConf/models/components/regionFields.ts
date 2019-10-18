@@ -9,6 +9,7 @@ import { query, add, edit, remove } from '@/pages/Crawler/RuleConf/components/Re
 
 export interface RegionFieldsItem extends TableListItem {
   id: string;
+  parentId: string;
   alias: string;
   name: string;
   selector: string;
@@ -20,6 +21,7 @@ export interface RegionFieldsItem extends TableListItem {
   temp?: boolean;
   required?: boolean;
   remarks?: string;
+  children?: RegionFieldsItem[];
   pageRegion?: PageRegionListItem;
 }
 

@@ -8,6 +8,7 @@ export default {
   'app.common.label.open-in-new-window': '点击新窗口打开链接',
   'app.common.label.yes': '是',
   'app.common.label.no': '否',
+  'app.common.bale.more': '更多',
   'app.common.validation.not-empty': '必填项不能为空',
 
   'app.crawler.site.filter.name': '站点名称',
@@ -50,6 +51,7 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': '下载标志',
 
   'app.crawler.rule-conf.operation.label.add-region': '区域',
+  'app.crawler.rule-conf.operation.label.add-field': '字段',
 
   'app.crawler.rule-conf.validation.name.not-empty': '页面名称不能为空',
   'app.crawler.rule-conf.validation.url-regex.not-empty': '请输入匹配的URL正则表达式',

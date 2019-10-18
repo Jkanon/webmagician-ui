@@ -1,7 +1,7 @@
 import React, { Component, RefObject } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Divider, Icon, Input, message, Switch } from 'antd';
+import { Divider, Dropdown, Icon, Input, Menu, message, Switch } from 'antd';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
@@ -34,12 +34,14 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
           rules: [
             {
               required: true,
-              message: 'Please Input !',
+              message: <FormattedMessage id="app.common.validation.not-empty" />,
             },
           ],
         },
         itemRender: () => <Input />,
       },
+      width: 300,
+      fixed: 'left',
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.alias" />,
@@ -49,12 +51,39 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
           rules: [
             {
               required: true,
-              message: 'Please Input !',
+              message: <FormattedMessage id="app.common.validation.not-empty" />,
             },
           ],
         },
         itemRender: () => <Input />,
       },
+      width: 100,
+    },
+    {
+      title: 'selector',
+      dataIndex: 'selector',
+      ellipsis: true,
+      editingRender: {
+        fieldDecoratorOptions: {
+          rules: [
+            {
+              required: true,
+              message: <FormattedMessage id="app.common.validation.not-empty" />,
+            },
+          ],
+        },
+        itemRender: () => <Input.TextArea autoSize />,
+      },
+      width: 100,
+    },
+    {
+      title: 'validationSelector',
+      dataIndex: 'validationSelector',
+      ellipsis: true,
+      editingRender: {
+        itemRender: () => <Input.TextArea autoSize />,
+      },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.required" />,
@@ -66,6 +95,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         },
         itemRender: () => <Switch />,
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.primary-key" />,
@@ -77,6 +107,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         },
         itemRender: () => <Switch />,
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.repeated" />,
@@ -88,6 +119,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         },
         itemRender: () => <Switch />,
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.temp" />,
@@ -99,6 +131,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         },
         itemRender: () => <Switch />,
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.download" />,
@@ -110,6 +143,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         },
         itemRender: () => <Switch />,
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.common.label.memo" />,
@@ -117,14 +151,26 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       editingRender: {
         itemRender: () => <Input.TextArea autoSize />,
       },
+      width: 100,
     },
     {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
       key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (text, record, index, form) => {
         const { editingId } = this.state;
+        const menu = (
+          <Menu>
+            <Menu.Item>
+              <a>
+                <Icon type="plus" />
+                <FormattedMessage id="app.crawler.rule-conf.operation.label.add-field" />
+              </a>
+            </Menu.Item>
+          </Menu>
+        );
         return (
           <>
             {record.editing ? (
@@ -147,6 +193,12 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
             )}
             <Divider type="vertical" />
             <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
+            <Divider type="vertical" />
+            <Dropdown overlay={menu}>
+              <a className="ant-dropdown-link" href="#">
+                <FormattedMessage id="app.common.bale.more" /> <Icon type="down" />
+              </a>
+            </Dropdown>
           </>
         );
       },
@@ -232,6 +284,17 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       .catch(() => {});
   };
 
+  assemblyDataList = ({ children, id, ...rest }: RegionFieldsItem): RegionFieldsItem => {
+    const { editingId } = this.state;
+    return {
+      id,
+      ...rest,
+      editing: id === editingId,
+      children:
+        children && children.length > 0 ? children.map(x => this.assemblyDataList(x)) : undefined,
+    };
+  };
+
   render() {
     const {
       dispatch,
@@ -245,7 +308,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       editingId === ''
         ? originalData
         : {
-            list: list.map(x => ({ ...x, editing: x.id === editingId })),
+            list: list.map(x => this.assemblyDataList(x)),
             pagination,
           };
 
@@ -258,7 +321,6 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         data={data}
         action="regionFields/fetch"
         searchParams={{ regionId }}
-        tableOptions={{ scroll: { x: false } }}
       />
     );
   }

@@ -140,7 +140,6 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   componentDidUpdate(
     prevProps: Readonly<TablePageProps<T>>,
     prevState: Readonly<TablePageState<T>>,
-    snapshot?: any,
   ): void {
     const { data: { list: preList } = { list: [] } } = prevProps;
     const { data: { list } = { list: [] } } = this.props;
@@ -384,7 +383,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
         y: tableMaxHeight,
         x:
           (scroll && scroll.x) ||
-          (scroll !== false && scroll && scroll.x !== false && 'max-content'),
+          (scroll !== false && scroll && scroll.x !== false && (scroll.x || 'max-content')),
       },
       bodyStyle: {
         ...bodyStyle,
