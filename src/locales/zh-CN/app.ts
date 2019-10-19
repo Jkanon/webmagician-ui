@@ -49,6 +49,8 @@ export default {
   'app.crawler.rule-conf.label.region.fields.temp': '临时字段',
   'app.crawler.rule-conf.label.region.fields.repeated': '数组',
   'app.crawler.rule-conf.label.region.fields.download': '下载标志',
+  'app.crawler.rule-conf.label.region.fields.selector': '抽取规则',
+  'app.crawler.rule-conf.label.region.fields.validation-selector': '抽取验证规则',
 
   'app.crawler.rule-conf.operation.label.add-region': '区域',
   'app.crawler.rule-conf.operation.label.add-field': '字段',

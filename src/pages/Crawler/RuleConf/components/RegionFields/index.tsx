@@ -1,7 +1,7 @@
 import React, { Component, RefObject } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Divider, Dropdown, Icon, Input, Menu, message, Switch } from 'antd';
+import { Button, Divider, Dropdown, Icon, Input, Menu, message, Switch } from 'antd';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
@@ -60,7 +60,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       width: 100,
     },
     {
-      title: 'selector',
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.selector" />,
       dataIndex: 'selector',
       ellipsis: true,
       editingRender: {
@@ -77,7 +77,9 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       width: 100,
     },
     {
-      title: 'validationSelector',
+      title: (
+        <FormattedMessage id="app.crawler.rule-conf.label.region.fields.validation-selector" />
+      ),
       dataIndex: 'validationSelector',
       ellipsis: true,
       editingRender: {
@@ -158,7 +160,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       align: 'center',
       key: 'operation',
       fixed: 'right',
-      width: 200,
+      width: 300,
       render: (text, record, index, form) => {
         const { editingId } = this.state;
         const menu = (
@@ -214,10 +216,22 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     };
   }
 
+  componentDidMount(): void {
+    this.fixRowHeightAlign();
+  }
+
+  componentDidUpdate(): void {
+    this.fixRowHeightAlign();
+  }
+
   handleEditClick = (index: string) => {
     this.setState({
       editingId: index,
     });
+  };
+
+  fixRowHeightAlign = () => {
+    window.dispatchEvent(new CustomEvent('resize'));
   };
 
   handleEditSave = (form?: WrappedFormUtils) => {
@@ -284,6 +298,12 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       .catch(() => {});
   };
 
+  operatorRender = () => (
+    <Button type="primary" icon="plus">
+      <FormattedMessage id="component.common.text.add" />
+    </Button>
+  );
+
   assemblyDataList = ({ children, id, ...rest }: RegionFieldsItem): RegionFieldsItem => {
     const { editingId } = this.state;
     return {
@@ -321,6 +341,8 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         data={data}
         action="regionFields/fetch"
         searchParams={{ regionId }}
+        operatorRender={this.operatorRender}
+        onDelete={(rows: RegionFieldsItem[]) => this.onDelete(rows.map(row => row.id))}
       />
     );
   }

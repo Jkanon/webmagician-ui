@@ -13,6 +13,7 @@ import defaultLocale from 'antd/es/locale/default';
 import { formatMessage } from 'umi-plugin-react/locale';
 import classNames from 'classnames';
 import RouteContext from '@ant-design/pro-layout/es/RouteContext';
+// @ts-ignore
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import debounce from 'lodash/debounce';
 

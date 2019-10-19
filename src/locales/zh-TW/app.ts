@@ -49,6 +49,8 @@ export default {
   'app.crawler.rule-conf.label.region.fields.temp': '臨時字段',
   'app.crawler.rule-conf.label.region.fields.repeated': '數組',
   'app.crawler.rule-conf.label.region.fields.download': '下載標誌',
+  'app.crawler.rule-conf.label.region.fields.selector': '抽取規則',
+  'app.crawler.rule-conf.label.region.fields.validation-selector': '抽取驗證規則',
 
   'app.crawler.rule-conf.operation.label.add-region': '區域',
   'app.crawler.rule-conf.operation.label.add-field': '字段',

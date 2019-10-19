@@ -32,7 +32,8 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
   }
 
   // 显示模态框
-  showModalHandler = () => {
+  showModalHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     const { beforeOpen } = this.props;
     if (beforeOpen) {
       beforeOpen();
@@ -56,6 +57,7 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
   };
 
   okHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     const { onOk } = this.props;
     if (onOk) {
       const ret = onOk(e);
@@ -78,6 +80,7 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
   };
 
   cancelHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     const { onCancel } = this.props;
     if (onCancel) {
       const ret = onCancel(e);
@@ -139,25 +142,31 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
         }) => (
           <>
             {element && React.cloneElement(element, { onClick: this.showModalHandler })}
-            <Modal
-              wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}${
-                footer === false ? ' wm-modal-wrap-nofooter' : ''
-              }`}
-              title={this.titleRender()}
-              visible={visible}
-              centered
-              onOk={this.okHandler}
-              onCancel={this.cancelHandler}
-              getContainer={
-                (tabsView &&
-                fixedHeader &&
-                (document.querySelector('.ant-tabs-tabpane.ant-tabs-tabpane-active') as HTMLElement))
-                || undefined
-              }
-              {...rest}
-            >
-              {children}
-            </Modal>
+            {/* wrapped in span to stop event propagation when it's in a table
+                of which expandRowByClick is true */}
+            <span onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}>
+              <Modal
+                wrapClassName={`wm-modal-wrap${fullScreen ? ' wm-modal-wrap-fullscreen' : ''}${
+                  footer === false ? ' wm-modal-wrap-nofooter' : ''
+                }`}
+                title={this.titleRender()}
+                visible={visible}
+                centered
+                onOk={this.okHandler}
+                onCancel={this.cancelHandler}
+                getContainer={
+                  (tabsView &&
+                    fixedHeader &&
+                    (document.querySelector(
+                      '.ant-tabs-tabpane.ant-tabs-tabpane-active',
+                    ) as HTMLElement)) ||
+                  undefined
+                }
+                {...rest}
+              >
+                {children}
+              </Modal>
+            </span>
           </>
         )}
       </RouteContext.Consumer>

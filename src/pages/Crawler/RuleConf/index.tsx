@@ -260,7 +260,7 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
         selectedRows={selectedRows}
         onDelete={(rows: PageInfoListItem[]) => this.onDelete(rows.map(row => row.id))}
         dispatch={dispatch}
-        tableOptions={{ scroll: { x: false } }}
+        tableOptions={{ scroll: { x: false }, expandRowByClick: true }}
       />
     );
   }

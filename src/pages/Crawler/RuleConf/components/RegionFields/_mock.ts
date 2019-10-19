@@ -34,6 +34,7 @@ const tableListDataSource: RegionFieldsItem[] = [
     name: 'articles',
     alias: '文章列表',
     selector: '',
+    repeated: true,
     pageRegion: {
       id: '913382675704647681',
       name: '列表',
@@ -45,6 +46,18 @@ const tableListDataSource: RegionFieldsItem[] = [
         parentId: '913382825163879170',
         name: 'article_title',
         alias: '标题',
+        selector: '',
+        pageRegion: {
+          id: '913382675704647681',
+          name: '列表',
+          selector: '',
+        },
+      },
+      {
+        id: '923382825263879170',
+        parentId: '913382825163879170',
+        name: 'article_brief',
+        alias: '摘要',
         selector: '',
         pageRegion: {
           id: '913382675704647681',

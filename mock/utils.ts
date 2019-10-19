@@ -61,22 +61,60 @@ export function addTableList(req: Request, res: Response, tableListDataSource: a
   });
 }
 
+function assemblyEditData(tableListDataSource: any[], index: number, body: any): any {
+  const record = tableListDataSource[index];
+  let ret = false;
+  if (record.id === body.id) {
+    ret = Object.assign({}, record, body, record.children ? { children: record.children } : {});
+    // eslint-disable-next-line no-param-reassign
+    tableListDataSource[index] = ret;
+    return ret;
+  }
+  if (record.children && record.children.length > 0) {
+    for (let i = 0; i < record.children.length; i += 1) {
+      ret = assemblyEditData(record.children, i, body);
+      if (ret) {
+        return ret;
+      }
+    }
+  }
+  return ret;
+}
+
 export function editTableList(req: Request, res: Response, tableListDataSource: any[]) {
   let { body } = req;
   if (!isEmpty(body) && body.id) {
-    tableListDataSource.forEach((r, i) => {
-      if (r.id === body.id) {
-        body = Object.assign({}, r, body);
-        // eslint-disable-next-line no-param-reassign
-        tableListDataSource[i] = body;
+    for (let i = 0; i < tableListDataSource.length; i += 1) {
+      const ret = assemblyEditData(tableListDataSource, i, body);
+      if (ret) {
+        body = ret;
+        break;
       }
-    });
+    }
   }
 
   return response(res, {
     code: 0,
     data: body,
   });
+}
+
+function removeDataIteratively(tableListDataSource: any[], predicate: ListIteratee<any>) {
+  const ret = remove(tableListDataSource, predicate);
+  for (let i = 0; i < tableListDataSource.length; i += 1) {
+    const record = tableListDataSource[i];
+    if (record && record.children && record.children.length > 0) {
+      const tmp = removeDataIteratively(record.children, predicate);
+      if (tmp.length !== 0) {
+        ret.push(...tmp);
+        if (record.children.length === 0) {
+          record.children = undefined;
+        }
+      }
+    }
+  }
+
+  return ret;
 }
 
 export function deleteTableList(
@@ -86,12 +124,11 @@ export function deleteTableList(
   predicate?: ListIteratee<any>,
 ) {
   const { ids } = req.query;
-  if (ids) {
-    if (predicate) {
-      remove(tableListDataSource, predicate);
-    } else {
-      remove(tableListDataSource, item => ids.indexOf(item.id.toString()) !== -1);
-    }
+  if (ids && tableListDataSource.length) {
+    removeDataIteratively(
+      tableListDataSource,
+      predicate || (item => ids.indexOf(item.id.toString()) !== -1),
+    );
   }
 
   return response(res, {
