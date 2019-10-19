@@ -13,6 +13,8 @@ import defaultLocale from 'antd/es/locale/default';
 import { formatMessage } from 'umi-plugin-react/locale';
 import classNames from 'classnames';
 import RouteContext from '@ant-design/pro-layout/es/RouteContext';
+import addEventListener from 'rc-util/lib/Dom/addEventListener';
+import debounce from 'lodash/debounce';
 
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
 import SearchPanel from './SearchPanel';
@@ -94,6 +96,14 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     },
   };
 
+  debouncedWindowResize: Function & {
+    cancel: Function;
+  };
+
+  resizeEvent?: {
+    remove: Function;
+  };
+
   constructor(props: TablePageProps<T>) {
     super(props);
     const pagination =
@@ -108,33 +118,14 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       searchFormValues: props.searchFormValues || {},
       pagination,
     };
+
+    this.debouncedWindowResize = debounce(this.handleWindowResize, 150);
   }
 
   componentDidMount() {
     this.doSearch();
-    if (this.tableRef) {
-      // eslint-disable-next-line react/no-find-dom-node
-      const standardTableDom = ReactDOM.findDOMNode(this.tableRef.current);
-      if (standardTableDom) {
-        // @ts-ignore
-        const el = standardTableDom.querySelector('.ant-table-tbody');
-        if (el) {
-          if (this.isMobile === true) {
-            this.setState({
-              tableMaxHeight: undefined,
-            });
-          } else {
-            // TODO 尺寸可能得跟着表格尺寸进行调整
-            let height: number | undefined =
-              window.innerHeight - el.getBoundingClientRect().top - 96;
-            height = height > 50 ? height : 50;
-            this.setState({
-              tableMaxHeight: height,
-            });
-          }
-        }
-      }
-    }
+    this.handleWindowResize();
+    this.resizeEvent = addEventListener(window, 'resize', this.debouncedWindowResize);
   }
 
   componentDidUpdate(
@@ -164,6 +155,45 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       }
     }
   }
+
+  componentWillUnmount() {
+    if (this.resizeEvent) {
+      this.resizeEvent.remove();
+    }
+    if (this.debouncedWindowResize) {
+      this.debouncedWindowResize.cancel();
+    }
+  }
+
+  handleWindowResize = () => {
+    this.syncTableHeight();
+  };
+
+  syncTableHeight = () => {
+    if (this.tableRef) {
+      // eslint-disable-next-line react/no-find-dom-node
+      const standardTableDom = ReactDOM.findDOMNode(this.tableRef.current);
+      if (standardTableDom) {
+        // @ts-ignore
+        const el = standardTableDom.querySelector('.ant-table-tbody');
+        if (el) {
+          if (this.isMobile === true) {
+            this.setState({
+              tableMaxHeight: undefined,
+            });
+          } else {
+            // TODO 尺寸可能得跟着表格尺寸进行调整
+            let height: number | undefined =
+              window.innerHeight - el.getBoundingClientRect().top - 96;
+            height = height > 50 ? height : 50;
+            this.setState({
+              tableMaxHeight: height,
+            });
+          }
+        }
+      }
+    }
+  };
 
   handleStandardTableChange = (
     pagination: Partial<TableListPagination>,
@@ -393,7 +423,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     };
     return (
       <StandardTable
-        ref={this.tableRef}
+        wrappedComponentRef={this.tableRef}
         selectedRows={selectedRows}
         loading={loading}
         data={data}
