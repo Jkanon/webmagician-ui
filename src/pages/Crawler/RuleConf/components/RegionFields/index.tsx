@@ -22,6 +22,8 @@ interface RegionFieldsProps {
 
 interface RegionFieldsState {
   editingId: string;
+  newData?: RegionFieldsItem;
+  expandRowKeys: string[];
 }
 
 class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
@@ -165,7 +167,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         const { editingId } = this.state;
         const menu = (
           <Menu>
-            <Menu.Item>
+            <Menu.Item disabled={editingId !== ''} onClick={() => this.handleAddClick(record.id)}>
               <a>
                 <Icon type="plus" />
                 <FormattedMessage id="app.crawler.rule-conf.operation.label.add-field" />
@@ -193,19 +195,27 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
                 <FormattedMessage id="component.common.text.edit" />
               </a>
             )}
-            <Divider type="vertical" />
-            <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
-            <Divider type="vertical" />
-            <Dropdown overlay={menu}>
-              <a className="ant-dropdown-link" href="#">
-                <FormattedMessage id="app.common.bale.more" /> <Icon type="down" />
-              </a>
-            </Dropdown>
+            {record.id !== this.newKey && (
+              <>
+                <Divider type="vertical" />
+                <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
+                <Divider type="vertical" />
+                <Dropdown overlay={menu}>
+                  <a className="ant-dropdown-link" href="#">
+                    <FormattedMessage id="app.common.bale.more" /> <Icon type="down" />
+                  </a>
+                </Dropdown>
+              </>
+            )}
           </>
         );
       },
     },
   ];
+
+  private newKey = 'new';
+
+  private expandKeys: string[] = [];
 
   private pageRef: RefObject<TablePage<RegionFieldsItem>> = React.createRef();
 
@@ -213,6 +223,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     super(props);
     this.state = {
       editingId: '',
+      expandRowKeys: [],
     };
   }
 
@@ -223,6 +234,23 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
   componentDidUpdate(): void {
     this.fixRowHeightAlign();
   }
+
+  handleAddClick = (parentId: string) => {
+    this.setState({
+      editingId: this.newKey,
+      newData: {
+        id: this.newKey,
+        name: '',
+        selector: '',
+        parentId,
+        pageRegion: {
+          id: this.props.regionId,
+          name: '',
+          selector: '',
+        },
+      },
+    });
+  };
 
   handleEditClick = (index: string) => {
     this.setState({
@@ -239,16 +267,23 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       // @ts-ignore
       form.validateFields().then((fieldsValue: RegionFieldsItem) => {
         const { editingId } = this.state;
-        this.handleEdit({ id: editingId, ...fieldsValue }).then(() => {
-          this.resetEditingId();
+        const { id, ...rest } = fieldsValue;
+        const cb =
+          editingId === this.newKey
+            ? this.handleAdd({ ...rest })
+            : this.handleEdit({ id: editingId, ...fieldsValue });
+        cb.then(() => {
+          this.resetEditingState();
         });
       });
     }
   };
 
   handleEditCancel = () => {
-    this.resetEditingId();
+    this.resetEditingState();
   };
+
+  handleAdd = (fields: any) => this.handleAddOrEdit('regionFields/create', fields);
 
   handleEdit = (fields: any) => this.handleAddOrEdit('regionFields/modify', fields);
 
@@ -271,10 +306,17 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     });
   };
 
-  resetEditingId = () => {
-    this.setState({
-      editingId: '',
-    });
+  resetEditingState = () => {
+    if (this.state.editingId === this.newKey) {
+      this.setState({
+        editingId: '',
+        newData: undefined,
+      });
+    } else {
+      this.setState({
+        editingId: '',
+      });
+    }
   };
 
   onDelete = (ids: string[]) => {
@@ -299,7 +341,12 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
   };
 
   operatorRender = () => (
-    <Button type="primary" icon="plus">
+    <Button
+      type="primary"
+      icon="plus"
+      disabled={this.state.editingId !== ''}
+      onClick={() => this.handleAddClick(this.props.regionId)}
+    >
       <FormattedMessage id="component.common.text.add" />
     </Button>
   );
@@ -315,6 +362,36 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     };
   };
 
+  assemblyDataListWithNew = (
+    { children, id, ...rest }: RegionFieldsItem,
+    newData: RegionFieldsItem,
+    parentKeys: string[],
+  ): RegionFieldsItem => {
+    const { editingId } = this.state;
+    let newChildren = children;
+    if (newData.parentId === id) {
+      if (newChildren === undefined) {
+        newChildren = [];
+      }
+      newChildren = [newData, ...newChildren];
+      newChildren = newChildren.map(x => this.assemblyDataList(x));
+      this.expandKeys = [id];
+    } else if (newChildren && newChildren.length > 0) {
+      newChildren = newChildren.map(x =>
+        this.assemblyDataListWithNew(x, newData, [...parentKeys, id]),
+      );
+    } else {
+      newChildren = undefined;
+    }
+
+    return {
+      id,
+      ...rest,
+      editing: id === editingId,
+      children: newChildren,
+    };
+  };
+
   render() {
     const {
       dispatch,
@@ -322,13 +399,19 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       regionFields: { data: originalData },
       regionId,
     } = this.props;
-    const { editingId } = this.state;
-    const { list, pagination } = originalData;
+    const { editingId, newData } = this.state;
+    const { list: originalList, pagination } = originalData;
+    const list =
+      newData && newData.parentId === regionId ? [newData, ...originalList] : originalList;
+    this.expandKeys = [];
     const data =
       editingId === ''
         ? originalData
         : {
-            list: list.map(x => this.assemblyDataList(x)),
+            list:
+              newData && newData.parentId !== regionId
+                ? list.map(x => this.assemblyDataListWithNew(x, newData, []))
+                : list.map(x => this.assemblyDataList(x)),
             pagination,
           };
 
@@ -343,6 +426,14 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         searchParams={{ regionId }}
         operatorRender={this.operatorRender}
         onDelete={(rows: RegionFieldsItem[]) => this.onDelete(rows.map(row => row.id))}
+        tableOptions={{
+          expandedRowKeys: this.state.expandRowKeys.concat(this.expandKeys),
+          onExpandedRowsChange: (expandedRows: string[]) => {
+            this.setState({
+              expandRowKeys: expandedRows,
+            });
+          },
+        }}
       />
     );
   }

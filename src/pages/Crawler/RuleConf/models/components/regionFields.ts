@@ -10,7 +10,7 @@ import { query, add, edit, remove } from '@/pages/Crawler/RuleConf/components/Re
 export interface RegionFieldsItem extends TableListItem {
   id: string;
   parentId: string;
-  alias: string;
+  alias?: string;
   name: string;
   selector: string;
   validationSelector?: string;
