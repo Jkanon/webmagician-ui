@@ -1,10 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Button, Checkbox, Dropdown, Menu, Tooltip } from 'antd';
+import { isFunction } from 'lodash';
 
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { StandardTableColumnProps } from '@/components/StandardTable';
 
 import styles from '@/components/Page/TablePage/index.less';
+
+export interface complexOperatorRender {
+  left: () => React.ReactNode;
+  right: {
+    title: ReactNode;
+    render?: () => React.ReactNode;
+  }[];
+}
 
 interface OperatorPanelProps {
   columns: StandardTableColumnProps<any>[];
@@ -13,7 +22,7 @@ interface OperatorPanelProps {
   onBatchDelete: React.MouseEventHandler<HTMLElement>;
   onSearch: React.MouseEventHandler<HTMLElement>;
   onSelectedDisplayColumnKeyChange?: (selectedKeys: string[]) => void;
-  operatorRender: () => React.ReactNode;
+  operatorRender: (() => React.ReactNode) | complexOperatorRender;
 }
 
 interface OperatorPanelState {
@@ -128,13 +137,55 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
     );
   }
 
-  render() {
-    const { selectedRows, batchDelete, operatorRender, onBatchDelete, onSearch } = this.props;
+  renderRightDefault() {
+    const { onSearch } = this.props;
+    return (
+      <>
+        <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
+          <Button shape="circle" icon="sync" onClick={onSearch} />
+        </Tooltip>
+        <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>
+          {this.renderSwitchDropdown()}
+        </Tooltip>
+      </>
+    );
+  }
 
+  renderRight() {
+    const { onSearch } = this.props;
+    // @ts-ignore
+    const { right } = this.props.operatorRender;
+    if (right) {
+      // @ts-ignore
+      right.map(x => {
+        if (x.title === 'refresh') {
+          return (
+            <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
+              <Button shape="circle" icon="sync" onClick={onSearch} />
+            </Tooltip>
+          );
+        }
+        if (x.title === 'display-settings') {
+          return (
+            <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>
+              {this.renderSwitchDropdown()}
+            </Tooltip>
+          );
+        }
+        return <Tooltip title={x.title}>{x.render && x.render()}</Tooltip>;
+      });
+    }
+    return this.renderRightDefault();
+  }
+
+  render() {
+    const { selectedRows, batchDelete, operatorRender, onBatchDelete } = this.props;
     return (
       <div className={styles.tableListOperator}>
         <div>
-          {operatorRender()}
+          {(isFunction(operatorRender) && operatorRender()) ||
+            // @ts-ignore
+            (isFunction(operatorRender.left) && operatorRender.left())}
           {selectedRows.length > 0 && batchDelete && (
             <Button onClick={onBatchDelete} icon="delete" type="danger">
               <FormattedMessage id="component.common.text.delete" />
@@ -142,12 +193,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
           )}
         </div>
         <div className={styles.tableListOperatorRight}>
-          <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
-            <Button shape="circle" icon="sync" onClick={onSearch} />
-          </Tooltip>
-          <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>
-            {this.renderSwitchDropdown()}
-          </Tooltip>
+          {(isFunction(operatorRender) && this.renderRightDefault()) || this.renderRight()}
         </div>
       </div>
     );

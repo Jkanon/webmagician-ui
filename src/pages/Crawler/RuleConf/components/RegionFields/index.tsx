@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { Button, Divider, Dropdown, Icon, Input, Menu, message, Switch } from 'antd';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import memoize from 'memoize-one';
 
 import { StandardTableColumnProps } from '@/components/StandardTable';
 import { TablePage } from '@/components/Page';
@@ -215,9 +216,25 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
 
   private newKey = 'new';
 
-  private expandKeys: string[] = [];
+  private newDataExpandRowKey = '';
 
   private pageRef: RefObject<TablePage<RegionFieldsItem>> = React.createRef();
+
+  assemblyDataByMemoize = memoize(
+    (
+      editingId: string,
+      list: RegionFieldsItem[],
+      newData?: RegionFieldsItem,
+    ): [RegionFieldsItem[], string] => {
+      this.newDataExpandRowKey = '';
+      const newList =
+        newData && newData.parentId !== this.props.regionId
+          ? list.map(x => this.assemblyDataListWithNew(x, newData, []))
+          : list.map(x => this.assemblyDataList(x));
+
+      return [newList, this.newDataExpandRowKey];
+    },
+  );
 
   constructor(props: RegionFieldsProps) {
     super(props);
@@ -375,7 +392,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       }
       newChildren = [newData, ...newChildren];
       newChildren = newChildren.map(x => this.assemblyDataList(x));
-      this.expandKeys = [id];
+      this.newDataExpandRowKey = id;
     } else if (newChildren && newChildren.length > 0) {
       newChildren = newChildren.map(x =>
         this.assemblyDataListWithNew(x, newData, [...parentKeys, id]),
@@ -403,15 +420,12 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     const { list: originalList, pagination } = originalData;
     const list =
       newData && newData.parentId === regionId ? [newData, ...originalList] : originalList;
-    this.expandKeys = [];
+    const [newList, newDataExpandRowKey] = this.assemblyDataByMemoize(editingId, list, newData);
     const data =
       editingId === ''
         ? originalData
         : {
-            list:
-              newData && newData.parentId !== regionId
-                ? list.map(x => this.assemblyDataListWithNew(x, newData, []))
-                : list.map(x => this.assemblyDataList(x)),
+            list: newList,
             pagination,
           };
 
@@ -424,10 +438,10 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         data={data}
         action="regionFields/fetch"
         searchParams={{ regionId }}
-        operatorRender={this.operatorRender}
+        operatorRender={{ left: this.operatorRender, right: [{ title: 'refresh' }] }}
         onDelete={(rows: RegionFieldsItem[]) => this.onDelete(rows.map(row => row.id))}
         tableOptions={{
-          expandedRowKeys: this.state.expandRowKeys.concat(this.expandKeys),
+          expandedRowKeys: this.state.expandRowKeys.concat(newDataExpandRowKey),
           onExpandedRowsChange: (expandedRows: string[]) => {
             this.setState({
               expandRowKeys: expandedRows,
