@@ -72,7 +72,11 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
           target="_blank"
           rel="noreferrer noopener"
           title={formatMessage({ id: 'app.common.label.open-in-new-window' })}
-          onClick={() => openWindow(text)}
+          onClick={(e: React.MouseEvent<HTMLElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openWindow(text);
+          }}
         >
           {text}
         </a>

@@ -19,7 +19,7 @@ import debounce from 'lodash/debounce';
 
 import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
 import SearchPanel from './SearchPanel';
-import OperatorPanel, { complexOperatorRender } from './OperatorPanel';
+import OperatorPanel, { ComplexOperatorRender } from './OperatorPanel';
 
 import styles from './index.less';
 
@@ -63,7 +63,7 @@ interface TablePageProps<T extends TableListItem> {
   handleSelectRows?: (rows: T[]) => void;
   onDelete?: (rows: T[]) => void;
   searchFormRender?: (form: WrappedFormUtils) => React.ReactNode;
-  operatorRender?: (() => React.ReactNode) | complexOperatorRender;
+  operatorRender?: (() => React.ReactNode) | ComplexOperatorRender;
   expandedRowRender?: (record: T) => React.ReactNode;
 }
 

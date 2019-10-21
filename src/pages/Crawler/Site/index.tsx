@@ -89,7 +89,10 @@ class Site extends Component<SiteProps, SiteState> {
           target="_blank"
           rel="noreferrer noopener"
           title={formatMessage({ id: 'app.common.label.open-in-new-window' })}
-          onClick={() => openWindow(text)}
+          onClick={(e: React.MouseEvent<HTMLElement>) => {
+            e.preventDefault();
+            openWindow(text);
+          }}
         >
           {text}
         </a>

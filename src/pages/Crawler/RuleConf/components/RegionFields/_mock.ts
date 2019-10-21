@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import { isEmpty, uniqueId } from 'lodash';
 import { RegionFieldsItem } from '@/pages/Crawler/RuleConf/models/components/regionFields';
-import { deleteTableList, editTableList, getTableList } from '@/../mock/utils';
+import { deleteTableList, editTableList, getTableList, response } from '@/../mock/utils';
 
 const tableListDataSource: RegionFieldsItem[] = [
   {
@@ -80,6 +81,52 @@ function get(req: Request, res: Response) {
   return getTableList(req, res, dataSource);
 }
 
+function addChildren(parentId: string, children?: RegionFieldsItem[]): RegionFieldsItem | false {
+  if (children && children.length > 0) {
+    for (let i = 0; i < children.length; i += 1) {
+      const data = children[i];
+      if (data.id === parentId) {
+        return data;
+      }
+    }
+  }
+  return false;
+}
+
+function add(req: Request, res: Response) {
+  const { body } = req;
+  if (!isEmpty(body)) {
+    const { parentId, pageRegion: { id: regionId } } = body;
+    body.id = uniqueId().toString();
+    if (parentId === regionId) {
+      tableListDataSource.unshift(body);
+    } else {
+      for (let i = 0; i < tableListDataSource.length; i += 1) {
+        let data: RegionFieldsItem | false = tableListDataSource[i];
+        let match = false;
+        if (!(data.pageRegion && data.pageRegion.id === regionId)) {
+           data = addChildren(parentId, data.children);
+          match = true;
+        } else if (data.id === parentId) {
+          match = true;
+        }
+
+        if (data !== false && match) {
+          if (!data.children) {
+            data.children = [];
+          }
+          data.children.unshift(body);
+          break;
+        }
+      }
+    }
+  }
+  return response(res, {
+    code: 0,
+    data: body,
+  });
+}
+
 function edit(req: Request, res: Response) {
   return editTableList(req, res, tableListDataSource);
 }
@@ -90,6 +137,7 @@ function del(req: Request, res: Response) {
 
 export default {
   'GET /api/crawler/fields': get,
+  'POST /api/crawler/fields': add,
   'PUT /api/crawler/fields': edit,
   'DELETE /api/crawler/fields': del,
 };

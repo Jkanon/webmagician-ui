@@ -7,7 +7,7 @@ import { StandardTableColumnProps } from '@/components/StandardTable';
 
 import styles from '@/components/Page/TablePage/index.less';
 
-export interface complexOperatorRender {
+export interface ComplexOperatorRender {
   left: () => React.ReactNode;
   right: {
     title: ReactNode;
@@ -22,7 +22,7 @@ interface OperatorPanelProps {
   onBatchDelete: React.MouseEventHandler<HTMLElement>;
   onSearch: React.MouseEventHandler<HTMLElement>;
   onSelectedDisplayColumnKeyChange?: (selectedKeys: string[]) => void;
-  operatorRender: (() => React.ReactNode) | complexOperatorRender;
+  operatorRender: (() => React.ReactNode) | ComplexOperatorRender;
 }
 
 interface OperatorPanelState {
