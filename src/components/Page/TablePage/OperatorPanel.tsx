@@ -157,7 +157,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
     const { right } = this.props.operatorRender;
     if (right) {
       // @ts-ignore
-      right.map(x => {
+      return right.map(x => {
         if (x.title === 'refresh') {
           return (
             <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
