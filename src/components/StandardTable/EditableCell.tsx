@@ -32,9 +32,9 @@ interface EditableCellProps extends FormComponentProps {
 class EditableCell extends PureComponent<EditableCellProps> {
   renderCustom() {
     const { form, editingRender, title, record, index, dataIndex } = this.props;
-    const text = record[dataIndex];
+    const text = get(record, dataIndex);
     if (typeof editingRender === 'function') {
-      return editingRender(get(record, dataIndex), record, index, title, dataIndex, form);
+      return editingRender(text, record, index, title, dataIndex, form);
     }
     const { getFieldDecorator } = form;
     const { fieldDecoratorOptions = {}, itemRender } = editingRender;
@@ -45,7 +45,7 @@ class EditableCell extends PureComponent<EditableCellProps> {
           // @ts-ignore
           ...fieldDecoratorOptions,
           // @ts-ignore
-        })(itemRender())}
+        })(itemRender(text, record, index, title, dataIndex, form))}
       </Form.Item>
     );
   }

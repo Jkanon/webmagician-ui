@@ -39,10 +39,12 @@ export default {
   'app.crawler.rule-conf.label.method': 'Http Request Method',
   'app.crawler.rule-conf.label.example-params': 'Params Example',
   'app.crawler.rule-conf.label.validation-selector': 'Validation Selector',
+
   'app.crawler.rule-conf.label.region.name': 'Region Name',
   'app.crawler.rule-conf.label.region.selector': 'Selector For Region',
   'app.crawler.rule-conf.label.region.fields': 'Extracted Fields',
   'app.crawler.rule-conf.label.region.links': 'Scraping Links',
+
   'app.crawler.rule-conf.label.region.fields.name': 'Name',
   'app.crawler.rule-conf.label.region.fields.alias': 'Alias',
   'app.crawler.rule-conf.label.region.fields.required': 'Required',
@@ -52,6 +54,11 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': 'Download Flag',
   'app.crawler.rule-conf.label.region.fields.selector': 'Selector',
   'app.crawler.rule-conf.label.region.fields.validation-selector': 'Validation Selector',
+
+  'app.crawler.rule-conf.label.region.links.name': 'Name',
+  'app.crawler.rule-conf.label.region.links.selector': 'Selector',
+  'app.crawler.rule-conf.label.region.links.method': 'Method',
+  'app.crawler.rule-conf.label.region.links.type': 'Type',
 
   'app.crawler.rule-conf.operation.label.add-region': 'Region',
   'app.crawler.rule-conf.operation.label.add-field': 'Field',

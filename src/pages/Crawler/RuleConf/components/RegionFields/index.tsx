@@ -257,16 +257,16 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
 
   handleAddClick = (parentId: string) => {
     const newData = {
-        id: this.newKey,
+      id: this.newKey,
+      name: '',
+      selector: '',
+      parentId,
+      pageRegion: {
+        id: this.props.regionId,
         name: '',
         selector: '',
-        parentId,
-        pageRegion: {
-          id: this.props.regionId,
-          name: '',
-          selector: '',
-        },
-      };
+      },
+    };
     this.setState({
       editingRecord: newData,
     });
@@ -289,7 +289,9 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         if (this.state.editingRecord == null) {
           return;
         }
-        const { editingRecord: { id: editingId, parentId, pageRegion } } = this.state;
+        const {
+          editingRecord: { id: editingId, parentId, pageRegion },
+        } = this.state;
         const { id, ...rest } = fieldsValue;
         const cb =
           editingId === this.newKey
@@ -322,9 +324,9 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         that.pageRef.current.doSearch();
       }
       if (this.newDataExpandRowKey !== '') {
-        this.setState({
-          expandRowKeys: this.state.expandRowKeys.concat(this.newDataExpandRowKey),
-        });
+        this.setState(prevState => ({
+          expandRowKeys: prevState.expandRowKeys.concat(this.newDataExpandRowKey),
+        }));
       }
       message.success(
         formatMessage({
@@ -385,15 +387,18 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
     </Button>
   );
 
-  assemblyDataList = ({ children, id, ...rest }: RegionFieldsItem,
-                      editingId: string): RegionFieldsItem => ({
-      id,
-      ...rest,
-      editing: id === editingId,
-      children: children && children.length > 0 ?
-        children.map(x => this.assemblyDataList(x, editingId))
+  assemblyDataList = (
+    { children, id, ...rest }: RegionFieldsItem,
+    editingId: string,
+  ): RegionFieldsItem => ({
+    id,
+    ...rest,
+    editing: id === editingId,
+    children:
+      children && children.length > 0
+        ? children.map(x => this.assemblyDataList(x, editingId))
         : undefined,
-    });
+  });
 
   assemblyDataListWithNew = (
     { children, id, ...rest }: RegionFieldsItem,

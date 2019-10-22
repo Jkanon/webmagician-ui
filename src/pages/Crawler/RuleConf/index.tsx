@@ -28,22 +28,6 @@ interface RuleConfState {
   selectedRows: PageInfoListItem[];
 }
 
-@connect(
-  ({
-    ruleConf,
-    loading,
-  }: {
-    ruleConf: RuleConfStateType;
-    loading: {
-      models: {
-        [key: string]: boolean;
-      };
-    };
-  }) => ({
-    ruleConf,
-    loading: loading.models.ruleConf,
-  }),
-)
 class RuleConf extends Component<RuleConfProps, RuleConfState> {
   state: RuleConfState = {
     selectedRows: [],
@@ -270,4 +254,19 @@ class RuleConf extends Component<RuleConfProps, RuleConfState> {
   }
 }
 
-export default RuleConf;
+export default connect(
+  ({
+    ruleConf,
+    loading,
+  }: {
+    ruleConf: RuleConfStateType;
+    loading: {
+      models: {
+        [key: string]: boolean;
+      };
+    };
+  }) => ({
+    ruleConf,
+    loading: loading.models.ruleConf,
+  }),
+)(RuleConf);

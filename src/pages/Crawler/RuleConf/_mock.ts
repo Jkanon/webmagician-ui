@@ -13,7 +13,7 @@ import { PageInfoListItem } from './models/ruleConf';
 const tableListDataSource: PageInfoListItem[] = [
   {
     id: '913382373068836866',
-    name: '简书用户首页',
+    name: 'User Profile（简书用户首页）',
     urlRegex: 'https://www.jianshu.com/u/[a-zA-Z0-9]+',
     urlExample: 'https://www.jianshu.com/u/53671b43e905',
     enableJs: false,
@@ -25,14 +25,14 @@ const tableListDataSource: PageInfoListItem[] = [
     pageRegions: [
       {
         id: '913382675704647681',
-        name: '记录1',
+        name: 'Record 1（记录1）',
         selector: '',
       },
     ],
   },
   {
     id: '913382373068836867',
-    name: '简书文章页',
+    name: 'Article Page（简书文章页）',
     urlRegex: 'https://www.jianshu.com/p/[a-zA-Z0-9]+',
     urlExample: 'https://www.jianshu.com/p/22f70071c5c4',
     enableJs: false,

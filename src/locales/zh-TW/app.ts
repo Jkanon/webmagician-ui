@@ -38,10 +38,12 @@ export default {
   'app.crawler.rule-conf.label.method': '請求方式',
   'app.crawler.rule-conf.label.example-params': '請求參數示例',
   'app.crawler.rule-conf.label.validation-selector': '頁面驗證表達式',
+
   'app.crawler.rule-conf.label.region.name': '區域名稱',
   'app.crawler.rule-conf.label.region.selector': '區域選擇器',
   'app.crawler.rule-conf.label.region.fields': '抽取字段',
   'app.crawler.rule-conf.label.region.links': '採集鏈接',
+
   'app.crawler.rule-conf.label.region.fields.name': '名稱',
   'app.crawler.rule-conf.label.region.fields.alias': '別名',
   'app.crawler.rule-conf.label.region.fields.required': '必須字段',
@@ -51,6 +53,11 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': '下載標誌',
   'app.crawler.rule-conf.label.region.fields.selector': '抽取規則',
   'app.crawler.rule-conf.label.region.fields.validation-selector': '抽取驗證規則',
+
+  'app.crawler.rule-conf.label.region.links.name': '名稱',
+  'app.crawler.rule-conf.label.region.links.selector': '抽取規則',
+  'app.crawler.rule-conf.label.region.links.method': '方法',
+  'app.crawler.rule-conf.label.region.links.type': '類型',
 
   'app.crawler.rule-conf.operation.label.add-region': '區域',
   'app.crawler.rule-conf.operation.label.add-field': '字段',

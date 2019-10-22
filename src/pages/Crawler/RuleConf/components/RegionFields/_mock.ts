@@ -96,7 +96,10 @@ function addChildren(parentId: string, children?: RegionFieldsItem[]): RegionFie
 function add(req: Request, res: Response) {
   const { body } = req;
   if (!isEmpty(body)) {
-    const { parentId, pageRegion: { id: regionId } } = body;
+    const {
+      parentId,
+      pageRegion: { id: regionId },
+    } = body;
     body.id = uniqueId().toString();
     if (parentId === regionId) {
       tableListDataSource.unshift(body);
@@ -105,7 +108,7 @@ function add(req: Request, res: Response) {
         let data: RegionFieldsItem | false = tableListDataSource[i];
         let match = false;
         if (!(data.pageRegion && data.pageRegion.id === regionId)) {
-           data = addChildren(parentId, data.children);
+          data = addChildren(parentId, data.children);
           match = true;
         } else if (data.id === parentId) {
           match = true;
@@ -136,8 +139,8 @@ function del(req: Request, res: Response) {
 }
 
 export default {
-  'GET /api/crawler/fields': get,
-  'POST /api/crawler/fields': add,
-  'PUT /api/crawler/fields': edit,
-  'DELETE /api/crawler/fields': del,
+  'GET /api/crawler/regions/fields': get,
+  'POST /api/crawler/regions/fields': add,
+  'PUT /api/crawler/regions/fields': edit,
+  'DELETE /api/crawler/regions/fields': del,
 };

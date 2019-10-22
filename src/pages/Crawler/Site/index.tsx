@@ -30,22 +30,6 @@ interface SiteState {
   currentRecord?: SiteListItem;
 }
 
-@connect(
-  ({
-    site,
-    loading,
-  }: {
-    site: SiteStateType;
-    loading: {
-      models: {
-        [key: string]: boolean;
-      };
-    };
-  }) => ({
-    site,
-    loading: loading.models.site,
-  }),
-)
 class Site extends Component<SiteProps, SiteState> {
   state: SiteState = {
     selectedRows: [],
@@ -313,9 +297,9 @@ class Site extends Component<SiteProps, SiteState> {
       .catch(() => {});
   };
 
-  handleAdd = (fields: any, form: WrappedFormUtils) => this.handleAddOrEdit('site/create', fields);
+  handleAdd = (fields: any) => this.handleAddOrEdit('site/create', fields);
 
-  handleEdit = (fields: any, form: WrappedFormUtils) => this.handleAddOrEdit('site/modify', fields);
+  handleEdit = (fields: any) => this.handleAddOrEdit('site/modify', fields);
 
   handleAddOrEdit = (type: string, fields: any) => {
     const { dispatch } = this.props;
@@ -408,4 +392,19 @@ class Site extends Component<SiteProps, SiteState> {
   }
 }
 
-export default Site;
+export default connect(
+  ({
+    site,
+    loading,
+  }: {
+    site: SiteStateType;
+    loading: {
+      models: {
+        [key: string]: boolean;
+      };
+    };
+  }) => ({
+    site,
+    loading: loading.models.site,
+  }),
+)(Site);

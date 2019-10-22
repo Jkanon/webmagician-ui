@@ -38,10 +38,12 @@ export default {
   'app.crawler.rule-conf.label.method': 'リクエストメソッド',
   'app.crawler.rule-conf.label.example-params': 'リクエストパラメータの例',
   'app.crawler.rule-conf.label.validation-selector': '抽出検証ルール',
+
   'app.crawler.rule-conf.label.region.name': 'リージョン名',
   'app.crawler.rule-conf.label.region.selector': 'リージョンのセレクタ',
   'app.crawler.rule-conf.label.region.fields': '抽出フィールド',
   'app.crawler.rule-conf.label.region.links': 'スクレイピングリンク',
+
   'app.crawler.rule-conf.label.region.fields.name': '名前',
   'app.crawler.rule-conf.label.region.fields.alias': '別名',
   'app.crawler.rule-conf.label.region.fields.required': '必須フィールド',
@@ -51,6 +53,11 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': 'ダウンロードのフラグ',
   'app.crawler.rule-conf.label.region.fields.selector': '抽出ルール',
   'app.crawler.rule-conf.label.region.fields.validation-selector': '抽出検証ルール',
+
+  'app.crawler.rule-conf.label.region.links.name': '名前',
+  'app.crawler.rule-conf.label.region.links.selector': '抽出ルール',
+  'app.crawler.rule-conf.label.region.links.method': 'メソッド',
+  'app.crawler.rule-conf.label.region.links.type': 'タイプ',
 
   'app.crawler.rule-conf.operation.label.add-region': 'リージョン',
   'app.crawler.rule-conf.operation.label.add-field': 'フィールド',

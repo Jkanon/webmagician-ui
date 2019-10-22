@@ -38,10 +38,12 @@ export default {
   'app.crawler.rule-conf.label.method': '请求方式',
   'app.crawler.rule-conf.label.example-params': '请求参数示例',
   'app.crawler.rule-conf.label.validation-selector': '页面验证表达式',
+
   'app.crawler.rule-conf.label.region.name': '区域名称',
   'app.crawler.rule-conf.label.region.selector': '区域选择器',
   'app.crawler.rule-conf.label.region.fields': '抽取字段',
   'app.crawler.rule-conf.label.region.links': '采集链接',
+
   'app.crawler.rule-conf.label.region.fields.name': '名称',
   'app.crawler.rule-conf.label.region.fields.alias': '别名',
   'app.crawler.rule-conf.label.region.fields.required': '必须字段',
@@ -51,6 +53,11 @@ export default {
   'app.crawler.rule-conf.label.region.fields.download': '下载标志',
   'app.crawler.rule-conf.label.region.fields.selector': '抽取规则',
   'app.crawler.rule-conf.label.region.fields.validation-selector': '抽取验证规则',
+
+  'app.crawler.rule-conf.label.region.links.name': '名称',
+  'app.crawler.rule-conf.label.region.links.selector': '抽取规则',
+  'app.crawler.rule-conf.label.region.links.method': '方法',
+  'app.crawler.rule-conf.label.region.links.type': '类型',
 
   'app.crawler.rule-conf.operation.label.add-region': '区域',
   'app.crawler.rule-conf.operation.label.add-field': '字段',

@@ -7,7 +7,8 @@ import { TableListData } from '@/components/Page/TablePage';
 import { ModalForm } from '@/components/Form';
 import InlineModal from '@/components/Modal/InlineModal';
 import pageRegionFormItems from './PageRegionFormItems';
-import RegionFields from './RegionFields/index';
+import RegionFields from './RegionFields';
+import RegionLinks from './RegionLinks';
 import { PageInfoListItem } from '@/pages/Crawler/RuleConf/models/ruleConf';
 
 export interface PageRegionListItem extends TableListItem {
@@ -54,6 +55,7 @@ class PageRegion extends PureComponent<PageRegionProps> {
             fullScreen
             maxmin={false}
             footer={false}
+            destroyOnClose
           >
             <Tabs tabPosition="left">
               <Tabs.TabPane
@@ -66,8 +68,7 @@ class PageRegion extends PureComponent<PageRegionProps> {
                 tab={formatMessage({ id: 'app.crawler.rule-conf.label.region.links' })}
                 key="2"
               >
-                <p>Content of Tab Pane 2</p>
-                <p>Content of Tab Pane 2</p>
+                <RegionLinks regionId={record.id} />
               </Tabs.TabPane>
             </Tabs>
           </InlineModal>
