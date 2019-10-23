@@ -156,23 +156,33 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
     // @ts-ignore
     const { right } = this.props.operatorRender;
     if (right) {
-      // @ts-ignore
-      return right.map(x => {
+      return right.map((x: { title: ReactNode; render?: () => React.ReactNode }) => {
         if (x.title === 'refresh') {
           return (
-            <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
+            <Tooltip
+              key={x.title.toString()}
+              title={<FormattedMessage id="component.common.text.refresh" />}
+            >
               <Button shape="circle" icon="sync" onClick={onSearch} />
             </Tooltip>
           );
         }
         if (x.title === 'display-settings') {
           return (
-            <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>
+            <Tooltip
+              key={x.title.toString()}
+              title={<FormattedMessage id="app.common.label.columns-display-settings" />}
+            >
               {this.renderSwitchDropdown()}
             </Tooltip>
           );
         }
-        return <Tooltip title={x.title}>{x.render && x.render()}</Tooltip>;
+        // @ts-ignore
+        return (
+          <Tooltip key={x.title.toString()} title={x.title}>
+            {x.render && x.render()}
+          </Tooltip>
+        );
       });
     }
     return this.renderRightDefault();

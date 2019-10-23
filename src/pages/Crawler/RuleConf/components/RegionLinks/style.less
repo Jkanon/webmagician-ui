@@ -1,0 +1,38 @@
+@import '~antd/es/style/themes/default.less';
+
+@border-color-card: #fafafa;
+
+.card {
+  padding: 10px;
+}
+
+.cardHeader {
+  background-color: @border-color-card;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.searchInput {
+  input {
+    background-color: @border-color-card;
+    border-radius: 50px;
+    &:focus {
+      background-color: #fff;
+    }
+  }
+}
+
+.linksCategory {
+  border: none;
+  :global {
+    .ant-collapse-item {
+      border-radius: 0 !important;
+    }
+    .ant-collapse-content > .ant-collapse-content-box {
+      padding: 0;
+    }
+    .ant-list {
+      border: none;
+      border-radius: 0;
+    }
+  }
+}

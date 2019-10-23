@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Input, Select } from 'antd';
+import { Col, Icon, Input, List, Row, Collapse } from 'antd';
 import { Dispatch } from 'redux';
-import { FormattedMessage } from 'umi-plugin-react/locale';
 
-import { StandardTableColumnProps } from '@/components/StandardTable';
 import {
   RegionLinksItem,
   RegionLinksStateType,
 } from '@/pages/Crawler/RuleConf/models/components/regionLinks';
-import { TablePage } from '@/components/Page';
-import LinksParams from './LinksParams';
+
+import styles from './style.less';
 
 interface RegionLinksProps {
   dispatch: Dispatch<any>;
@@ -24,119 +22,105 @@ interface RegionLinksState {
 }
 
 class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
-  columns: StandardTableColumnProps<RegionLinksItem>[] = [
-    {
-      title: <FormattedMessage id="app.crawler.rule-conf.label.region.links.name" />,
-      dataIndex: 'name',
-      editingRender: {
-        fieldDecoratorOptions: {
-          rules: [
-            {
-              required: true,
-              message: <FormattedMessage id="app.common.validation.not-empty" />,
-            },
-          ],
-        },
-        itemRender: () => <Input />,
-      },
-    },
-    {
-      title: <FormattedMessage id="app.crawler.rule-conf.label.region.links.method" />,
-      dataIndex: 'method',
-      editingRender: {
-        fieldDecoratorOptions: {
-          rules: [
-            {
-              required: true,
-              message: <FormattedMessage id="app.common.validation.not-empty" />,
-            },
-          ],
-        },
-        itemRender: text => (
-          <Select defaultValue={text || 'GET'}>
-            <Select.Option value="GET">GET</Select.Option>
-            <Select.Option value="POST">POST</Select.Option>
-            <Select.Option value="PUT">PUT</Select.Option>
-            <Select.Option value="DELETE">DELETE</Select.Option>
-          </Select>
-        ),
-      },
-    },
-    {
-      title: <FormattedMessage id="app.crawler.rule-conf.label.region.links.type" />,
-      dataIndex: 'type',
-      editingRender: {
-        fieldDecoratorOptions: {
-          rules: [
-            {
-              required: true,
-              message: <FormattedMessage id="app.common.validation.not-empty" />,
-            },
-          ],
-        },
-        itemRender: () => (
-          <Select>
-            <Select.Option value="GET">Get</Select.Option>
-            <Select.Option value="POST">Post</Select.Option>
-            <Select.Option value="PUT">Put</Select.Option>
-            <Select.Option value="DELETE">Delete</Select.Option>
-          </Select>
-        ),
-      },
-    },
-    {
-      title: <FormattedMessage id="app.crawler.rule-conf.label.region.links.selector" />,
-      dataIndex: 'selector',
-      ellipsis: true,
-      editingRender: {
-        fieldDecoratorOptions: {
-          rules: [
-            {
-              required: true,
-              message: <FormattedMessage id="app.common.validation.not-empty" />,
-            },
-          ],
-        },
-        itemRender: () => <Input.TextArea autoSize />,
-      },
-    },
-    {
-      title: <FormattedMessage id="app.common.label.operation" />,
-      align: 'center',
-      key: 'operation',
-      width: 300,
-      render: () => <div>test</div>,
-    },
-  ];
+  componentWillMount(): void {
+    const { dispatch, regionId } = this.props;
 
-  operatorRender = () => (
-    <Button type="primary" icon="plus">
-      <FormattedMessage id="component.common.text.add" />
-    </Button>
-  );
-
-  expandedRowRender = () => <LinksParams />;
+    dispatch({
+      type: 'regionLinks/fetch',
+      payload: {
+        regionId,
+      },
+    });
+  }
 
   render() {
     const {
-      dispatch,
-      loading,
       regionLinks: { data },
-      regionId,
     } = this.props;
 
+    const header = (
+      <>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Icon type="folder-open" />
+          <span style={{ display: 'inline-flex', flexFlow: 'column', marginLeft: 10 }}>
+            <span>详情页</span>
+            <span>1 request</span>
+          </span>
+        </div>
+      </>
+    );
+
+    const { list } = data;
+
     return (
-      <TablePage
-        columns={this.columns}
-        dispatch={dispatch}
-        loading={loading}
-        data={data}
-        expandedRowRender={this.expandedRowRender}
-        action="regionLinks/fetch"
-        searchParams={{ regionId }}
-        operatorRender={{ left: this.operatorRender, right: [{ title: 'refresh' }] }}
-        tableOptions={{ scroll: { x: false } }}
-      />
+      <Row>
+        <Col xs={24} sm={24} md={24} lg={6} xl={6}>
+          <div className="ant-card-bordered">
+            <div className={`${styles.searchInput} ${styles.card} ${styles.cardHeader}`}>
+              <Input prefix={<Icon type="search" />} placeholder="Filter" />
+            </div>
+            <div className={`${styles.card} ${styles.cardHeader}`}>
+              <a>
+                <Icon type="plus" /> New Links
+              </a>
+            </div>
+            <div>
+              <Collapse
+                defaultActiveKey={['1']}
+                expandIcon={({ isActive }) => (
+                  <Icon type="caret-right" rotate={isActive ? 90 : 0} />
+                )}
+                className={styles.linksCategory}
+              >
+                <Collapse.Panel header={header} key="1">
+                  <List
+                    itemLayout="horizontal"
+                    size="small"
+                    dataSource={list}
+                    bordered
+                    renderItem={item => (
+                      <List.Item>
+                        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                          <div
+                            style={{
+                              flex: '0 0 50px',
+                              fontWeight: 'bold',
+                              fontSize: 'xx-small',
+                              color: 'green',
+                            }}
+                          >
+                            DELETE
+                          </div>
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              flex: '1 1 auto',
+                            }}
+                          >
+                            {item.name}
+                          </div>
+                          <div>
+                            <Icon type="ellipsis" />
+                          </div>
+                        </div>
+                      </List.Item>
+                    )}
+                  />
+                </Collapse.Panel>
+              </Collapse>
+            </div>
+          </div>
+        </Col>
+        <Col xs={24} sm={24} md={24} lg={18} xl={18}>
+          <div className="ant-card-bordered" style={{ borderLeft: 0 }}>
+            <p>Card content</p>
+            <p>Card content</p>
+            <p>Card content</p>
+          </div>
+        </Col>
+      </Row>
     );
   }
 }

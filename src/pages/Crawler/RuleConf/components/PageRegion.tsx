@@ -11,6 +11,8 @@ import RegionFields from './RegionFields';
 import RegionLinks from './RegionLinks';
 import { PageInfoListItem } from '@/pages/Crawler/RuleConf/models/ruleConf';
 
+import styles from './style.less';
+
 export interface PageRegionListItem extends TableListItem {
   id: string;
   name: string;
@@ -57,7 +59,7 @@ class PageRegion extends PureComponent<PageRegionProps> {
             footer={false}
             destroyOnClose
           >
-            <Tabs tabPosition="left">
+            <Tabs tabPosition="left" className={styles.verticalTabs}>
               <Tabs.TabPane
                 tab={formatMessage({ id: 'app.crawler.rule-conf.label.region.fields' })}
                 key="1"
