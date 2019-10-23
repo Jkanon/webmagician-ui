@@ -88,6 +88,10 @@ function addChildren(parentId: string, children?: RegionFieldsItem[]): RegionFie
       if (data.id === parentId) {
         return data;
       }
+      const ret = addChildren(parentId, data.children);
+      if (ret !== false) {
+        return ret;
+      }
     }
   }
   return false;
@@ -107,13 +111,12 @@ function add(req: Request, res: Response) {
       for (let i = 0; i < tableListDataSource.length; i += 1) {
         let data: RegionFieldsItem | false = tableListDataSource[i];
         let match = false;
-        if (!(data.pageRegion && data.pageRegion.id === regionId)) {
+        if (data.id === parentId) {
+          match = true;
+        } else if (data.pageRegion && data.pageRegion.id === regionId) {
           data = addChildren(parentId, data.children);
           match = true;
-        } else if (data.id === parentId) {
-          match = true;
         }
-
         if (data !== false && match) {
           if (!data.children) {
             data.children = [];
