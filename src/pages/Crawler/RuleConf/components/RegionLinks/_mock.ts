@@ -36,7 +36,6 @@ function get(req: Request, res: Response) {
   if (regionId) {
     dataSource = dataSource.filter(x => x.pageRegion && x.pageRegion.id === regionId);
   }
-
   return getTableList(req, res, dataSource);
 }
 

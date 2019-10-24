@@ -48,8 +48,8 @@ function del(req: Request, res: Response) {
 }
 
 export default {
-  'GET /api/crawler/regions/links': get,
-  'POST /api/crawler/regions/links': add,
-  'PUT /api/crawler/regions/links': edit,
-  'DELETE /api/crawler/regions/links': del,
+  'GET /api/crawler/regions/links/params': get,
+  'POST /api/crawler/regions/links/params': add,
+  'PUT /api/crawler/regions/links/params': edit,
+  'DELETE /api/crawler/regions/links/params': del,
 };

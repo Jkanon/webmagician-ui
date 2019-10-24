@@ -25,13 +25,37 @@ class LinksParams extends PureComponent {
         },
         itemRender: () => <Input />,
       },
-      width: 300,
+    },
+    {
+      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.selector" />,
+      dataIndex: 'selector',
+      editingRender: {
+        fieldDecoratorOptions: {
+          rules: [
+            {
+              required: true,
+              message: <FormattedMessage id="app.common.validation.not-empty" />,
+            },
+          ],
+        },
+        itemRender: () => <Input />,
+      },
+    },
+    {
+      title: <FormattedMessage id="app.common.label.memo" />,
+      dataIndex: 'remarks',
+      editingRender: {
+        itemRender: () => <Input />,
+      },
     },
   ];
 
   renderRequestParams = () => (
     // @ts-ignore
-    <TablePage action="linksParams/fetch" />
+    <TablePage
+      action="linksParams/fetch"
+      columns={this.columns}
+    />
   );
 
   render() {

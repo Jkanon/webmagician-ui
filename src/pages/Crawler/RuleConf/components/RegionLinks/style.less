@@ -6,6 +6,10 @@
 .right {
   height: 100%;
   border: 1px solid #e8e8e8;
+  >div {
+    height: 100%;
+    overflow-y: auto;
+  }
   :global {
     .ant-collapse,
     .ant-collapse-item,
@@ -22,6 +26,9 @@
 
 .right {
   border-left: none;
+  >div {
+    margin-left: 4px;
+  }
 }
 
 .card {
@@ -61,7 +68,7 @@
 
 .linksListItem {
   cursor: pointer;
-  :hover {
+  &:hover {
     background-color: #e8e8e8;
   }
 }
