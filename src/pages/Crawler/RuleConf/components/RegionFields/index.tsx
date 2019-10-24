@@ -188,7 +188,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
                   <FormattedMessage id="component.common.text.save" />
                 </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <a onClick={() => this.handleEditCancel()}>
+                <a onClick={this.handleEditCancel}>
                   <Icon type="close" />
                   <FormattedMessage id="component.common.text.cancel" />
                 </a>
@@ -254,6 +254,8 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
   componentDidUpdate(): void {
     this.fixRowHeightAlign();
   }
+
+  handleAddToRegionClick = () => this.handleAddClick(this.props.regionId);
 
   handleAddClick = (parentId: string) => {
     const newData = {
@@ -376,12 +378,14 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
       .catch(() => {});
   };
 
+  onBatchDeleteClick = (rows: RegionFieldsItem[]) => this.onDelete(rows.map(row => row.id));
+
   operatorRender = () => (
     <Button
       type="primary"
       icon="plus"
       disabled={this.state.editingRecord != null}
-      onClick={() => this.handleAddClick(this.props.regionId)}
+      onClick={this.handleAddToRegionClick}
     >
       <FormattedMessage id="component.common.text.add" />
     </Button>
@@ -468,7 +472,7 @@ class RegionFields extends Component<RegionFieldsProps, RegionFieldsState> {
         action="regionFields/fetch"
         searchParams={{ regionId }}
         operatorRender={{ left: this.operatorRender, right: [{ title: 'refresh' }] }}
-        onDelete={(rows: RegionFieldsItem[]) => this.onDelete(rows.map(row => row.id))}
+        onDelete={this.onBatchDeleteClick}
         tableOptions={{
           expandedRowKeys: this.state.expandRowKeys.concat(newDataExpandRowKey),
           onExpandedRowsChange: (expandedRows: string[]) => {

@@ -177,8 +177,8 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
             </Tooltip>
           );
         }
-        // @ts-ignore
         return (
+          // @ts-ignore
           <Tooltip key={x.title.toString()} title={x.title}>
             {x.render && x.render()}
           </Tooltip>

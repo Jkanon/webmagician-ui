@@ -2,6 +2,28 @@
 
 @border-color-card: #fafafa;
 
+.left,
+.right {
+  height: 100%;
+  border: 1px solid #e8e8e8;
+  :global {
+    .ant-collapse,
+    .ant-collapse-item,
+    .ant-collapse-header,
+    .ant-collapse-content {
+      border-radius: 0 !important;
+    }
+  }
+}
+
+.left {
+  box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.4);
+}
+
+.right {
+  border-left: none;
+}
+
 .card {
   padding: 10px;
 }
@@ -11,7 +33,7 @@
   border-bottom: 1px solid #eaeaea;
 }
 
-.searchInput {
+.searchCard {
   input {
     background-color: @border-color-card;
     border-radius: 50px;
@@ -35,4 +57,32 @@
       border-radius: 0;
     }
   }
+}
+
+.linksListItem {
+  cursor: pointer;
+  :hover {
+    background-color: #e8e8e8;
+  }
+}
+
+.linkName {
+  :global {
+    .ant-collapse {
+      border: none !important;
+    }
+    .ant-collapse-header {
+      input {
+        background-color: @border-color-card;
+        background-image: none;
+        border: 0 !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+}
+
+.linkSelector {
+  padding: 16px;
+  border-bottom: 1px solid #eaeaea;
 }
