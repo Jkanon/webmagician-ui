@@ -58,9 +58,14 @@ export default {
   'app.crawler.rule-conf.label.region.links.selector': '抽取規則',
   'app.crawler.rule-conf.label.region.links.method': '方法',
   'app.crawler.rule-conf.label.region.links.type': '類型',
+  'app.crawler.rule-conf.label.region.links.type.binary': '二進制',
+  'app.crawler.rule-conf.label.region.links.type.content-page': '內容頁',
+  'app.crawler.rule-conf.label.region.links.type.list-page': '列表頁',
+  'app.crawler.rule-conf.label.region.links.type.extra': '附加頁',
 
   'app.crawler.rule-conf.operation.label.add-region': '區域',
   'app.crawler.rule-conf.operation.label.add-field': '字段',
+  'app.crawler.rule-conf.operation.label.add-link': '新鏈接',
 
   'app.crawler.rule-conf.validation.name.not-empty': '頁面名稱不能為空',
   'app.crawler.rule-conf.validation.url-regex.not-empty': '請輸入匹配的URL正則表達式',

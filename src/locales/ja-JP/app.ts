@@ -58,9 +58,14 @@ export default {
   'app.crawler.rule-conf.label.region.links.selector': '抽出ルール',
   'app.crawler.rule-conf.label.region.links.method': 'メソッド',
   'app.crawler.rule-conf.label.region.links.type': 'タイプ',
+  'app.crawler.rule-conf.label.region.links.type.binary': 'バイナリー・ファイル ',
+  'app.crawler.rule-conf.label.region.links.type.content-page': 'コンテンツページ',
+  'app.crawler.rule-conf.label.region.links.type.list-page': 'リストページ',
+  'app.crawler.rule-conf.label.region.links.type.extra': 'Extra',
 
   'app.crawler.rule-conf.operation.label.add-region': 'リージョン',
   'app.crawler.rule-conf.operation.label.add-field': 'フィールド',
+  'app.crawler.rule-conf.operation.label.add-link': '新規リンク',
 
   'app.crawler.rule-conf.validation.name.not-empty': 'ページの名前を入力ください',
   'app.crawler.rule-conf.validation.url-regex.not-empty':

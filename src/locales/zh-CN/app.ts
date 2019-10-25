@@ -58,9 +58,14 @@ export default {
   'app.crawler.rule-conf.label.region.links.selector': '抽取规则',
   'app.crawler.rule-conf.label.region.links.method': '方法',
   'app.crawler.rule-conf.label.region.links.type': '类型',
+  'app.crawler.rule-conf.label.region.links.type.binary': '二进制',
+  'app.crawler.rule-conf.label.region.links.type.content-page': '内容页',
+  'app.crawler.rule-conf.label.region.links.type.list-page': '列表页',
+  'app.crawler.rule-conf.label.region.links.type.extra': '附加页',
 
   'app.crawler.rule-conf.operation.label.add-region': '区域',
   'app.crawler.rule-conf.operation.label.add-field': '字段',
+  'app.crawler.rule-conf.operation.label.add-link': '新链接',
 
   'app.crawler.rule-conf.validation.name.not-empty': '页面名称不能为空',
   'app.crawler.rule-conf.validation.url-regex.not-empty': '请输入匹配的URL正则表达式',

@@ -3,6 +3,7 @@ export default {
   'component.common.text.add': 'Add',
   'component.common.text.edit': 'Modify',
   'component.common.text.detail': 'Detail',
+  'component.common.text.duplicate': 'Duplicate',
   'component.common.text.refresh': 'Refresh',
   'component.common.text.save': 'Save',
   'component.common.text.cancel': 'Cancel',

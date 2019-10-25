@@ -6,9 +6,10 @@
 .right {
   height: 100%;
   border: 1px solid #e8e8e8;
-  >div {
+  > div {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    overflow-y: auto;
   }
   :global {
     .ant-collapse,
@@ -22,11 +23,15 @@
 
 .left {
   box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.4);
+  .autoFix {
+    flex: auto;
+    overflow-y: auto;
+  }
 }
 
 .right {
   border-left: none;
-  >div {
+  > div {
     margin-left: 4px;
   }
 }
@@ -92,4 +97,23 @@
 .linkSelector {
   padding: 16px;
   border-bottom: 1px solid #eaeaea;
+}
+
+.linksParams {
+  flex: auto;
+  height: 100%;
+  > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    :global {
+      .ant-tabs-bar {
+        margin-bottom: 0;
+      }
+      .ant-tabs-content {
+        flex: auto;
+        overflow-y: auto;
+      }
+    }
+  }
 }

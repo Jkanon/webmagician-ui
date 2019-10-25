@@ -3,6 +3,7 @@ export default {
   'component.common.text.add': '新建',
   'component.common.text.edit': '編輯',
   'component.common.text.detail': '詳情',
+  'component.common.text.duplicate': '複製',
   'component.common.text.refresh': '刷新',
   'component.common.text.save': '保存',
   'component.common.text.cancel': '取消',

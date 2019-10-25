@@ -1,69 +1,18 @@
 import React, { PureComponent } from 'react';
-import { Input, Tabs } from 'antd';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { Tabs } from 'antd';
 import { connect } from 'dva';
 
-import { LinksParamsItem } from '../../../models/components/linksParams';
-
-import { StandardTableColumnProps } from '@/components/StandardTable';
-import { TablePage } from '@/components/Page';
 import { RegionFieldsStateType } from '@/pages/Crawler/RuleConf/models/components/regionFields';
+import RequestParams from './RequestParams';
+import styles from '../style.less';
 
 class LinksParams extends PureComponent {
-  columns: StandardTableColumnProps<LinksParamsItem>[] = [
-    {
-      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.name" />,
-      dataIndex: 'name',
-      editingRender: {
-        fieldDecoratorOptions: {
-          rules: [
-            {
-              required: true,
-              message: <FormattedMessage id="app.common.validation.not-empty" />,
-            },
-          ],
-        },
-        itemRender: () => <Input />,
-      },
-    },
-    {
-      title: <FormattedMessage id="app.crawler.rule-conf.label.region.fields.selector" />,
-      dataIndex: 'selector',
-      editingRender: {
-        fieldDecoratorOptions: {
-          rules: [
-            {
-              required: true,
-              message: <FormattedMessage id="app.common.validation.not-empty" />,
-            },
-          ],
-        },
-        itemRender: () => <Input />,
-      },
-    },
-    {
-      title: <FormattedMessage id="app.common.label.memo" />,
-      dataIndex: 'remarks',
-      editingRender: {
-        itemRender: () => <Input />,
-      },
-    },
-  ];
-
-  renderRequestParams = () => (
-    // @ts-ignore
-    <TablePage
-      action="linksParams/fetch"
-      columns={this.columns}
-    />
-  );
-
   render() {
     return (
-      <div>
+      <div className={styles.linksParams}>
         <Tabs defaultActiveKey="1">
           <Tabs.TabPane tab="Request Params" key="1">
-            {this.renderRequestParams()}
+            <RequestParams data={[]} />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Attached Params" key="2">
             Content of Tab Pane 2

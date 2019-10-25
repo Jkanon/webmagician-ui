@@ -59,9 +59,14 @@ export default {
   'app.crawler.rule-conf.label.region.links.selector': 'Selector',
   'app.crawler.rule-conf.label.region.links.method': 'Method',
   'app.crawler.rule-conf.label.region.links.type': 'Type',
+  'app.crawler.rule-conf.label.region.links.type.binary': 'Binary File',
+  'app.crawler.rule-conf.label.region.links.type.content-page': 'Content Page',
+  'app.crawler.rule-conf.label.region.links.type.list-page': 'List Page',
+  'app.crawler.rule-conf.label.region.links.type.extra': 'Extra',
 
   'app.crawler.rule-conf.operation.label.add-region': 'Region',
   'app.crawler.rule-conf.operation.label.add-field': 'Field',
+  'app.crawler.rule-conf.operation.label.add-link': 'New Link',
 
   'app.crawler.rule-conf.validation.name.not-empty': "Page's name cannot be empty",
   'app.crawler.rule-conf.validation.url-regex.not-empty':

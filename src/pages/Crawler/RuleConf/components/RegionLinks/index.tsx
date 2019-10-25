@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { connect } from 'dva';
 import { Col, Dropdown, Icon, Input, List, Menu, Row, Collapse, Select } from 'antd';
 import { Dispatch } from 'redux';
@@ -28,24 +28,45 @@ interface RegionLinksState {
 const linkCategories = [
   {
     type: 1,
-    name: '内容页',
+    name: <FormattedMessage id="app.crawler.rule-conf.label.region.links.type.content-page" />,
   },
   {
     type: 2,
-    name: '列表页',
+    name: <FormattedMessage id="app.crawler.rule-conf.label.region.links.type.list-page" />,
   },
   {
     type: 3,
-    name: '附加页',
+    name: <FormattedMessage id="app.crawler.rule-conf.label.region.links.type.extra" />,
   },
   {
     type: 0,
-    name: '二进制',
+    name: <FormattedMessage id="app.crawler.rule-conf.label.region.links.type.binary" />,
   },
 ];
 
 class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
-  groupByMemoize = memoize((collection: List<RegionLinksItem>) => groupBy(collection, 'type'));
+  groupByMemoize = memoize((collection: RegionLinksItem[]) => groupBy(collection, 'type'));
+
+  linksItemsActionMenu = (
+    <Menu>
+      <Menu.Item key="1">
+        <span>
+          <Icon type="copy" theme="filled" />
+          <span>
+            <FormattedMessage id="component.common.text.duplicate" />
+          </span>
+        </span>
+      </Menu.Item>
+      <Menu.Item key="2">
+        <span>
+          <Icon type="delete" theme="filled" />
+          <span>
+            <FormattedMessage id="component.common.text.delete" />
+          </span>
+        </span>
+      </Menu.Item>
+    </Menu>
+  );
 
   componentWillMount(): void {
     const { dispatch, regionId } = this.props;
@@ -58,95 +79,77 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
     });
   }
 
+  renderCollapseHeader = ({ name }: { name: ReactNode }, list: RegionLinksItem[] = []) => (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Icon type="folder-open" />
+      <span style={{ display: 'inline-flex', flexFlow: 'column', marginLeft: 10 }}>
+        <span>{name}</span>
+        <span>{list.length} request</span>
+      </span>
+    </div>
+  );
+
   renderLinksList() {
     const {
       regionLinks: { data },
     } = this.props;
 
-    const renderHeader = ({ name }: { name: string }) => (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Icon type="folder-open" />
-        <span style={{ display: 'inline-flex', flexFlow: 'column', marginLeft: 10 }}>
-          <span>{name}</span>
-          <span>1 request</span>
-        </span>
-      </div>
-    );
-
     const { list } = data;
     const dataGroup = this.groupByMemoize(list);
 
-    const menu = (
-      <Menu>
-        <Menu.Item key="1">
-          <span>
-            <Icon type="copy" theme="filled" />
-            <span>Duplicate</span>
-          </span>
-        </Menu.Item>
-        <Menu.Item key="2">
-          <span>
-            <Icon type="delete" theme="filled" />
-            <span>
-              <FormattedMessage id="component.common.text.delete" />
-            </span>
-          </span>
-        </Menu.Item>
-      </Menu>
-    );
-
     return (
-      <div>
+      <div className={styles.autoFix}>
         <Collapse
           defaultActiveKey={['1']}
           expandIcon={({ isActive }) => <Icon type="caret-right" rotate={isActive ? 90 : 0} />}
           className={styles.linksCategory}
         >
-          {
-            linkCategories.map(({ type, name }) => (
-                <Collapse.Panel header={renderHeader({ name })} key={type}>
-                  <List
-                    itemLayout="horizontal"
-                    size="small"
-                    dataSource={dataGroup[type]}
-                    bordered
-                    renderItem={item => (
-                      <List.Item title={item.name} className={styles.linksListItem}>
-                        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                          <div
-                            style={{
-                              flex: '0 0 50px',
-                              fontWeight: 'bold',
-                              fontSize: 'xx-small',
-                              color: 'green',
-                            }}
-                          >
-                            {item.method}
-                          </div>
-                          <div
-                            style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              flex: '1 1 auto',
-                            }}
-                          >
-                            {item.name}
-                          </div>
-                          <div>
-                            <Dropdown overlay={menu}>
-                              <a>
-                                <Icon type="ellipsis" />
-                              </a>
-                            </Dropdown>
-                          </div>
-                        </div>
-                      </List.Item>
-                    )}
-                  />
-                </Collapse.Panel>
-              ))
-          }
+          {linkCategories.map(({ type, name }) => (
+            <Collapse.Panel
+              header={this.renderCollapseHeader({ name }, dataGroup[type])}
+              key={type}
+            >
+              <List
+                itemLayout="horizontal"
+                size="small"
+                dataSource={dataGroup[type]}
+                bordered
+                renderItem={item => (
+                  <List.Item title={item.name} className={styles.linksListItem}>
+                    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <div
+                        style={{
+                          flex: '0 0 50px',
+                          fontWeight: 'bold',
+                          fontSize: 'xx-small',
+                          color: 'green',
+                        }}
+                      >
+                        {item.method}
+                      </div>
+                      <div
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          flex: 'auto',
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                      <div>
+                        <Dropdown overlay={this.linksItemsActionMenu}>
+                          <a>
+                            <Icon type="ellipsis" />
+                          </a>
+                        </Dropdown>
+                      </div>
+                    </div>
+                  </List.Item>
+                )}
+              />
+            </Collapse.Panel>
+          ))}
         </Collapse>
       </div>
     );
@@ -163,7 +166,8 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
               </div>
               <div className={`${styles.card} ${styles.cardHeader}`}>
                 <a>
-                  <Icon type="plus" /> New Links
+                  <Icon type="plus" />{' '}
+                  <FormattedMessage id="app.crawler.rule-conf.operation.label.add-link" />
                 </a>
               </div>
               {this.renderLinksList()}
@@ -181,7 +185,10 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
                 >
                   <Collapse.Panel
                     header={
-                      <Input placeholder="点击输入链接名称" onClick={e => e.stopPropagation()} />
+                      <Input
+                        placeholder="Click here to input the title of the link"
+                        onClick={e => e.stopPropagation()}
+                      />
                     }
                     key="1"
                   >

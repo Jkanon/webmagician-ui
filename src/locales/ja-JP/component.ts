@@ -3,6 +3,7 @@ export default {
   'component.common.text.add': '追加',
   'component.common.text.edit': '編集',
   'component.common.text.detail': '詳細',
+  'component.common.text.duplicate': 'コピー',
   'component.common.text.refresh': 'リフレッシュ',
   'component.common.text.save': '保存する',
   'component.common.text.cancel': '取り消す',
