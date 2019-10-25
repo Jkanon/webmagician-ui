@@ -23,7 +23,7 @@ export interface LinksParamsItem extends TableListItem {
 }
 
 export interface LinksParamsStateType {
-  data: TableListData<RegionLinksItem>;
+  data: TableListData<LinksParamsItem>;
 }
 
 export type Effect = (

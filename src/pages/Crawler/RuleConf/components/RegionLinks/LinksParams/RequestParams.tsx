@@ -54,7 +54,7 @@ class RequestParams extends Component<RequestParamsProps> {
   render() {
     return (
       // @ts-ignore
-      <TablePage action="linksParams/fetch" columns={this.columns} />
+      <TablePage columns={this.columns} data={{ list: this.props.data, pagination: false }} />
     );
   }
 }

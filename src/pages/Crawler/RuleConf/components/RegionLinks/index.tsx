@@ -22,7 +22,7 @@ interface RegionLinksProps {
 }
 
 interface RegionLinksState {
-  editingRecord: RegionLinksItem | null;
+  editingRecord?: RegionLinksItem;
 }
 
 const linkCategories = [
@@ -68,6 +68,11 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
     </Menu>
   );
 
+  constructor(props: RegionLinksProps) {
+    super(props);
+    this.state = {};
+  }
+
   componentWillMount(): void {
     const { dispatch, regionId } = this.props;
 
@@ -79,6 +84,21 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
     });
   }
 
+  onLinksItemClick = (item?: RegionLinksItem) => {
+    this.setState({
+      editingRecord: item,
+    });
+    if (item !== undefined) {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'linksParams/fetch',
+        payload: {
+          linkId: item.id,
+        },
+      });
+    }
+  };
+
   renderCollapseHeader = ({ name }: { name: ReactNode }, list: RegionLinksItem[] = []) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Icon type="folder-open" />
@@ -89,7 +109,49 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
     </div>
   );
 
-  renderLinksList() {
+  renderLinksListItem = (item: RegionLinksItem) => {
+    const { editingRecord: { id } = { id: 'new' } } = this.state;
+
+    return (
+      <List.Item
+        title={item.name}
+        className={`${styles.linksListItem} ${item.id === id ? styles.active : ''}`}
+        onClick={() => this.onLinksItemClick(item)}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+          <div
+            style={{
+              flex: '0 0 50px',
+              fontWeight: 'bold',
+              fontSize: 'xx-small',
+              color: 'green',
+            }}
+          >
+            {item.method}
+          </div>
+          <div
+            style={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              flex: 'auto',
+            }}
+          >
+            {item.name}
+          </div>
+          <div>
+            <Dropdown overlay={this.linksItemsActionMenu}>
+              <a>
+                <Icon type="ellipsis" />
+              </a>
+            </Dropdown>
+          </div>
+        </div>
+      </List.Item>
+    );
+  };
+
+  renderLinksList = () => {
     const {
       regionLinks: { data },
     } = this.props;
@@ -114,48 +176,17 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
                 size="small"
                 dataSource={dataGroup[type]}
                 bordered
-                renderItem={item => (
-                  <List.Item title={item.name} className={styles.linksListItem}>
-                    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <div
-                        style={{
-                          flex: '0 0 50px',
-                          fontWeight: 'bold',
-                          fontSize: 'xx-small',
-                          color: 'green',
-                        }}
-                      >
-                        {item.method}
-                      </div>
-                      <div
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          flex: 'auto',
-                        }}
-                      >
-                        {item.name}
-                      </div>
-                      <div>
-                        <Dropdown overlay={this.linksItemsActionMenu}>
-                          <a>
-                            <Icon type="ellipsis" />
-                          </a>
-                        </Dropdown>
-                      </div>
-                    </div>
-                  </List.Item>
-                )}
+                renderItem={this.renderLinksListItem}
               />
             </Collapse.Panel>
           ))}
         </Collapse>
       </div>
     );
-  }
+  };
 
   render() {
+    const { editingRecord } = this.state;
     return (
       <Row style={{ height: '100%' }}>
         <Col xs={24} sm={24} md={24} lg={6} xl={6} style={{ height: '100%' }}>
@@ -165,7 +196,7 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
                 <Input prefix={<Icon type="search" />} placeholder="Filter" />
               </div>
               <div className={`${styles.card} ${styles.cardHeader}`}>
-                <a>
+                <a onClick={() => this.onLinksItemClick(undefined)}>
                   <Icon type="plus" />{' '}
                   <FormattedMessage id="app.crawler.rule-conf.operation.label.add-link" />
                 </a>
@@ -207,7 +238,7 @@ class RegionLinks extends Component<RegionLinksProps, RegionLinksState> {
                   <Input style={{ width: 'calc(100% - 100px)' }} placeholder="Link Selector" />
                 </Input.Group>
               </div>
-              {<LinksParams />}
+              {<LinksParams linkId={(editingRecord && editingRecord.id) || 'new'} />}
             </div>
           </div>
         </Col>
