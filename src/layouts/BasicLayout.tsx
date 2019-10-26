@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { MenuDataItem, BasicLayoutProps as ProLayoutProps, Settings } from '@ant-design/pro-layout';
 import GlobalFooter from '@ant-design/pro-layout/lib/GlobalFooter';
 import RouteContext from '@ant-design/pro-layout/es/RouteContext';
-import { Icon } from 'antd';
+import { Icon, Result, Button } from 'antd';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -20,8 +20,22 @@ import TabsView from './Components/TabsView';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
+import { getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.png';
 import logoCollapsed from '../assets/logo-collapsed.png';
+
+const noMatch = (
+  <Result
+    status="403"
+    title="403"
+    subTitle="Sorry, you are not authorized to access this page."
+    extra={
+      <Button type="primary">
+        <Link to="/user/login">Go Login</Link>
+      </Button>
+    }
+  />
+);
 
 interface MySettings extends Settings {
   tabsView: boolean;
@@ -30,6 +44,9 @@ interface MySettings extends Settings {
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
+  };
+  route: ProLayoutProps['route'] & {
+    authority: string[];
   };
   settings: MySettings;
   dispatch: Dispatch;
@@ -53,7 +70,7 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
   });
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings: defaultSettings, collapsed } = props;
+  const { dispatch, children, settings: defaultSettings, collapsed, location = { pathname: '/' } } = props;
   const [settings, setSettings] = useState<Partial<MySettings>>(defaultSettings);
   const { tabsView, fixedHeader, title } = settings;
 
@@ -114,6 +131,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
   };
 
+  // get children authority
+  const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
+    authority: undefined,
+  };
+
   return (
     <ProLayout
       logo={collapsed ? logoCollapsed : logo}
@@ -146,14 +168,22 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           <RouteContext.Consumer>
             {value => (
               <TabsView {...value}>
-                <div className="ant-pro-page-content-wrap-children-content">{children}</div>
-                {// @ts-ignore
+                <div className="ant-pro-page-content-wrap-children-content">
+                  <Authorized authority={authorized!.authority} noMatch={noMatch}>
+                    {children}
+                  </Authorized>
+                </div>
+                {
                 fixedHeader && footerRender()}
               </TabsView>
             )}
           </RouteContext.Consumer>
         ) : (
-          <div className="ant-pro-page-content-wrap-children-content">{children}</div>
+          <div className="ant-pro-page-content-wrap-children-content">
+            <Authorized authority={authorized!.authority} noMatch={noMatch}>
+              {children}
+            </Authorized>
+          </div>
         )}
       </div>
       <SettingDrawer settings={settings} onSettingChange={setSettings} />
